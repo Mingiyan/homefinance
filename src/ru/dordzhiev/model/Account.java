@@ -49,6 +49,13 @@ public class Account {
         this.currency = currency;
     }
 
+    public Account(String name, BigDecimal amount, AccountType accountType, Currency currency) {
+        this.name = name;
+        this.amount = amount;
+        this.accountType = accountType;
+        this.currency = currency;
+    }
+
     @Override
     public String toString() {
         return "Account{" +

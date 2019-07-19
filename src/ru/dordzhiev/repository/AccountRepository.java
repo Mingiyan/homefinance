@@ -1,7 +1,10 @@
 package ru.dordzhiev.repository;
 
 import ru.dordzhiev.model.Account;
+import ru.dordzhiev.model.AccountType;
+import ru.dordzhiev.model.Currency;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,7 +14,10 @@ import java.util.Optional;
 
 public class AccountRepository implements RepositoryCRUD<Long, Account>{
     private static final String INSERT = "insert into account_tbl (name, amount, type, currency) values (?, ?, ?, ?)";
+    private static final String FIND_BY_ID = "select * from account_tbl where id = ?";
+    private static final String FIND_ALL = "select* from account_tbl";
     private DatabaseConnector databaseConnector;
+
 
     public AccountRepository(DatabaseConnector databaseConnector) {
         this.databaseConnector = databaseConnector;
@@ -40,6 +46,26 @@ public class AccountRepository implements RepositoryCRUD<Long, Account>{
 
     @Override
     public Optional<Account> findById(Long id) {
+        try(Connection connection = databaseConnector.getConnection()) {
+            try(PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID)) {
+                preparedStatement.setLong(1, id);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                Account account = null;
+                while (resultSet.next()) {
+
+                    String name = resultSet.getString("name");
+                    String amount = resultSet.getString("amount");
+                    String type = resultSet.getString("type");
+                    String currency = resultSet.getString("currency");
+
+
+                    account = new Account(name, BigDecimal.valueOf(Long.valueOf(amount)), AccountType.valueOf(type), currency);
+                }
+                return Optional.ofNullable(account);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return Optional.empty();
     }
 
