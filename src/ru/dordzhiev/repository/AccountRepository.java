@@ -26,19 +26,19 @@ public class AccountRepository implements RepositoryCRUD<Long, Account>{
     @Override
     public void save(Account object) {
         try (Connection connection = databaseConnector.getConnection()){
-            try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT)) {
-                preparedStatement.setString(1, object.getName());
-                preparedStatement.setString(2, String.valueOf(object.getAmount()));
-                preparedStatement.setString(3, String.valueOf(object.getAccountType()));
-                preparedStatement.setString(4, String.valueOf(object.getCurrency()));
-                preparedStatement.executeUpdate();
+            PreparedStatement preparedStatement = connection.prepareStatement(INSERT);
+            preparedStatement.setString(1, object.getName());
+            preparedStatement.setString(2, String.valueOf(object.getAmount()));
+            preparedStatement.setString(3, String.valueOf(object.getAccountType()));
+            preparedStatement.setString(4, String.valueOf(object.getCurrency()));
+            preparedStatement.executeUpdate();
 
-                ResultSet resultSet = preparedStatement.getGeneratedKeys();
-                if (resultSet.next()) {
-                    object.setId(resultSet.getLong(1));
-                }
-                connection.commit();
+            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+            if (resultSet.next()) {
+                object.setId(resultSet.getLong(1));
             }
+            connection.commit();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -47,22 +47,19 @@ public class AccountRepository implements RepositoryCRUD<Long, Account>{
     @Override
     public Optional<Account> findById(Long id) {
         try(Connection connection = databaseConnector.getConnection()) {
-            try(PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID)) {
-                preparedStatement.setLong(1, id);
-                ResultSet resultSet = preparedStatement.executeQuery();
-                Account account = null;
-                while (resultSet.next()) {
-
-                    String name = resultSet.getString("name");
-                    String amount = resultSet.getString("amount");
-                    String type = resultSet.getString("type");
-                    String currency = resultSet.getString("currency");
-
-
-                    account = new Account(name, BigDecimal.valueOf(Long.valueOf(amount)), AccountType.valueOf(type), currency);
-                }
-                return Optional.ofNullable(account);
+            PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID);
+            preparedStatement.setLong(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            Account account = null;
+            while (resultSet.next()) {
+                String name = resultSet.getString("name");
+                String amount = resultSet.getString("amount");
+                String type = resultSet.getString("type");
+                String currency = resultSet.getString("currency");
+                account = new Account(name, BigDecimal.valueOf(Long.valueOf(amount)), AccountType.valueOf(type), currency);
             }
+            return Optional.ofNullable(account);
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

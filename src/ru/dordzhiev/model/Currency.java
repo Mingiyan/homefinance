@@ -20,6 +20,11 @@ public class Currency {
         this.name = name;
     }
 
+    public Currency(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     @Override
     public String toString() {
         return "Currency{" +
