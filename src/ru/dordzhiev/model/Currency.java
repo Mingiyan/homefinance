@@ -1,6 +1,6 @@
 package ru.dordzhiev.model;
 
-public class CategoryTransaction {
+public class Currency {
     private Long id;
     private String name;
 
@@ -22,7 +22,7 @@ public class CategoryTransaction {
 
     @Override
     public String toString() {
-        return "CategoryTransaction{" +
+        return "Currency{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 '}';

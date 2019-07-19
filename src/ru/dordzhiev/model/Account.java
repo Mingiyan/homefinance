@@ -1,12 +1,11 @@
 package ru.dordzhiev.model;
 
-import java.time.LocalDateTime;
+import java.math.BigDecimal;
 
-public class Transaction {
+public class Account {
     private Long id;
     private String name;
-    private LocalDateTime dateTime;
-    private CategoryTransaction categoryTransaction;
+    private BigDecimal amount;
     private AccountType accountType;
     private Currency currency;
 
@@ -26,20 +25,12 @@ public class Transaction {
         this.name = name;
     }
 
-    public LocalDateTime getDateTime() {
-        return dateTime;
+    public BigDecimal getAmount() {
+        return amount;
     }
 
-    public void setDateTime(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
-    }
-
-    public CategoryTransaction getCategoryTransaction() {
-        return categoryTransaction;
-    }
-
-    public void setCategoryTransaction(CategoryTransaction categoryTransaction) {
-        this.categoryTransaction = categoryTransaction;
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
     }
 
     public AccountType getAccountType() {
@@ -60,11 +51,10 @@ public class Transaction {
 
     @Override
     public String toString() {
-        return "Transaction{" +
+        return "Account{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", dateTime=" + dateTime +
-                ", categoryTransaction=" + categoryTransaction +
+                ", amount=" + amount +
                 ", accountType=" + accountType +
                 ", currency=" + currency +
                 '}';
