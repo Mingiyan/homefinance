@@ -18,6 +18,8 @@ public class CurrencyRepository implements RepositoryCRUD<Long, Currency> {
     private static final String FIND_BY_ID = "select * from currency_tbl where id = ?";
     private static final String FIND_BY_NAME = "select * from currency_tbl where name = ?";
     private static final String FIND_ALL = "select * from currency_tbl";
+    private static final String UPDATE = "update currency_tbl set name = ? where id = ?";
+    private static final String DELETE = "delete from currency_tbl where id = ?";
     private DatabaseConnector databaseConnector;
 
     public CurrencyRepository(DatabaseConnector databaseConnector) {
@@ -59,12 +61,36 @@ public class CurrencyRepository implements RepositoryCRUD<Long, Currency> {
     }
         @Override
     public Currency update(Currency object) {
-        return null;
+        try (Connection connection = databaseConnector.getConnection()) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE)){
+                preparedStatement.setString(1, object.getName());
+                preparedStatement.setLong(2, object.getId());
+                preparedStatement.executeUpdate();
+                ResultSet resultSet = preparedStatement.getGeneratedKeys();
+                if (resultSet.next()) {
+                    object.setId(resultSet.getLong(2));
+                }
+                connection.commit();
+            } catch (SQLException e) {
+                connection.rollback();
+                e.printStackTrace();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+            return null;
     }
 
     @Override
     public void remove(Currency object) {
-
+        try (Connection connection = databaseConnector.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(DELETE);
+            preparedStatement.setLong(1, object.getId());
+            preparedStatement.executeUpdate();
+            connection.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
