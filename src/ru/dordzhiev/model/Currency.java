@@ -20,6 +20,10 @@ public class Currency {
         this.name = name;
     }
 
+    public Currency() {
+
+    }
+
     public Currency(Long id, String name) {
         this.id = id;
         this.name = name;

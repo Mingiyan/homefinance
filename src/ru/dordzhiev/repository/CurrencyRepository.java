@@ -20,10 +20,9 @@ public class CurrencyRepository implements RepositoryCRUD<Long, Currency> {
     private static final String FIND_ALL = "select * from currency_tbl";
     private static final String UPDATE = "update currency_tbl set name = ? where id = ?";
     private static final String DELETE = "delete from currency_tbl where id = ?";
-    private DatabaseConnector databaseConnector;
+    private DatabaseConnector databaseConnector = new DatabaseConnector();
 
-    public CurrencyRepository(DatabaseConnector databaseConnector) {
-        this.databaseConnector = databaseConnector;
+    public CurrencyRepository() {
     }
 
     @Override
