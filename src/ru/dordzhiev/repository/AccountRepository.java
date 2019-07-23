@@ -54,9 +54,7 @@ public class AccountRepository implements RepositoryCRUD<Long, Account>{
             while (resultSet.next()) {
                 String name = resultSet.getString("name");
                 String amount = resultSet.getString("amount");
-                String type = resultSet.getString("type");
-                String currency = resultSet.getString("currency");
-//                account = new Account(name, BigDecimal.valueOf(Long.valueOf(amount)), AccountType.valueOf(type), currency);
+//                account = new Account(name, ;
             }
             return Optional.ofNullable(account);
 

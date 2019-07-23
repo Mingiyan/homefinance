@@ -1,5 +1,6 @@
 package ru.dordzhiev.repository;
 
+import ru.dordzhiev.model.CategoryTransaction;
 import ru.dordzhiev.model.Currency;
 
 import java.sql.Connection;
@@ -10,20 +11,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class CurrencyRepository implements RepositoryCRUD<Long, Currency> {
-    private static final String INSERT = "insert into currency_tbl (name) values (?)";
-    private static final String FIND_BY_ID = "select * from currency_tbl where id = ?";
-    private static final String FIND_BY_NAME = "select * from currency_tbl where name = ?";
-    private static final String FIND_ALL = "select * from currency_tbl";
-    private static final String UPDATE = "update currency_tbl set name = ? where id = ?";
-    private static final String DELETE = "delete from currency_tbl where id = ?";
+public class CategoryTransactionRepository implements RepositoryCRUD<Long, CategoryTransaction> {
+    private static final String INSERT = "insert into category_tbl (name) values (?)";
+    private static final String FIND_BY_ID = "select * from category_tbl where id = ?";
+    private static final String FIND_BY_NAME = "select * from category_tbl where name = ?";
+    private static final String FIND_ALL = "select * from category_tbl";
+    private static final String UPDATE = "update category_tbl set name = ? where id = ?";
+    private static final String DELETE = "delete from category_tbl where id = ?";
     private DatabaseConnector databaseConnector = new DatabaseConnector();
 
-    public CurrencyRepository() {
+    public CategoryTransactionRepository() {
+
     }
 
     @Override
-    public void save(Currency object) {
+    public void save(CategoryTransaction object) {
         try (Connection connection = databaseConnector.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT);
             preparedStatement.setString(1, object.getName());
@@ -39,24 +41,25 @@ public class CurrencyRepository implements RepositoryCRUD<Long, Currency> {
     }
 
     @Override
-    public Optional<Currency> findById(Long id) {
+    public Optional<CategoryTransaction> findById(Long id) {
         try (Connection connection = databaseConnector.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID);
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            Currency currency = null;
+            CategoryTransaction categoryTransaction = null;
             while (resultSet.next()) {
                 String name = resultSet.getString("name");
-                currency = new Currency(id, name);
+                categoryTransaction = new CategoryTransaction(id, name);
             }
-            return Optional.ofNullable(currency);
+            return Optional.ofNullable(categoryTransaction);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return Optional.empty();
     }
-        @Override
-    public Currency update(Currency object) {
+
+    @Override
+    public CategoryTransaction update(CategoryTransaction object) {
         try (Connection connection = databaseConnector.getConnection()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE)){
                 preparedStatement.setString(1, object.getName());
@@ -78,7 +81,7 @@ public class CurrencyRepository implements RepositoryCRUD<Long, Currency> {
     }
 
     @Override
-    public void remove(Currency object) {
+    public void remove(CategoryTransaction object) {
         try (Connection connection = databaseConnector.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(DELETE);
             preparedStatement.setLong(1, object.getId());
@@ -90,35 +93,18 @@ public class CurrencyRepository implements RepositoryCRUD<Long, Currency> {
     }
 
     @Override
-    public List<Currency> findAll() {
+    public List<CategoryTransaction> findAll() {
         try (Connection connection = databaseConnector.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL);
             ResultSet resultSet = preparedStatement.executeQuery();
-            List<Currency> list = new ArrayList<>();
+            List<CategoryTransaction> list = new ArrayList<>();
             while (resultSet.next()) {
-                list.add(new Currency(resultSet.getLong("id"), resultSet.getString("name")));
+                list.add(new CategoryTransaction (resultSet.getLong("id"), resultSet.getString("name")));
             }
             return list;
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
-    }
-
-    public Optional<Currency> findByName(String name) {
-        try (Connection connection = databaseConnector.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_NAME);
-            preparedStatement.setString(1, name);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            Currency currency = null;
-            while (resultSet.next()) {
-                Long id = resultSet.getLong("id");
-                currency = new Currency(id, name);
-            }
-            return Optional.ofNullable(currency);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return Optional.empty();
     }
 }

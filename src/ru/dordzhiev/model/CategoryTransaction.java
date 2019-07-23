@@ -4,6 +4,11 @@ public class CategoryTransaction {
     private Long id;
     private String name;
 
+    public CategoryTransaction(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public Long getId() {
         return id;
     }
