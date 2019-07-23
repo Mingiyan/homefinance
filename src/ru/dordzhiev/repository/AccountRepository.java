@@ -27,9 +27,9 @@ public class AccountRepository implements RepositoryCRUD<Long, Account>{
         try (Connection connection = databaseConnector.getConnection()){
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT);
             preparedStatement.setString(1, object.getName());
-            preparedStatement.setString(2, BigDecimal.valueOf(object.getAmount()));
+            preparedStatement.setBigDecimal(2, object.getAmount());
             preparedStatement.setString(3, String.valueOf(object.getAccountType()));
-            preparedStatement.setString(4, String.valueOf(object.getCurrency().get().getId()));
+            preparedStatement.setLong(4, object.getCurrency().get().getId());
             preparedStatement.executeUpdate();
 
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
