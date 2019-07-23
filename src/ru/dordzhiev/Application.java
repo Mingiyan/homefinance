@@ -1,23 +1,32 @@
 package ru.dordzhiev;
 
+import ru.dordzhiev.model.Account;
+import ru.dordzhiev.model.AccountType;
 import ru.dordzhiev.model.Currency;
+import ru.dordzhiev.repository.AccountRepository;
 import ru.dordzhiev.repository.CurrencyRepository;
+
+import java.math.BigDecimal;
+import java.util.Optional;
 
 
 public class Application {
     public static void main(String[] args) {
-        Currency currency = new Currency();
-        currency.setName("Доллар");
-        System.out.println(currency);
-
+        Optional<Currency> currency;
         CurrencyRepository currencyRepository = new CurrencyRepository();
-        currencyRepository.save(currency);
+        currency = currencyRepository.findById((long) 1);
+
+        Account account = new Account();
+        account.setName("Хавчик");
+        account.setAmount(BigDecimal.valueOf(1235));
+        account.setAccountType(AccountType.CASH);
+        account.setCurrency(currency);
+        System.out.println(account);
+
         System.out.println(currencyRepository.findAll());
-        System.out.println(currencyRepository.findById((long)2));
-        System.out.println(currencyRepository.findAll());
-        currency.setName("Евро");
-        currencyRepository.update(currency);
-        currencyRepository.remove(currency);
-        System.out.println(currencyRepository.findAll());
+        AccountRepository accountRepository = new AccountRepository();
+
+        accountRepository.save(account);
+        System.out.println(accountRepository.findAll());
     }
 }

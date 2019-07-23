@@ -13,14 +13,13 @@ import java.util.List;
 import java.util.Optional;
 
 public class AccountRepository implements RepositoryCRUD<Long, Account>{
-    private static final String INSERT = "insert into account_tbl (name, amount, type, currency) values (?, ?, ?, ?)";
+    private static final String INSERT = "insert into account_tbl (name, amount, type, currency_id) values (?, ?, ?, ?)";
     private static final String FIND_BY_ID = "select * from account_tbl where id = ?";
     private static final String FIND_ALL = "select* from account_tbl";
-    private DatabaseConnector databaseConnector;
+    private DatabaseConnector databaseConnector = new DatabaseConnector();
 
+    public AccountRepository() {
 
-    public AccountRepository(DatabaseConnector databaseConnector) {
-        this.databaseConnector = databaseConnector;
     }
 
     @Override
@@ -28,9 +27,9 @@ public class AccountRepository implements RepositoryCRUD<Long, Account>{
         try (Connection connection = databaseConnector.getConnection()){
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT);
             preparedStatement.setString(1, object.getName());
-            preparedStatement.setString(2, String.valueOf(object.getAmount()));
+            preparedStatement.setString(2, BigDecimal.valueOf(object.getAmount()));
             preparedStatement.setString(3, String.valueOf(object.getAccountType()));
-            preparedStatement.setString(4, String.valueOf(object.getCurrency()));
+            preparedStatement.setString(4, String.valueOf(object.getCurrency().get().getId()));
             preparedStatement.executeUpdate();
 
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
@@ -54,7 +53,8 @@ public class AccountRepository implements RepositoryCRUD<Long, Account>{
             while (resultSet.next()) {
                 String name = resultSet.getString("name");
                 String amount = resultSet.getString("amount");
-//                account = new Account(name, ;
+                String type = resultSet.getString("type");
+//                account = new Account(name, amount, AccountType.valueOf(type),
             }
             return Optional.ofNullable(account);
 
