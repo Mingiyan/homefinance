@@ -30,8 +30,7 @@ create table transaction_tbl (
     name varchar(50) not null,
     date_time date not null,
     category_id int not null,
-    account_id int not null,
-    currency_id int not null
+    account_id int not null
 );
 
 alter table transaction_tbl

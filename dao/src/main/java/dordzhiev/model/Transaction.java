@@ -14,5 +14,5 @@ public class Transaction {
     private LocalDateTime dateTime;
     private CategoryTransaction categoryTransaction;
     private Account account;
-    private Currency currency;
+
 }
