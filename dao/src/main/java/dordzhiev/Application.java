@@ -1,10 +1,10 @@
-package ru.dordzhiev;
+package dordzhiev;
 
-import ru.dordzhiev.model.Account;
-import ru.dordzhiev.model.AccountType;
-import ru.dordzhiev.model.Currency;
-import ru.dordzhiev.repository.AccountRepository;
-import ru.dordzhiev.repository.CurrencyRepository;
+import dordzhiev.model.Account;
+import dordzhiev.model.AccountType;
+import dordzhiev.model.Currency;
+import dordzhiev.repository.AccountRepository;
+import dordzhiev.repository.CurrencyRepository;
 
 import java.math.BigDecimal;
 import java.util.Optional;

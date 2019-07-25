@@ -1,8 +1,13 @@
-package ru.dordzhiev.model;
+package dordzhiev.model;
 
-public class Currency {
+public class CategoryTransaction {
     private Long id;
     private String name;
+
+    public CategoryTransaction(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
     public Long getId() {
         return id;
@@ -20,18 +25,9 @@ public class Currency {
         this.name = name;
     }
 
-    public Currency() {
-
-    }
-
-    public Currency(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
     @Override
     public String toString() {
-        return "Currency{" +
+        return "CategoryTransaction{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 '}';

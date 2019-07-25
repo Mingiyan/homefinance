@@ -1,4 +1,4 @@
-package ru.dordzhiev.model;
+package dordzhiev.model;
 
 import java.math.BigDecimal;
 import java.util.Optional;

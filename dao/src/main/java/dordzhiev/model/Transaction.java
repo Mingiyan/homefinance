@@ -1,4 +1,4 @@
-package ru.dordzhiev.model;
+package dordzhiev.model;
 
 import java.time.LocalDateTime;
 

@@ -1,4 +1,4 @@
-package ru.dordzhiev.repository;
+package dordzhiev.repository;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -6,8 +6,8 @@ import java.sql.SQLException;
 
 public class DatabaseConnector {
     private final static String DB_URL = "jdbc:postgresql://localhost:5432/geekfactory";
-    private final static String DB_USER = "**";
-    private final static String DB_PASSWORD = "**";
+    private final static String DB_USER = "vvvd";
+    private final static String DB_PASSWORD = "Vvvd010203";
 
     public Connection getConnection() {
 

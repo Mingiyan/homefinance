@@ -1,4 +1,4 @@
-package ru.dordzhiev.repository;
+package dordzhiev.repository;
 
 import java.util.List;
 import java.util.Optional;
