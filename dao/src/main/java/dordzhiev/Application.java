@@ -20,7 +20,7 @@ public class Application {
         account.setName("Хавчик");
         account.setAmount(BigDecimal.valueOf(1235));
         account.setAccountType(AccountType.CASH);
-        account.setCurrency(currency);
+        account.setCurrency(currency.get());
         System.out.println(account);
 
         System.out.println(currencyRepository.findAll());
