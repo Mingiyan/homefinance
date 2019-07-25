@@ -1,6 +1,8 @@
 package dordzhiev.repository;
 
 import dordzhiev.model.Account;
+import dordzhiev.model.AccountType;
+import dordzhiev.model.Currency;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -26,7 +28,7 @@ public class AccountRepository implements RepositoryCRUD<Long, Account>{
             preparedStatement.setString(1, object.getName());
             preparedStatement.setBigDecimal(2, object.getAmount());
             preparedStatement.setString(3, String.valueOf(object.getAccountType()));
-            preparedStatement.setLong(4, object.getCurrency().get().getId());
+            preparedStatement.setLong(4, object.getCurrency().getId());
             preparedStatement.executeUpdate();
 
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
@@ -51,7 +53,8 @@ public class AccountRepository implements RepositoryCRUD<Long, Account>{
                 String name = resultSet.getString("name");
                 String amount = resultSet.getString("amount");
                 String type = resultSet.getString("type");
-//                account = new Account(name, amount, AccountType.valueOf(type),
+
+//                account = new Account(name, amount, AccountType.valueOf(type), )
             }
             return Optional.ofNullable(account);
 
