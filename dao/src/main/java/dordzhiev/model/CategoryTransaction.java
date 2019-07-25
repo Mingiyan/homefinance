@@ -9,5 +9,5 @@ import lombok.*;
 public class CategoryTransaction {
     private Long id;
     private String name;
-
+    private CategoryTransaction parentCategory;
 }

@@ -13,6 +13,6 @@ public class Transaction {
     private String name;
     private LocalDateTime dateTime;
     private CategoryTransaction categoryTransaction;
-    private AccountType accountType;
+    private Account account;
     private Currency currency;
 }
