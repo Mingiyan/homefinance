@@ -4,6 +4,7 @@ import dordzhiev.model.Account;
 import dordzhiev.model.AccountType;
 import dordzhiev.model.Currency;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -51,10 +52,11 @@ public class AccountRepository implements RepositoryCRUD<Long, Account>{
             Account account = null;
             while (resultSet.next()) {
                 String name = resultSet.getString("name");
-                String amount = resultSet.getString("amount");
+                BigDecimal amount = resultSet.getBigDecimal("amount");
                 String type = resultSet.getString("type");
-
-//                account = new Account(name, amount, AccountType.valueOf(type), )
+                CurrencyRepository currencyRepository = new CurrencyRepository();
+                Optional<Currency> currency = currencyRepository.findById(resultSet.getLong("currency_id"));
+                account = new Account(id ,name, amount, AccountType.valueOf(type), currency.get());
             }
             return Optional.ofNullable(account);
 

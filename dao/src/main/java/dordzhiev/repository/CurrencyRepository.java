@@ -28,10 +28,6 @@ public class CurrencyRepository implements RepositoryCRUD<Long, Currency> {
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT);
             preparedStatement.setString(1, object.getName());
             preparedStatement.executeUpdate();
-            ResultSet resultSet = preparedStatement.getGeneratedKeys();
-            if (resultSet.next()) {
-                object.setId(resultSet.getLong(1));
-            }
             connection.commit();
         } catch (SQLException e) {
             e.printStackTrace();

@@ -29,10 +29,6 @@ public class CategoryTransactionRepository implements RepositoryCRUD<Long, Categ
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT);
             preparedStatement.setString(1, object.getName());
             preparedStatement.executeUpdate();
-            ResultSet resultSet = preparedStatement.getGeneratedKeys();
-            if (resultSet.next()) {
-                object.setId(resultSet.getLong(1));
-            }
             connection.commit();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -48,7 +44,9 @@ public class CategoryTransactionRepository implements RepositoryCRUD<Long, Categ
             CategoryTransaction categoryTransaction = null;
             while (resultSet.next()) {
                 String name = resultSet.getString("name");
-                categoryTransaction = new CategoryTransaction(id, name);
+                CategoryTransaction categoryTran = new CategoryTransaction();
+                categoryTran.setId(resultSet.getLong("category_id"));
+                categoryTransaction = new CategoryTransaction(id, name, categoryTran);
             }
             return Optional.ofNullable(categoryTransaction);
         } catch (SQLException e) {
@@ -98,7 +96,7 @@ public class CategoryTransactionRepository implements RepositoryCRUD<Long, Categ
             ResultSet resultSet = preparedStatement.executeQuery();
             List<CategoryTransaction> list = new ArrayList<>();
             while (resultSet.next()) {
-                list.add(new CategoryTransaction (resultSet.getLong("id"), resultSet.getString("name")));
+//                list.add(new CategoryTransaction (resultSet.getLong("id"), resultSet.getString("name")));
             }
             return list;
         } catch (SQLException e) {

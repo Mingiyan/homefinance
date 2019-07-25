@@ -14,7 +14,7 @@ public class Application {
     public static void main(String[] args) {
         Optional<Currency> currency;
         CurrencyRepository currencyRepository = new CurrencyRepository();
-        currency = currencyRepository.findById((long) 2);
+        currency = currencyRepository.findById((long) 1);
 
         Account account = new Account();
         account.setName("Одежда");
@@ -27,6 +27,6 @@ public class Application {
         AccountRepository accountRepository = new AccountRepository();
 
         accountRepository.save(account);
-        System.out.println(accountRepository.findAll());
+        System.out.println(accountRepository.findById((long) 1));
     }
 }

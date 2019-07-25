@@ -18,7 +18,7 @@ FOREIGN KEY (currency_id) REFERENCES currency_tbl (id);
 create table category_tbl (
   id serial primary key not null,
   name varchar(30) not null,
-  category_id int not null
+  category_id int
 );
 
 alter table category_tbl
