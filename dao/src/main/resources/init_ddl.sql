@@ -11,9 +11,9 @@ create table account_tbl (
   currency_id int not null
 );
 
-ALTER TABLE account_tbl
-ADD CONSTRAINT currency_fk
-FOREIGN KEY (currency_id) REFERENCES currency_tbl (id);
+alter table account_tbl
+add constraint currency_fk
+foreign key (currency_id) references currency_tbl (id);
 
 create table category_tbl (
   id serial primary key not null,
