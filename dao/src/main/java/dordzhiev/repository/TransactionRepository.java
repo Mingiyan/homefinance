@@ -17,8 +17,9 @@ public class TransactionRepository implements RepositoryCRUD<Long, Transaction> 
     private static final String FIND_ALL = "select * from transaction_tbl";
     private static final String UPDATE = "update transaction_tbl set name = ?, date_time = ?, category_id = ?, ammount_id = ? where id = ?";
     private static final String DELETE = "delete from transaction_tbl where id = ?";
-
-    DatabaseConnector databaseConnector = new DatabaseConnector();
+    CategoryTransactionRepository categoryTransactionRepository = new CategoryTransactionRepository();
+    private AccountRepository accountRepository = new AccountRepository();
+    private DatabaseConnector databaseConnector = new DatabaseConnector();
 
     @Override
     public void save(Transaction object) {
@@ -42,9 +43,8 @@ public class TransactionRepository implements RepositoryCRUD<Long, Transaction> 
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             Transaction transaction = null;
-            while (resultSet.next()) {
-                CategoryTransactionRepository categoryTransactionRepository = new CategoryTransactionRepository();
-                AccountRepository accountRepository = new AccountRepository();
+            while (resultSet.next()) { // if
+
                 String name = resultSet.getString("name");
                 LocalDateTime dateTime = resultSet.getTimestamp("date_time").toLocalDateTime();
                 Optional<CategoryTransaction> categoryTransactionOptional = categoryTransactionRepository.findById(resultSet.getLong("category_id"));
@@ -103,8 +103,6 @@ public class TransactionRepository implements RepositoryCRUD<Long, Transaction> 
             ResultSet resultSet = preparedStatement.executeQuery();
             List<Transaction> list = new ArrayList<>();
             while (resultSet.next()) {
-                CategoryTransactionRepository categoryTransactionRepository = new CategoryTransactionRepository();
-                AccountRepository accountRepository = new AccountRepository();
                 Long id = resultSet.getLong("id");
                 String name = resultSet.getString("name");
                 LocalDateTime dateTime = resultSet.getTimestamp("date_time").toLocalDateTime();

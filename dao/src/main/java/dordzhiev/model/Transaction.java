@@ -3,6 +3,7 @@ package dordzhiev.model;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 
 @Data
 @ToString
@@ -12,7 +13,7 @@ public class Transaction {
     private Long id;
     private String name;
     private LocalDateTime dateTime;
-    private CategoryTransaction categoryTransaction;
+    private Collection<CategoryTransaction> categoryTransaction;
     private Account account;
 
 }
