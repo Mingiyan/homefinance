@@ -6,7 +6,7 @@ import dordzhiev.repository.TransactionRepository;
 import java.util.List;
 import java.util.Optional;
 
-public class TransactionService  implements ServiceCRUD<Long, Transaction> {
+public class TransactionService implements ServiceCRUD<Long, Transaction> {
 
     TransactionRepository transactionRepository = new TransactionRepository();
 
