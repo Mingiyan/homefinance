@@ -13,7 +13,6 @@ import java.util.Optional;
 public class CategoryTransactionRepository implements RepositoryCRUD<Long, CategoryTransaction> {
     private static final String INSERT = "insert into category_tbl (name) values (?)";
     private static final String FIND_BY_ID = "select * from category_tbl where id = ?";
-    private static final String FIND_BY_NAME = "select * from category_tbl where name = ?";
     private static final String FIND_ALL = "select * from category_tbl";
     private static final String UPDATE = "update category_tbl set name = ? where id = ?";
     private static final String DELETE = "delete from category_tbl where id = ?";
