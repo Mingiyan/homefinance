@@ -12,10 +12,10 @@ import java.util.List;
 import java.util.Optional;
 
 public class CategoryTransactionRepository implements RepositoryCRUD<Long, CategoryTransactionModel> {
-    private static final String INSERT = "insert into category_tbl (name) values (?)";
+    private static final String INSERT = "insert into category_tbl (name, category_id) values (?, ?)";
     private static final String FIND_BY_ID = "select * from category_tbl where id = ?";
     private static final String FIND_ALL = "select * from category_tbl";
-    private static final String UPDATE = "update category_tbl set name = ? where id = ?";
+    private static final String UPDATE = "update category_tbl set name = ?, category_id = ? where id = ?";
     private static final String DELETE = "delete from category_tbl where id = ?";
     private DatabaseConnector databaseConnector = new DatabaseConnector();
     public CategoryTransactionRepository() {
@@ -27,6 +27,7 @@ public class CategoryTransactionRepository implements RepositoryCRUD<Long, Categ
         try (Connection connection = databaseConnector.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT);
             preparedStatement.setString(1, object.getName());
+            preparedStatement.setLong(2, object.getParentCategory().getId());
             preparedStatement.executeUpdate();
             connection.commit();
         } catch (SQLException e) {
@@ -57,11 +58,12 @@ public class CategoryTransactionRepository implements RepositoryCRUD<Long, Categ
         try (Connection connection = databaseConnector.getConnection()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE)){
                 preparedStatement.setString(1, object.getName());
-                preparedStatement.setLong(2, object.getId());
+                preparedStatement.setLong(2, object.getParentCategory().getId());
+                preparedStatement.setLong(3, object.getId());
                 preparedStatement.executeUpdate();
                 ResultSet resultSet = preparedStatement.getGeneratedKeys();
                 if (resultSet.next()) {
-                    object.setId(resultSet.getLong(2));
+                    object.setId(resultSet.getLong(3));
                 }
                 connection.commit();
             } catch (SQLException e) {
