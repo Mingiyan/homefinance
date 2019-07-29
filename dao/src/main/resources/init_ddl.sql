@@ -29,7 +29,6 @@ create table transaction_tbl (
     id serial primary key not null,
     name varchar(50) not null,
     date_time date not null,
-    category_id int not null,
     account_id int not null
 );
 

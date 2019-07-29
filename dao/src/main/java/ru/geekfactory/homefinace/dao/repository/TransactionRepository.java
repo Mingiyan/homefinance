@@ -26,11 +26,9 @@ public class TransactionRepository implements RepositoryCRUD<Long, TransactionMo
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT);
             preparedStatement.setString(1, object.getName());
             preparedStatement.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
-
-            Collection<CategoryTransactionModel> collection = new HashSet<>();
-            collection = object.getCategoryTransaction();
+            Collection<CategoryTransactionModel> collection = object.getCategoryTransaction();
             for (CategoryTransactionModel element : collection) {
-
+                element.
             }
             preparedStatement.setLong(3, );
             preparedStatement.setLong(4, object.getAccount().getId());
