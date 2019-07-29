@@ -40,3 +40,16 @@ foreign key (category_id) references category_tbl;
 alter table transaction_tbl
 add constraint transaction_to_account_fk
 foreign key (account_id) references account_tbl;
+
+create table transaction_category_tbl (
+  transaction_id int not null,
+  category_id int not null
+);
+
+alter table transaction_category_tbl
+add constraint transaction_fk
+foreign key (transaction_id) references transaction_tbl;
+
+alter table transaction_category_tbl
+add constraint category_fk
+foreign key (category_id) references category_tbl;

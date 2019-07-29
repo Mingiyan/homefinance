@@ -1,5 +1,6 @@
 package ru.geekfactory.homefinace.dao.repository;
 
+import ru.geekfactory.homefinace.dao.HomeFinanceDaoException;
 import ru.geekfactory.homefinace.dao.model.CategoryTransactionModel;
 
 import java.sql.Connection;
@@ -17,7 +18,6 @@ public class CategoryTransactionRepository implements RepositoryCRUD<Long, Categ
     private static final String UPDATE = "update category_tbl set name = ? where id = ?";
     private static final String DELETE = "delete from category_tbl where id = ?";
     private DatabaseConnector databaseConnector = new DatabaseConnector();
-
     public CategoryTransactionRepository() {
 
     }
@@ -30,7 +30,7 @@ public class CategoryTransactionRepository implements RepositoryCRUD<Long, Categ
             preparedStatement.executeUpdate();
             connection.commit();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new HomeFinanceDaoException("error while save CategoryTransactionModel " + object, e);
         }
     }
 
@@ -43,15 +43,13 @@ public class CategoryTransactionRepository implements RepositoryCRUD<Long, Categ
             CategoryTransactionModel categoryTransaction = null;
             while (resultSet.next()) {
                 String name = resultSet.getString("name");
-                CategoryTransactionModel categoryTran = new CategoryTransactionModel();
-                categoryTran.setId(resultSet.getLong("category_id"));
-                categoryTransaction = new CategoryTransactionModel(id, name, categoryTran);
+                CategoryTransactionModel parentCategory = findById(resultSet.getLong("category_id")).orElse(null);
+                categoryTransaction = new CategoryTransactionModel(id, name, parentCategory);
             }
             return Optional.ofNullable(categoryTransaction);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new HomeFinanceDaoException("error while find CategoryTransactionModel by id", e);
         }
-        return Optional.empty();
     }
 
     @Override
@@ -68,10 +66,10 @@ public class CategoryTransactionRepository implements RepositoryCRUD<Long, Categ
                 connection.commit();
             } catch (SQLException e) {
                 connection.rollback();
-                e.printStackTrace();
+                throw new HomeFinanceDaoException("error while update CategoryTransactionModel " + object, e);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new HomeFinanceDaoException("error while update CategoryTransactionModel " + object, e);
         }
         return null;
     }
@@ -84,7 +82,7 @@ public class CategoryTransactionRepository implements RepositoryCRUD<Long, Categ
             preparedStatement.executeUpdate();
             connection.commit();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new HomeFinanceDaoException("error while remove CategoryTransactionModel " + object, e);
         }
     }
 
@@ -95,12 +93,11 @@ public class CategoryTransactionRepository implements RepositoryCRUD<Long, Categ
             ResultSet resultSet = preparedStatement.executeQuery();
             List<CategoryTransactionModel> list = new ArrayList<>();
             while (resultSet.next()) {
-//                list.add(new CategoryTransaction (resultSet.getLong("id"), resultSet.getString("name")));
+                list.add(new CategoryTransactionModel(resultSet.getLong("id"), resultSet.getString("name"), findById(resultSet.getLong("category_id")).orElse(null)));
             }
             return list;
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new HomeFinanceDaoException("error while find all CategoryTransactionModel ", e);
         }
-        return null;
     }
 }

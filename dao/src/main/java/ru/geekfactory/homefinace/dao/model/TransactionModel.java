@@ -15,5 +15,4 @@ public class TransactionModel {
     private LocalDateTime dateTime;
     private Collection<CategoryTransactionModel> categoryTransaction;
     private AccountModel account;
-
 }

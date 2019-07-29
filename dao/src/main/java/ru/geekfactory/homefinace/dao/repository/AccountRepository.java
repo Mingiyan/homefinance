@@ -1,5 +1,6 @@
 package ru.geekfactory.homefinace.dao.repository;
 
+import ru.geekfactory.homefinace.dao.HomeFinanceDaoException;
 import ru.geekfactory.homefinace.dao.model.AccountModel;
 import ru.geekfactory.homefinace.dao.model.AccountType;
 import ru.geekfactory.homefinace.dao.model.CurrencyModel;
@@ -20,7 +21,7 @@ public class AccountRepository implements RepositoryCRUD<Long, AccountModel>{
     private static final String DELETE = "delete from account_tbl where id = ?";
     private static final String FIND_ALL = "select * from account_tbl";
     private DatabaseConnector databaseConnector = new DatabaseConnector();
-
+    private CurrencyRepository currencyRepository = new CurrencyRepository();
     public AccountRepository() {
 
     }
@@ -36,7 +37,7 @@ public class AccountRepository implements RepositoryCRUD<Long, AccountModel>{
             preparedStatement.executeUpdate();
             connection.commit();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new HomeFinanceDaoException("error while save Account model " + object, e);
         }
     }
 
@@ -51,16 +52,14 @@ public class AccountRepository implements RepositoryCRUD<Long, AccountModel>{
                 String name = resultSet.getString("name");
                 BigDecimal amount = resultSet.getBigDecimal("amount");
                 String type = resultSet.getString("type");
-                CurrencyRepository currencyRepository = new CurrencyRepository();
                 Optional<CurrencyModel> currency = currencyRepository.findById(resultSet.getLong("currency_id"));
                 account = new AccountModel(id ,name, amount, AccountType.valueOf(type), currency.get());
             }
             return Optional.ofNullable(account);
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new HomeFinanceDaoException("error while find Account model by id", e);
         }
-        return Optional.empty();
     }
 
     @Override
@@ -84,8 +83,7 @@ public class AccountRepository implements RepositoryCRUD<Long, AccountModel>{
                 return null;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
+            throw new HomeFinanceDaoException("error while update Account model " + object, e);
         }
     }
 
@@ -97,7 +95,7 @@ public class AccountRepository implements RepositoryCRUD<Long, AccountModel>{
             preparedStatement.executeUpdate();
             connection.commit();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new HomeFinanceDaoException("error while remove Account model " + object, e);
         }
     }
 
@@ -108,7 +106,6 @@ public class AccountRepository implements RepositoryCRUD<Long, AccountModel>{
             ResultSet resultSet = preparedStatement.executeQuery();
             List<AccountModel> list = new ArrayList<>();
             while (resultSet.next()) {
-                CurrencyRepository currencyRepository = new CurrencyRepository();
                 Long id = resultSet.getLong("id");
                 String name = resultSet.getString("name");
                 BigDecimal amount = resultSet.getBigDecimal("amount");
@@ -118,9 +115,7 @@ public class AccountRepository implements RepositoryCRUD<Long, AccountModel>{
             }
             return list;
         } catch (SQLException e) {
-            e.printStackTrace();
-
+            throw new HomeFinanceDaoException("error while find all Account model", e);
         }
-        return null;
     }
 }

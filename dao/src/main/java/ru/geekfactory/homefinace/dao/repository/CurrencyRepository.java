@@ -1,5 +1,6 @@
 package ru.geekfactory.homefinace.dao.repository;
 
+import ru.geekfactory.homefinace.dao.HomeFinanceDaoException;
 import ru.geekfactory.homefinace.dao.model.CurrencyModel;
 
 import java.sql.Connection;
@@ -30,7 +31,7 @@ public class CurrencyRepository implements RepositoryCRUD<Long, CurrencyModel> {
             preparedStatement.executeUpdate();
             connection.commit();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new HomeFinanceDaoException("error while save CurrencyModel model " + object, e);
         }
     }
 
@@ -47,9 +48,8 @@ public class CurrencyRepository implements RepositoryCRUD<Long, CurrencyModel> {
             }
             return Optional.ofNullable(currency);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new HomeFinanceDaoException("error while find CurrencyModel model by id", e);
         }
-        return Optional.empty();
     }
         @Override
     public CurrencyModel update(CurrencyModel object) {
@@ -65,10 +65,10 @@ public class CurrencyRepository implements RepositoryCRUD<Long, CurrencyModel> {
                 connection.commit();
             } catch (SQLException e) {
                 connection.rollback();
-                e.printStackTrace();
+                throw new HomeFinanceDaoException("error while update CurrencyModel " + object, e);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new HomeFinanceDaoException("error while update CurrencyModel " + object, e);
         }
         return null;
     }
@@ -81,7 +81,7 @@ public class CurrencyRepository implements RepositoryCRUD<Long, CurrencyModel> {
             preparedStatement.executeUpdate();
             connection.commit();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new HomeFinanceDaoException("error while remove CurrencyModel " + object, e);
         }
     }
 
@@ -96,9 +96,8 @@ public class CurrencyRepository implements RepositoryCRUD<Long, CurrencyModel> {
             }
             return list;
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new HomeFinanceDaoException("error while find all CurrencyModel", e);
         }
-        return null;
     }
 
     public Optional<CurrencyModel> findByName(String name) {

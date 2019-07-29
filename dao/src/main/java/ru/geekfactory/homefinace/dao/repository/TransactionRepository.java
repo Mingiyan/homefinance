@@ -1,14 +1,13 @@
 package ru.geekfactory.homefinace.dao.repository;
 
+import ru.geekfactory.homefinace.dao.HomeFinanceDaoException;
 import ru.geekfactory.homefinace.dao.model.AccountModel;
 import ru.geekfactory.homefinace.dao.model.CategoryTransactionModel;
 import ru.geekfactory.homefinace.dao.model.TransactionModel;
 
 import java.sql.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class TransactionRepository implements RepositoryCRUD<Long, TransactionModel> {
 
@@ -17,7 +16,7 @@ public class TransactionRepository implements RepositoryCRUD<Long, TransactionMo
     private static final String FIND_ALL = "select * from transaction_tbl";
     private static final String UPDATE = "update transaction_tbl set name = ?, date_time = ?, category_id = ?, ammount_id = ? where id = ?";
     private static final String DELETE = "delete from transaction_tbl where id = ?";
-    CategoryTransactionRepository categoryTransactionRepository = new CategoryTransactionRepository();
+    private CategoryTransactionRepository categoryTransactionRepository = new CategoryTransactionRepository();
     private AccountRepository accountRepository = new AccountRepository();
     private DatabaseConnector databaseConnector = new DatabaseConnector();
 
@@ -27,12 +26,15 @@ public class TransactionRepository implements RepositoryCRUD<Long, TransactionMo
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT);
             preparedStatement.setString(1, object.getName());
             preparedStatement.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
-            preparedStatement.setLong(3, object.getCategoryTransaction().get);
+
+            Collection<CategoryTransactionModel> collection = new HashSet<>();
+            collection =
+            preparedStatement.setLong(3, object.getCategoryTransaction());
             preparedStatement.setLong(4, object.getAccount().getId());
             preparedStatement.executeUpdate();
             connection.commit();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new HomeFinanceDaoException("error while save TransactionModel " + object, e);
         }
     }
 
@@ -44,7 +46,6 @@ public class TransactionRepository implements RepositoryCRUD<Long, TransactionMo
             ResultSet resultSet = preparedStatement.executeQuery();
             TransactionModel transaction = null;
             while (resultSet.next()) { // if
-
                 String name = resultSet.getString("name");
                 LocalDateTime dateTime = resultSet.getTimestamp("date_time").toLocalDateTime();
                 Optional<CategoryTransactionModel> categoryTransactionOptional = categoryTransactionRepository.findById(resultSet.getLong("category_id"));
@@ -53,7 +54,7 @@ public class TransactionRepository implements RepositoryCRUD<Long, TransactionMo
             }
             return Optional.ofNullable(transaction);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new HomeFinanceDaoException("error while find TransactionModel by id", e);
         }
         return Optional.empty();
     }
@@ -75,12 +76,10 @@ public class TransactionRepository implements RepositoryCRUD<Long, TransactionMo
                 return object;
             } catch (SQLException e) {
                 connection.rollback();
-                e.printStackTrace();
-                return null;
+                throw new HomeFinanceDaoException("error while update TransactionModel " + object, e);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
+            throw new HomeFinanceDaoException("error while update TransactionModel " + object, e);
         }
     }
 
@@ -92,7 +91,7 @@ public class TransactionRepository implements RepositoryCRUD<Long, TransactionMo
             preparedStatement.executeUpdate();
             connection.commit();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new HomeFinanceDaoException("error while update TransactionModel " + object, e);
         }
     }
 
@@ -112,8 +111,7 @@ public class TransactionRepository implements RepositoryCRUD<Long, TransactionMo
             }
             return list;
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new HomeFinanceDaoException("error while find all TransactionModel", e);
         }
-        return null;
     }
 }
