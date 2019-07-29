@@ -1,9 +1,8 @@
-package dordzhiev.repository;
+package ru.geekfactory.homefinace.dao.repository;
 
-import dordzhiev.model.Account;
-import dordzhiev.model.AccountType;
-import dordzhiev.model.CategoryTransaction;
-import dordzhiev.model.Currency;
+import ru.geekfactory.homefinace.dao.model.AccountModel;
+import ru.geekfactory.homefinace.dao.model.AccountType;
+import ru.geekfactory.homefinace.dao.model.CurrencyModel;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -14,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class AccountRepository implements RepositoryCRUD<Long, Account>{
+public class AccountRepository implements RepositoryCRUD<Long, AccountModel>{
     private static final String INSERT = "insert into account_tbl (name, amount, type, currency_id) values (?, ?, ?, ?)";
     private static final String FIND_BY_ID = "select * from account_tbl where id = ?";
     private static final String UPDATE = "update account_tbl set name = ?, amount = ?, type = ?, currency_id = ? where id = ?";
@@ -27,7 +26,7 @@ public class AccountRepository implements RepositoryCRUD<Long, Account>{
     }
 
     @Override
-    public void save(Account object) {
+    public void save(AccountModel object) {
         try (Connection connection = databaseConnector.getConnection()){
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT);
             preparedStatement.setString(1, object.getName());
@@ -42,19 +41,19 @@ public class AccountRepository implements RepositoryCRUD<Long, Account>{
     }
 
     @Override
-    public Optional<Account> findById(Long id) {
+    public Optional<AccountModel> findById(Long id) {
         try(Connection connection = databaseConnector.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID);
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            Account account = null;
+            AccountModel account = null;
             while (resultSet.next()) {
                 String name = resultSet.getString("name");
                 BigDecimal amount = resultSet.getBigDecimal("amount");
                 String type = resultSet.getString("type");
                 CurrencyRepository currencyRepository = new CurrencyRepository();
-                Optional<Currency> currency = currencyRepository.findById(resultSet.getLong("currency_id"));
-                account = new Account(id ,name, amount, AccountType.valueOf(type), currency.get());
+                Optional<CurrencyModel> currency = currencyRepository.findById(resultSet.getLong("currency_id"));
+                account = new AccountModel(id ,name, amount, AccountType.valueOf(type), currency.get());
             }
             return Optional.ofNullable(account);
 
@@ -65,7 +64,7 @@ public class AccountRepository implements RepositoryCRUD<Long, Account>{
     }
 
     @Override
-    public Account update(Account object) {
+    public AccountModel update(AccountModel object) {
         try (Connection connection = databaseConnector.getConnection()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE)) {
                 preparedStatement.setString(1, object.getName());
@@ -91,7 +90,7 @@ public class AccountRepository implements RepositoryCRUD<Long, Account>{
     }
 
     @Override
-    public void remove(Account object) {
+    public void remove(AccountModel object) {
         try (Connection connection = databaseConnector.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(DELETE);
             preparedStatement.setLong(1, object.getId());
@@ -103,19 +102,19 @@ public class AccountRepository implements RepositoryCRUD<Long, Account>{
     }
 
     @Override
-    public List<Account> findAll() {
+    public List<AccountModel> findAll() {
         try (Connection connection = databaseConnector.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL);
             ResultSet resultSet = preparedStatement.executeQuery();
-            List<Account> list = new ArrayList<>();
+            List<AccountModel> list = new ArrayList<>();
             while (resultSet.next()) {
                 CurrencyRepository currencyRepository = new CurrencyRepository();
                 Long id = resultSet.getLong("id");
                 String name = resultSet.getString("name");
                 BigDecimal amount = resultSet.getBigDecimal("amount");
                 String type = resultSet.getString("type");
-                Optional<Currency> currency = currencyRepository.findById(resultSet.getLong("currency_id"));
-                list.add(new Account (id, name, amount, AccountType.valueOf(type), currency.get()));
+                Optional<CurrencyModel> currency = currencyRepository.findById(resultSet.getLong("currency_id"));
+                list.add(new AccountModel (id, name, amount, AccountType.valueOf(type), currency.get()));
             }
             return list;
         } catch (SQLException e) {

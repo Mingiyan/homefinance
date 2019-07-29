@@ -1,6 +1,6 @@
-package dordzhiev.repository;
+package ru.geekfactory.homefinace.dao.repository;
 
-import dordzhiev.model.CategoryTransaction;
+import ru.geekfactory.homefinace.dao.model.CurrencyModel;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,20 +10,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class CategoryTransactionRepository implements RepositoryCRUD<Long, CategoryTransaction> {
-    private static final String INSERT = "insert into category_tbl (name) values (?)";
-    private static final String FIND_BY_ID = "select * from category_tbl where id = ?";
-    private static final String FIND_ALL = "select * from category_tbl";
-    private static final String UPDATE = "update category_tbl set name = ? where id = ?";
-    private static final String DELETE = "delete from category_tbl where id = ?";
+public class CurrencyRepository implements RepositoryCRUD<Long, CurrencyModel> {
+    private static final String INSERT = "insert into currency_tbl (name) values (?)";
+    private static final String FIND_BY_ID = "select * from currency_tbl where id = ?";
+    private static final String FIND_BY_NAME = "select * from currency_tbl where name = ?";
+    private static final String FIND_ALL = "select * from currency_tbl";
+    private static final String UPDATE = "update currency_tbl set name = ? where id = ?";
+    private static final String DELETE = "delete from currency_tbl where id = ?";
     private DatabaseConnector databaseConnector = new DatabaseConnector();
 
-    public CategoryTransactionRepository() {
-
+    public CurrencyRepository() {
     }
 
     @Override
-    public void save(CategoryTransaction object) {
+    public void save(CurrencyModel object) {
         try (Connection connection = databaseConnector.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT);
             preparedStatement.setString(1, object.getName());
@@ -35,27 +35,24 @@ public class CategoryTransactionRepository implements RepositoryCRUD<Long, Categ
     }
 
     @Override
-    public Optional<CategoryTransaction> findById(Long id) {
+    public Optional<CurrencyModel> findById(Long id) {
         try (Connection connection = databaseConnector.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID);
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            CategoryTransaction categoryTransaction = null;
+            CurrencyModel currency = null;
             while (resultSet.next()) {
                 String name = resultSet.getString("name");
-                CategoryTransaction categoryTran = new CategoryTransaction();
-                categoryTran.setId(resultSet.getLong("category_id"));
-                categoryTransaction = new CategoryTransaction(id, name, categoryTran);
+                currency = new CurrencyModel(id, name);
             }
-            return Optional.ofNullable(categoryTransaction);
+            return Optional.ofNullable(currency);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return Optional.empty();
     }
-
-    @Override
-    public CategoryTransaction update(CategoryTransaction object) {
+        @Override
+    public CurrencyModel update(CurrencyModel object) {
         try (Connection connection = databaseConnector.getConnection()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE)){
                 preparedStatement.setString(1, object.getName());
@@ -77,7 +74,7 @@ public class CategoryTransactionRepository implements RepositoryCRUD<Long, Categ
     }
 
     @Override
-    public void remove(CategoryTransaction object) {
+    public void remove(CurrencyModel object) {
         try (Connection connection = databaseConnector.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(DELETE);
             preparedStatement.setLong(1, object.getId());
@@ -89,18 +86,35 @@ public class CategoryTransactionRepository implements RepositoryCRUD<Long, Categ
     }
 
     @Override
-    public List<CategoryTransaction> findAll() {
+    public List<CurrencyModel> findAll() {
         try (Connection connection = databaseConnector.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL);
             ResultSet resultSet = preparedStatement.executeQuery();
-            List<CategoryTransaction> list = new ArrayList<>();
+            List<CurrencyModel> list = new ArrayList<>();
             while (resultSet.next()) {
-//                list.add(new CategoryTransaction (resultSet.getLong("id"), resultSet.getString("name")));
+                list.add(new CurrencyModel(resultSet.getLong("id"), resultSet.getString("name")));
             }
             return list;
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public Optional<CurrencyModel> findByName(String name) {
+        try (Connection connection = databaseConnector.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_NAME);
+            preparedStatement.setString(1, name);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            CurrencyModel currency = null;
+            while (resultSet.next()) {
+                Long id = resultSet.getLong("id");
+                currency = new CurrencyModel(id, name);
+            }
+            return Optional.ofNullable(currency);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Optional.empty();
     }
 }

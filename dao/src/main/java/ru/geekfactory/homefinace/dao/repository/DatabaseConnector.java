@@ -1,4 +1,4 @@
-package dordzhiev.repository;
+package ru.geekfactory.homefinace.dao.repository;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

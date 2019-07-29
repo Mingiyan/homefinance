@@ -1,4 +1,4 @@
-package dordzhiev.model;
+package ru.geekfactory.homefinace.dao.model;
 
 import lombok.*;
 
@@ -6,7 +6,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Currency {
+public class CurrencyModel {
     private Long id;
     private String name;
 }

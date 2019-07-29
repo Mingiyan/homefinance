@@ -1,4 +1,4 @@
-package dordzhiev.model;
+package ru.geekfactory.homefinace.dao.model;
 
 import lombok.*;
 
@@ -8,10 +8,10 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Account {
+public class AccountModel {
     private Long id;
     private String name;
     private BigDecimal amount;
     private AccountType accountType;
-    private Currency currency;
+    private CurrencyModel currency;
 }

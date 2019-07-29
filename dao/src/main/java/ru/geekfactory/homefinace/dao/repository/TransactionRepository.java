@@ -1,8 +1,8 @@
-package dordzhiev.repository;
+package ru.geekfactory.homefinace.dao.repository;
 
-import dordzhiev.model.Account;
-import dordzhiev.model.CategoryTransaction;
-import dordzhiev.model.Transaction;
+import ru.geekfactory.homefinace.dao.model.AccountModel;
+import ru.geekfactory.homefinace.dao.model.CategoryTransactionModel;
+import ru.geekfactory.homefinace.dao.model.TransactionModel;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class TransactionRepository implements RepositoryCRUD<Long, Transaction> {
+public class TransactionRepository implements RepositoryCRUD<Long, TransactionModel> {
 
     private static final String INSERT = "insert into transaction_tbl (name, date_time, category_id, ammount_id) values (?, ?, ?, ?)";
     private static final String FIND_BY_ID = "select * from transaction_tbl where id = ?";
@@ -22,12 +22,12 @@ public class TransactionRepository implements RepositoryCRUD<Long, Transaction> 
     private DatabaseConnector databaseConnector = new DatabaseConnector();
 
     @Override
-    public void save(Transaction object) {
+    public void save(TransactionModel object) {
         try (Connection connection = databaseConnector.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT);
             preparedStatement.setString(1, object.getName());
             preparedStatement.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
-            preparedStatement.setLong(3, object.getCategoryTransaction().getId());
+            preparedStatement.setLong(3, object.getCategoryTransaction().get);
             preparedStatement.setLong(4, object.getAccount().getId());
             preparedStatement.executeUpdate();
             connection.commit();
@@ -37,19 +37,19 @@ public class TransactionRepository implements RepositoryCRUD<Long, Transaction> 
     }
 
     @Override
-    public Optional<Transaction> findById(Long id) {
+    public Optional<TransactionModel> findById(Long id) {
         try (Connection connection = databaseConnector.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID);
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            Transaction transaction = null;
+            TransactionModel transaction = null;
             while (resultSet.next()) { // if
 
                 String name = resultSet.getString("name");
                 LocalDateTime dateTime = resultSet.getTimestamp("date_time").toLocalDateTime();
-                Optional<CategoryTransaction> categoryTransactionOptional = categoryTransactionRepository.findById(resultSet.getLong("category_id"));
-                Optional<Account> accountOptional = accountRepository.findById(resultSet.getLong("account_id"));
-                transaction = new Transaction(id, name, dateTime, categoryTransactionOptional.get(), accountOptional.get());
+                Optional<CategoryTransactionModel> categoryTransactionOptional = categoryTransactionRepository.findById(resultSet.getLong("category_id"));
+                Optional<AccountModel> accountOptional = accountRepository.findById(resultSet.getLong("account_id"));
+                transaction = new TransactionModel(id, name, dateTime, categoryTransactionOptional.get(), accountOptional.get());
             }
             return Optional.ofNullable(transaction);
         } catch (SQLException e) {
@@ -59,7 +59,7 @@ public class TransactionRepository implements RepositoryCRUD<Long, Transaction> 
     }
 
     @Override
-    public Transaction update(Transaction object) {
+    public TransactionModel update(TransactionModel object) {
         try (Connection connection = databaseConnector.getConnection()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE)) {
                 preparedStatement.setString(1, object.getName());
@@ -85,7 +85,7 @@ public class TransactionRepository implements RepositoryCRUD<Long, Transaction> 
     }
 
     @Override
-    public void remove(Transaction object) {
+    public void remove(TransactionModel object) {
         try (Connection connection = databaseConnector.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(DELETE);
             preparedStatement.setLong(1, object.getId());
@@ -97,18 +97,18 @@ public class TransactionRepository implements RepositoryCRUD<Long, Transaction> 
     }
 
     @Override
-    public List<Transaction> findAll() {
+    public List<TransactionModel> findAll() {
         try (Connection connection = databaseConnector.getConnection()){
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL);
             ResultSet resultSet = preparedStatement.executeQuery();
-            List<Transaction> list = new ArrayList<>();
+            List<TransactionModel> list = new ArrayList<>();
             while (resultSet.next()) {
                 Long id = resultSet.getLong("id");
                 String name = resultSet.getString("name");
                 LocalDateTime dateTime = resultSet.getTimestamp("date_time").toLocalDateTime();
-                Optional<CategoryTransaction> categoryTransactionOptional = categoryTransactionRepository.findById(resultSet.getLong("category_id"));
-                Optional<Account> accountOptional = accountRepository.findById(resultSet.getLong("account_id"));
-                list.add(new Transaction(id, name, dateTime, categoryTransactionOptional.get(), accountOptional.get()));
+                Optional<CategoryTransactionModel> categoryTransactionOptional = categoryTransactionRepository.findById(resultSet.getLong("category_id"));
+                Optional<AccountModel> accountOptional = accountRepository.findById(resultSet.getLong("account_id"));
+                list.add(new TransactionModel(id, name, dateTime, categoryTransactionOptional.get(), accountOptional.get()));
             }
             return list;
         } catch (SQLException e) {

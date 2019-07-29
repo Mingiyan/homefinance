@@ -1,4 +1,4 @@
-package dordzhiev.service;
+package ru.geekfactory.homefinance.service;
 
 import java.util.List;
 import java.util.Optional;

@@ -1,4 +1,4 @@
-package dordzhiev.model;
+package ru.geekfactory.homefinace.dao.model;
 
 import lombok.*;
 
@@ -9,11 +9,11 @@ import java.util.Collection;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class Transaction {
+public class TransactionModel {
     private Long id;
     private String name;
     private LocalDateTime dateTime;
-    private Collection<CategoryTransaction> categoryTransaction;
-    private Account account;
+    private Collection<CategoryTransactionModel> categoryTransaction;
+    private AccountModel account;
 
 }
