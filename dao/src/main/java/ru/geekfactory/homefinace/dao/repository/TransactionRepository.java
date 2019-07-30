@@ -12,8 +12,7 @@ import java.util.*;
 public class TransactionRepository implements RepositoryCRUD<Long, TransactionModel> {
 
     private static final String INSERT = "with ins1 as (" +
-            "  insert into transaction_tbl (name, date_time, account_id) values (?, ?, ?)" +
-            "  returning id)" +
+            "  insert into transaction_tbl (name, date_time, account_id) values (?, ?, ?) returning id)" +
             "  insert into transaction_category_tbl (transaction_id, category_id)" +
             "  select id, unnest(array[?]::integer[]) from ins1;";
     private static final String INSERT_TO_TC = "insert into transaction_category_tbl (transaction_id, category_id) VALUES (?, ?)";
