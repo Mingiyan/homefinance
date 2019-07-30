@@ -13,9 +13,9 @@ import java.util.Optional;
 
 public class CurrencyRepository implements RepositoryCRUD<Long, CurrencyModel> {
     private static final String INSERT = "insert into currency_tbl (name) values (?)";
-    private static final String FIND_BY_ID = "select * from currency_tbl where id = ?";
-    private static final String FIND_BY_NAME = "select * from currency_tbl where name = ?";
-    private static final String FIND_ALL = "select * from currency_tbl";
+    private static final String FIND_BY_ID = "select id, name from currency_tbl where id = ?";
+    private static final String FIND_BY_NAME = "select id, name from currency_tbl where name = ?";
+    private static final String FIND_ALL = "select id, name from currency_tbl";
     private static final String UPDATE = "update currency_tbl set name = ? where id = ?";
     private static final String DELETE = "delete from currency_tbl where id = ?";
     private DatabaseConnector databaseConnector = new DatabaseConnector();

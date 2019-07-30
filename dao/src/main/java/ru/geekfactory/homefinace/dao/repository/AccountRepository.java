@@ -16,10 +16,10 @@ import java.util.Optional;
 
 public class AccountRepository implements RepositoryCRUD<Long, AccountModel>{
     private static final String INSERT = "insert into account_tbl (name, amount, type, currency_id) values (?, ?, ?, ?)";
-    private static final String FIND_BY_ID = "select * from account_tbl where id = ?";
+    private static final String FIND_BY_ID = "select id, name, amount, type, currency_id from account_tbl where id = ?";
     private static final String UPDATE = "update account_tbl set name = ?, amount = ?, type = ?, currency_id = ? where id = ?";
     private static final String DELETE = "delete from account_tbl where id = ?";
-    private static final String FIND_ALL = "select * from account_tbl";
+    private static final String FIND_ALL = "select id, name, amount, type, currency_id from account_tbl";
     private DatabaseConnector databaseConnector = new DatabaseConnector();
     private CurrencyRepository currencyRepository = new CurrencyRepository();
     public AccountRepository() {

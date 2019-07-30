@@ -11,9 +11,11 @@ import java.util.*;
 
 public class TransactionRepository implements RepositoryCRUD<Long, TransactionModel> {
 
-    private static final String INSERT = "insert into transaction_tbl (name, date_time, category_id, ammount_id) values (?, ?, ?, ?)";
-    private static final String FIND_BY_ID = "select * from transaction_tbl where id = ?";
-    private static final String FIND_ALL = "select * from transaction_tbl";
+    private static final String INSERT = "with ins1 as (insert into transaction_tbl (name, date_time, account_id) values (?, ?, ?) returning id)" +
+                                        "  insert into transaction_category_tbl (transaction_id, category_id)" +
+                                        "  values ((select id from ins1), unnest(array[?]))";
+    private static final String FIND_BY_ID = "select id, name, date_time, account_id from transaction_tbl where id = ?";
+    private static final String FIND_ALL = "select id, name, date_time, account_id from transaction_tbl";
     private static final String UPDATE = "update transaction_tbl set name = ?, date_time = ?, category_id = ?, ammount_id = ? where id = ?";
     private static final String DELETE = "delete from transaction_tbl where id = ?";
     private CategoryTransactionRepository categoryTransactionRepository = new CategoryTransactionRepository();
@@ -26,12 +28,14 @@ public class TransactionRepository implements RepositoryCRUD<Long, TransactionMo
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT);
             preparedStatement.setString(1, object.getName());
             preparedStatement.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
+            preparedStatement.setLong(3, object.getAccount().getId());
             Collection<CategoryTransactionModel> collection = object.getCategoryTransaction();
-            for (CategoryTransactionModel element : collection) {
-                element.
+            List<Long> categoryList = new ArrayList<>();
+            for (CategoryTransactionModel category : collection) {
+                categoryList.add(category.getId());
             }
-            preparedStatement.setLong(3, );
-            preparedStatement.setLong(4, object.getAccount().getId());
+            System.out.println(categoryList.toArray());
+            preparedStatement.setObject(4, categoryList);
             preparedStatement.executeUpdate();
             connection.commit();
         } catch (SQLException e) {
@@ -51,13 +55,13 @@ public class TransactionRepository implements RepositoryCRUD<Long, TransactionMo
                 LocalDateTime dateTime = resultSet.getTimestamp("date_time").toLocalDateTime();
                 Optional<CategoryTransactionModel> categoryTransactionOptional = categoryTransactionRepository.findById(resultSet.getLong("category_id"));
                 Optional<AccountModel> accountOptional = accountRepository.findById(resultSet.getLong("account_id"));
-                transaction = new TransactionModel(id, name, dateTime, categoryTransactionOptional.get(), accountOptional.get());
+//                transaction = new TransactionModel(id, name, dateTime, categoryTransactionOptional.get(), accountOptional.get());
             }
             return Optional.ofNullable(transaction);
         } catch (SQLException e) {
             throw new HomeFinanceDaoException("error while find TransactionModel by id", e);
         }
-        return Optional.empty();
+//        return Optional.empty();
     }
 
     @Override
@@ -66,7 +70,7 @@ public class TransactionRepository implements RepositoryCRUD<Long, TransactionMo
             try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE)) {
                 preparedStatement.setString(1, object.getName());
                 preparedStatement.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
-                preparedStatement.setLong(3, object.getCategoryTransaction().getId());
+//                preparedStatement.setLong(3, object.getCategoryTransaction());
                 preparedStatement.setLong(4, object.getAccount().getId());
                 preparedStatement.executeUpdate();
                 ResultSet resultSet = preparedStatement.getGeneratedKeys();
@@ -108,7 +112,7 @@ public class TransactionRepository implements RepositoryCRUD<Long, TransactionMo
                 LocalDateTime dateTime = resultSet.getTimestamp("date_time").toLocalDateTime();
                 Optional<CategoryTransactionModel> categoryTransactionOptional = categoryTransactionRepository.findById(resultSet.getLong("category_id"));
                 Optional<AccountModel> accountOptional = accountRepository.findById(resultSet.getLong("account_id"));
-                list.add(new TransactionModel(id, name, dateTime, categoryTransactionOptional.get(), accountOptional.get()));
+//                list.add(new TransactionModel(id, name, dateTime, accountOptional.get().getId(), accountOptional.get()));
             }
             return list;
         } catch (SQLException e) {
