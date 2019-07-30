@@ -33,14 +33,15 @@ public class TransactionRepository implements RepositoryCRUD<Long, TransactionMo
             preparedStatement.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
             preparedStatement.setLong(3, object.getAccount().getId());
             Collection<CategoryTransactionModel> collection = object.getCategoryTransaction();
-            if (!collection.isEmpty()) {
-                int[] array = new int[collection.size()];
+            int[] array = {};
+            if (collection != null) {
+                array = new int[collection.size()];
                 int i = 0;
                 for (CategoryTransactionModel category : collection) {
                     array[i++] = Math.toIntExact(category.getId());
                 }
-                preparedStatement.setObject(4, array);
             }
+            preparedStatement.setObject(4, array);
             preparedStatement.executeUpdate();
             connection.commit();
         } catch (SQLException e) {

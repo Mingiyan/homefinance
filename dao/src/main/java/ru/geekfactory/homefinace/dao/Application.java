@@ -43,7 +43,7 @@ public class Application {
         transactionModel.setAccount(accountModel.orElse(null));
         transactionModel.setDateTime(LocalDateTime.now());
         CategoryTransactionRepository categoryTransactionRepository = new CategoryTransactionRepository();
-        Collection<CategoryTransactionModel> collection = categoryTransactionRepository.findAll();
+        Collection<CategoryTransactionModel> collection = null;
         System.out.println(collection);
         transactionModel.setCategoryTransaction(collection);
         TransactionRepository transactionRepository = new TransactionRepository();
