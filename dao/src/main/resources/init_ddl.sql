@@ -26,10 +26,10 @@ add constraint category_tbl_fk
 foreign key (category_id) references category_tbl (id);
 
 create table transaction_tbl (
-    id serial primary key not null,
-    name varchar(50) not null,
-    date_time date not null,
-    account_id int not null
+  id serial primary key not null,
+  name varchar(50) not null,
+  date_time date not null,
+  account_id int not null
 );
 
 alter table transaction_tbl
