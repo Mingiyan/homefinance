@@ -11,8 +11,4 @@ public class CategoryTransactionModel {
     private String name;
     private CategoryTransactionModel parentCategory;
 
-    public CategoryTransactionModel(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
 }

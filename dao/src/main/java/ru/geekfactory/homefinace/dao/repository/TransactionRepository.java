@@ -11,9 +11,12 @@ import java.util.*;
 
 public class TransactionRepository implements RepositoryCRUD<Long, TransactionModel> {
 
-    private static final String INSERT = "with ins1 as (insert into transaction_tbl (name, date_time, account_id) values (?, ?, ?) returning id)" +
-                                        "  insert into transaction_category_tbl (transaction_id, category_id)" +
-                                        "  values ((select id from ins1), unnest(array[?]))";
+    private static final String INSERT = "with ins1 as (" +
+            "  insert into transaction_tbl (name, date_time, account_id) values (?, ?, ?)" +
+            "  returning id)" +
+            "  insert into transaction_category_tbl (transaction_id, category_id)" +
+            "  select id, unnest(array[?]::integer[]) from ins1;";
+    private static final String INSERT_TO_TC = "insert into transaction_category_tbl (transaction_id, category_id) VALUES (?, ?)";
     private static final String FIND_BY_ID = "select id, name, date_time, account_id from transaction_tbl where id = ?";
     private static final String FIND_ALL = "select id, name, date_time, account_id from transaction_tbl";
     private static final String UPDATE = "update transaction_tbl set name = ?, date_time = ?, category_id = ?, ammount_id = ? where id = ?";
@@ -30,12 +33,14 @@ public class TransactionRepository implements RepositoryCRUD<Long, TransactionMo
             preparedStatement.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
             preparedStatement.setLong(3, object.getAccount().getId());
             Collection<CategoryTransactionModel> collection = object.getCategoryTransaction();
-            List<Long> categoryList = new ArrayList<>();
-            for (CategoryTransactionModel category : collection) {
-                categoryList.add(category.getId());
+            if (!collection.isEmpty()) {
+                int[] array = new int[collection.size()];
+                int i = 0;
+                for (CategoryTransactionModel category : collection) {
+                    array[i++] = Math.toIntExact(category.getId());
+                }
+                preparedStatement.setObject(4, array);
             }
-            System.out.println(categoryList.toArray());
-            preparedStatement.setObject(4, categoryList);
             preparedStatement.executeUpdate();
             connection.commit();
         } catch (SQLException e) {
