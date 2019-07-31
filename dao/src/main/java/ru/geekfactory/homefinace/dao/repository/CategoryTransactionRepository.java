@@ -66,6 +66,7 @@ public class CategoryTransactionRepository implements RepositoryCRUD<Long, Categ
                     object.setId(resultSet.getLong(3));
                 }
                 connection.commit();
+                return object;
             } catch (SQLException e) {
                 connection.rollback();
                 throw new HomeFinanceDaoException("error while update CategoryTransactionModel " + object, e);
@@ -73,7 +74,6 @@ public class CategoryTransactionRepository implements RepositoryCRUD<Long, Categ
         } catch (SQLException e) {
             throw new HomeFinanceDaoException("error while update CategoryTransactionModel " + object, e);
         }
-        return null;
     }
 
     @Override

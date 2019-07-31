@@ -14,12 +14,15 @@ public class TransactionRepository implements RepositoryCRUD<Long, TransactionMo
     private static final String INSERT = "with ins1 as (" +
             " insert into transaction_tbl (name, date_time, account_id) values (?, ?, ?) returning id)" +
             " insert into transaction_category_tbl (transaction_id, category_id)" +
-            " select id, unnest(array[?]::integer[]) from ins1;";
+            " select id, unnest(array[?]::integer[]) from ins1";
     private static final String FIND_CATEGORIES = "select c.id, c.name, c.category_id from transaction_tbl t1 join" +
             " transaction_category_tbl t2 on t1.id = t2.transaction_id join category_tbl c on t2.category_id = c.id where t1.id = ?";
     private static final String FIND_BY_ID = "select id, name, date_time, account_id from transaction_tbl where id = ?";
     private static final String FIND_ALL = "select id, name, date_time, account_id from transaction_tbl";
-    private static final String UPDATE = "update transaction_tbl set name = ?, date_time = ?, category_id = ?, ammount_id = ? where id = ?";
+    private static final String UPDATE = "with upd1 as (" +
+            " update transaction_tbl set name = ?, date_time = ?, account_id = ? where id = ? returning id) " +
+            " insert into transaction_category_tbl (transaction_id, category_id) " +
+            " select id, unnest(array[?]::integer[]) from upd1";
     private static final String DELETE = "delete from transaction_tbl where id = ?";
     private static final String DELETE_FROM_CATEGORIES = "delete from transaction_category_tbl tc using transaction_tbl t where tc.transaction_id = t.id and t.id = ?";
     private CategoryTransactionRepository categoryTransactionRepository = new CategoryTransactionRepository();
@@ -83,15 +86,24 @@ public class TransactionRepository implements RepositoryCRUD<Long, TransactionMo
     public TransactionModel update(TransactionModel object) {
         try (Connection connection = databaseConnector.getConnection()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE)) {
-
+                PreparedStatement psDeleteCategoryes = connection.prepareStatement(DELETE_FROM_CATEGORIES);
+                psDeleteCategoryes.setLong(1, object.getId());
+                psDeleteCategoryes.executeUpdate();
                 preparedStatement.setString(1, object.getName());
                 preparedStatement.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
-                preparedStatement.setLong(4, object.getAccount().getId());
-                preparedStatement.executeUpdate();
-                ResultSet resultSet = preparedStatement.getGeneratedKeys();
-                if (resultSet.next()) {
-                    object.setId(resultSet.getLong(1));
+                preparedStatement.setLong(3, object.getAccount().getId());
+                preparedStatement.setLong(4, object.getId());
+                Collection<CategoryTransactionModel> collection = object.getCategoryTransaction();
+                int[] array = {};
+                if (collection != null) {
+                    array = new int[collection.size()];
+                    int i = 0;
+                    for (CategoryTransactionModel category : collection) {
+                        array[i++] = Math.toIntExact(category.getId());
+                    }
                 }
+                preparedStatement.setObject(5, array);
+                preparedStatement.executeUpdate();
                 connection.commit();
                 return object;
             } catch (SQLException e) {

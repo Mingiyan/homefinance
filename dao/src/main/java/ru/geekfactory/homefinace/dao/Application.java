@@ -34,24 +34,27 @@ public class Application {
 //        accountRepository.save(account);
 //        System.out.println(accountRepository.findById((long) 1));
 
-//        AccountRepository accountRepository = new AccountRepository();
+        AccountRepository accountRepository = new AccountRepository();
 
 //
 //        TransactionModel transactionModel = new TransactionModel();
-//        transactionModel.setName("BuyBack");
+//        transactionModel.setName("Testo bortcok");
 //        Optional<AccountModel> accountModel = accountRepository.findById((long) 2);
 //        transactionModel.setAccount(accountModel.orElse(null));
 //        transactionModel.setDateTime(LocalDateTime.now());
-//        CategoryTransactionRepository categoryTransactionRepository = new CategoryTransactionRepository();
-//        Collection<CategoryTransactionModel> collection = categoryTransactionRepository.findAll();
+        CategoryTransactionRepository categoryTransactionRepository = new CategoryTransactionRepository();
+        Collection<CategoryTransactionModel> collection = categoryTransactionRepository.findAll();
 //        System.out.println(collection);
 //        transactionModel.setCategoryTransaction(collection);
         TransactionRepository transactionRepository = new TransactionRepository();
 //        System.out.println(transactionModel);
-//        transactionRepository.save(transactionModel);
+//        transactionRepository.update(transactionModel);
 
-        TransactionModel transactionModel = transactionRepository.findById((long) 10).orElse(null);
-        transactionRepository.remove(transactionModel);
+        TransactionModel transactionModel = transactionRepository.findById((long) 6).orElse(null);
+//        transactionRepository.remove(transactionModel);
+        transactionModel.setName("TESTO for BORTSOKI");
+        transactionModel.setCategoryTransaction(collection);
+        transactionRepository.update(transactionModel);
         System.out.println(transactionRepository.findAll());
 
     }
