@@ -34,20 +34,22 @@ public class Application {
 //        accountRepository.save(account);
 //        System.out.println(accountRepository.findById((long) 1));
 
-        AccountRepository accountRepository = new AccountRepository();
+//        AccountRepository accountRepository = new AccountRepository();
 
-
-        TransactionModel transactionModel = new TransactionModel();
-        transactionModel.setName("BuyBack");
-        Optional<AccountModel> accountModel = accountRepository.findById((long) 2);
-        transactionModel.setAccount(accountModel.orElse(null));
-        transactionModel.setDateTime(LocalDateTime.now());
-        CategoryTransactionRepository categoryTransactionRepository = new CategoryTransactionRepository();
-        Collection<CategoryTransactionModel> collection = null;
-        System.out.println(collection);
-        transactionModel.setCategoryTransaction(collection);
+//
+//        TransactionModel transactionModel = new TransactionModel();
+//        transactionModel.setName("BuyBack");
+//        Optional<AccountModel> accountModel = accountRepository.findById((long) 2);
+//        transactionModel.setAccount(accountModel.orElse(null));
+//        transactionModel.setDateTime(LocalDateTime.now());
+//        CategoryTransactionRepository categoryTransactionRepository = new CategoryTransactionRepository();
+//        Collection<CategoryTransactionModel> collection = categoryTransactionRepository.findAll();
+//        System.out.println(collection);
+//        transactionModel.setCategoryTransaction(collection);
         TransactionRepository transactionRepository = new TransactionRepository();
-        System.out.println(transactionModel);
-        transactionRepository.save(transactionModel);
+//        System.out.println(transactionModel);
+//        transactionRepository.save(transactionModel);
+
+        System.out.println(transactionRepository.findById((long) 22));
     }
 }
