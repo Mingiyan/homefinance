@@ -50,7 +50,9 @@ public class Application {
 //        System.out.println(transactionModel);
 //        transactionRepository.save(transactionModel);
 
-//        System.out.println(transactionRepository.findById((long) 22));
+        TransactionModel transactionModel = transactionRepository.findById((long) 10).orElse(null);
+        transactionRepository.remove(transactionModel);
         System.out.println(transactionRepository.findAll());
+
     }
 }

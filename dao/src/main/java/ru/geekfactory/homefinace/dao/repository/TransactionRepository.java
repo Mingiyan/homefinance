@@ -21,6 +21,7 @@ public class TransactionRepository implements RepositoryCRUD<Long, TransactionMo
     private static final String FIND_ALL = "select id, name, date_time, account_id from transaction_tbl";
     private static final String UPDATE = "update transaction_tbl set name = ?, date_time = ?, category_id = ?, ammount_id = ? where id = ?";
     private static final String DELETE = "delete from transaction_tbl where id = ?";
+    private static final String DELETE_FROM_CATEGORIES = "delete from transaction_category_tbl tc using transaction_tbl t where tc.transaction_id = t.id and t.id = ?";
     private CategoryTransactionRepository categoryTransactionRepository = new CategoryTransactionRepository();
     private AccountRepository accountRepository = new AccountRepository();
     private DatabaseConnector databaseConnector = new DatabaseConnector();
@@ -82,9 +83,9 @@ public class TransactionRepository implements RepositoryCRUD<Long, TransactionMo
     public TransactionModel update(TransactionModel object) {
         try (Connection connection = databaseConnector.getConnection()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE)) {
+
                 preparedStatement.setString(1, object.getName());
                 preparedStatement.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
-//                preparedStatement.setLong(3, object.getCategoryTransaction());
                 preparedStatement.setLong(4, object.getAccount().getId());
                 preparedStatement.executeUpdate();
                 ResultSet resultSet = preparedStatement.getGeneratedKeys();
@@ -105,6 +106,9 @@ public class TransactionRepository implements RepositoryCRUD<Long, TransactionMo
     @Override
     public void remove(TransactionModel object) {
         try (Connection connection = databaseConnector.getConnection()) {
+            PreparedStatement psDeleteCategoryes = connection.prepareStatement(DELETE_FROM_CATEGORIES);
+            psDeleteCategoryes.setLong(1, object.getId());
+            psDeleteCategoryes.executeUpdate();
             PreparedStatement preparedStatement = connection.prepareStatement(DELETE);
             preparedStatement.setLong(1, object.getId());
             preparedStatement.executeUpdate();
@@ -118,9 +122,7 @@ public class TransactionRepository implements RepositoryCRUD<Long, TransactionMo
     public List<TransactionModel> findAll() {
         try (Connection connection = databaseConnector.getConnection()){
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL);
-
             ResultSet resultSet = preparedStatement.executeQuery();
-
             List<TransactionModel> list = new ArrayList<>();
             while (resultSet.next()) {
                 Collection<CategoryTransactionModel> collection = new HashSet<>();
