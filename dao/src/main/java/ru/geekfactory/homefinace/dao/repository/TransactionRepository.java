@@ -37,15 +37,7 @@ public class TransactionRepository implements RepositoryCRUD<Long, TransactionMo
             preparedStatement.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
             preparedStatement.setLong(3, object.getAccount().getId());
             Collection<CategoryTransactionModel> collection = object.getCategoryTransaction();
-            int[] array = {};
-            if (collection != null) {
-                array = new int[collection.size()];
-                int i = 0;
-                for (CategoryTransactionModel category : collection) {
-                    array[i++] = Math.toIntExact(category.getId());
-                }
-            }
-            preparedStatement.setObject(4, array);
+            preparedStatement.setObject(4, convertToArray(collection));
             preparedStatement.executeUpdate();
             connection.commit();
         } catch (SQLException e) {
@@ -94,15 +86,7 @@ public class TransactionRepository implements RepositoryCRUD<Long, TransactionMo
                 preparedStatement.setLong(3, object.getAccount().getId());
                 preparedStatement.setLong(4, object.getId());
                 Collection<CategoryTransactionModel> collection = object.getCategoryTransaction();
-                int[] array = {};
-                if (collection != null) {
-                    array = new int[collection.size()];
-                    int i = 0;
-                    for (CategoryTransactionModel category : collection) {
-                        array[i++] = Math.toIntExact(category.getId());
-                    }
-                }
-                preparedStatement.setObject(5, array);
+                preparedStatement.setObject(5, convertToArray(collection));
                 preparedStatement.executeUpdate();
                 connection.commit();
                 return object;
@@ -157,5 +141,17 @@ public class TransactionRepository implements RepositoryCRUD<Long, TransactionMo
         } catch (SQLException e) {
             throw new HomeFinanceDaoException("error while find all TransactionModel", e);
         }
+    }
+
+    private int[] convertToArray(Collection<CategoryTransactionModel> collection) {
+        int[] array = {};
+        if (collection != null) {
+            array = new int[collection.size()];
+            int i = 0;
+            for (CategoryTransactionModel category : collection) {
+                array[i++] = Math.toIntExact(category.getId());
+            }
+        }
+        return array;
     }
 }

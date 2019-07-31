@@ -50,9 +50,9 @@ public class Application {
 //        System.out.println(transactionModel);
 //        transactionRepository.update(transactionModel);
 
-        TransactionModel transactionModel = transactionRepository.findById((long) 6).orElse(null);
+        TransactionModel transactionModel = transactionRepository.findById((long) 21).orElse(null);
 //        transactionRepository.remove(transactionModel);
-        transactionModel.setName("TESTO for BORTSOKI");
+        transactionModel.setName("TESTO ");
         transactionModel.setCategoryTransaction(collection);
         transactionRepository.update(transactionModel);
         System.out.println(transactionRepository.findAll());
