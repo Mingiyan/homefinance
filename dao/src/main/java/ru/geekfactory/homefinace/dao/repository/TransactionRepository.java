@@ -59,11 +59,11 @@ public class TransactionRepository implements RepositoryCRUD<Long, TransactionMo
             ResultSet rsById = psFindById.executeQuery();
             ResultSet rsCategories = psFindCategories.executeQuery();
             TransactionModel transaction = null;
-            Collection<CategoryTransactionModel> collection = new HashSet<>();
             if (rsById.next()) {
                 String name = rsById.getString("name");
                 LocalDateTime dateTime = rsById.getTimestamp("date_time").toLocalDateTime();
                 AccountModel accountOptional = accountRepository.findById(rsById.getLong("account_id")).orElse(null);
+                Collection<CategoryTransactionModel> collection = new HashSet<>();
                 while (rsCategories.next()) {
                     Long categoryId = rsCategories.getLong("id");
                     String categoryName = rsCategories.getString("name");
@@ -118,15 +118,26 @@ public class TransactionRepository implements RepositoryCRUD<Long, TransactionMo
     public List<TransactionModel> findAll() {
         try (Connection connection = databaseConnector.getConnection()){
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL);
+
             ResultSet resultSet = preparedStatement.executeQuery();
+
             List<TransactionModel> list = new ArrayList<>();
             while (resultSet.next()) {
+                Collection<CategoryTransactionModel> collection = new HashSet<>();
                 Long id = resultSet.getLong("id");
                 String name = resultSet.getString("name");
                 LocalDateTime dateTime = resultSet.getTimestamp("date_time").toLocalDateTime();
-                Optional<CategoryTransactionModel> categoryTransactionOptional = categoryTransactionRepository.findById(resultSet.getLong("category_id"));
-                Optional<AccountModel> accountOptional = accountRepository.findById(resultSet.getLong("account_id"));
-//                list.add(new TransactionModel(id, name, dateTime, accountOptional.get().getId(), accountOptional.get()));
+                AccountModel accountOptional = accountRepository.findById(resultSet.getLong("account_id")).orElse(null);
+                PreparedStatement psCategory = connection.prepareStatement(FIND_CATEGORIES);
+                psCategory.setLong(1, id);
+                ResultSet rsCategories = psCategory.executeQuery();
+                while (rsCategories.next()) {
+                    Long categoryId = rsCategories.getLong("id");
+                    String categoryName = rsCategories.getString("name");
+                    CategoryTransactionModel parentCategory = categoryTransactionRepository.findById(rsCategories.getLong("category_id")).orElse(null);
+                    collection.add(new CategoryTransactionModel(categoryId, categoryName, parentCategory));
+                }
+                list.add(new TransactionModel(id, name, dateTime, collection, accountOptional));
             }
             return list;
         } catch (SQLException e) {
