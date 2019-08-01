@@ -33,10 +33,6 @@ create table transaction_tbl (
 );
 
 alter table transaction_tbl
-add constraint transaction_to_category_fk
-foreign key (category_id) references category_tbl;
-
-alter table transaction_tbl
 add constraint transaction_to_account_fk
 foreign key (account_id) references account_tbl;
 
