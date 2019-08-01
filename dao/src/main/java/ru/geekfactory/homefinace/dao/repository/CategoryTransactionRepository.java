@@ -27,7 +27,11 @@ public class CategoryTransactionRepository implements RepositoryCRUD<Long, Categ
         try (Connection connection = databaseConnector.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT);
             preparedStatement.setString(1, object.getName());
-            preparedStatement.setLong(2, object.getParentCategory().getId());
+            if (object.getParentCategory() != null) {
+                preparedStatement.setLong(2, object.getParentCategory().getId());
+            } else {
+                preparedStatement.setObject(2, null);
+            }
             preparedStatement.executeUpdate();
             connection.commit();
         } catch (SQLException e) {
