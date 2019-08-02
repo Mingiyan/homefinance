@@ -8,6 +8,7 @@ import ru.geekfactory.homefinace.dao.model.AccountModel;
 import ru.geekfactory.homefinace.dao.model.AccountType;
 import ru.geekfactory.homefinace.dao.model.CurrencyModel;
 import ru.geekfactory.homefinace.dao.repository.AccountRepository;
+import ru.geekfactory.homefinace.dao.repository.CurrencyRepository;
 
 import java.math.BigDecimal;
 
@@ -19,6 +20,7 @@ public class AccountRepositoryTest {
     private static DatabaseConnectorTest databaseConnectorTest = new DatabaseConnectorTest();
 
     private AccountRepository accountRepository = new AccountRepository();
+    private CurrencyRepository currencyRepository = new CurrencyRepository();
 
 
     @BeforeAll
@@ -42,13 +44,13 @@ public class AccountRepositoryTest {
     @DisplayName("save and findById operation test")
     void saveAndFind() {
         CurrencyModel currencyNew = new CurrencyModel();
-        currencyNew.setId((long) 1);
         currencyNew.setName("Dollar");
         AccountModel accountModel = new AccountModel();
         accountModel.setName("test");
         accountModel.setAccountType(AccountType.CASH);
         accountModel.setAmount(BigDecimal.valueOf(1));
-        accountModel.setCurrency(currencyNew);
+        currencyRepository.save(currencyNew);
+        accountModel.setCurrency(currencyRepository.findById((long) 1).orElse(null));
         accountRepository.save(accountModel);
         assertEquals(1, accountRepository.findById((long) 1).get().getId());
         assertEquals("test", accountRepository.findById((long) 1).get().getName());

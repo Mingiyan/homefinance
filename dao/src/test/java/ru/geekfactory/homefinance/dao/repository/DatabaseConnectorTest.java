@@ -1,7 +1,6 @@
 package ru.geekfactory.homefinance.dao.repository;
 
 import org.h2.tools.RunScript;
-import ru.geekfactory.homefinace.dao.HomeFinanceDaoException;
 
 import java.io.*;
 import java.sql.Connection;
