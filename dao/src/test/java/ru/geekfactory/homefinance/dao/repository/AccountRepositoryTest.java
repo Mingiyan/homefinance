@@ -5,8 +5,10 @@ import ru.geekfactory.homefinace.dao.model.AccountModel;
 import ru.geekfactory.homefinace.dao.model.AccountType;
 import ru.geekfactory.homefinace.dao.model.CurrencyModel;
 import ru.geekfactory.homefinace.dao.repository.AccountRepository;
+import ru.geekfactory.homefinace.dao.repository.RepositoryCRUD;
 
 import java.math.BigDecimal;
+import java.sql.Connection;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -14,7 +16,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class AccountRepositoryTest {
 
     private static DatabaseConnectorTest databaseConnectorTest = new DatabaseConnectorTest();
-    private AccountRepository accountRepository = new AccountRepository();
+
+    private AccountRepository accountRepository;
+
 
     @BeforeAll
     static void beforeAll() {
@@ -25,7 +29,6 @@ public class AccountRepositoryTest {
 
     @BeforeEach
     void beforeEach() {
-
     }
 
     @Test
@@ -47,5 +50,6 @@ public class AccountRepositoryTest {
         accountModel.setCurrency(currencyNew);
         accountRepository.save(accountModel);
         assertEquals(1, accountRepository.findById((long) 1).get().getId());
+        assertEquals("test", accountRepository.findById((long) 1).get().getName());
     }
 }

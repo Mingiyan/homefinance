@@ -11,7 +11,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DatabaseConnectorTest {
-    private final static String DB_URL = "jdbc:h2:mem:geekfactoryTest";
+    private final static String DB_URL = "jdbc:h2:mem:geekfactoryTest;MODE=PostgreSQL";
     private final static String DB_USER = "sa";
     private final static String DB_PASSWORD = "";
 
