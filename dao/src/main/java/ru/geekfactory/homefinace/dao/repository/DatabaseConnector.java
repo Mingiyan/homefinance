@@ -1,16 +1,25 @@
 package ru.geekfactory.homefinace.dao.repository;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 
 public class DatabaseConnector {
-    private final static String DB_URL = "jdbc:postgresql://localhost:5432/geekfactory";
-    private final static String DB_USER = "vvvd";
-    private final static String DB_PASSWORD = "Vvvd010203";
+    private Properties properties = new Properties();
+    private InputStream inputStream = getClass().getClassLoader().getResourceAsStream("application.properties");
 
     public Connection getConnection() {
-
+        try {
+            properties.load(inputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String DB_URL = properties.getProperty("dburl");
+        String DB_USER = properties.getProperty("dbuser");
+        String DB_PASSWORD = properties.getProperty("dbpassword");
         try {
             Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
             connection.setAutoCommit(false);

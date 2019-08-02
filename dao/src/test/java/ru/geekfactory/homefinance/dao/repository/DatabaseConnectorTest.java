@@ -3,25 +3,32 @@ package ru.geekfactory.homefinance.dao.repository;
 import org.h2.tools.RunScript;
 import ru.geekfactory.homefinace.dao.HomeFinanceDaoException;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 
 public class DatabaseConnectorTest {
-    private final static String DB_URL = "jdbc:h2:mem:geekfactoryTest;MODE=PostgreSQL";
-    private final static String DB_USER = "sa";
-    private final static String DB_PASSWORD = "";
+    private Properties properties = new Properties();
+    private InputStream inputStream = getClass().getClassLoader().getResourceAsStream("application.properties");
 
     public Connection getConnection() {
         try {
-            Connection connectionTest = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-            connectionTest.setAutoCommit(false);
-            return connectionTest;
+            properties.load(inputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String DB_URL = properties.getProperty("dburl");
+        String DB_USER = properties.getProperty("dbuser");
+        String DB_PASSWORD = properties.getProperty("dbpassword");
+        try {
+            Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+            connection.setAutoCommit(false);
+            return connection;
         } catch (SQLException e) {
-            throw new HomeFinanceDaoException("Connection failed!");
+            e.printStackTrace();
+            return null;
         }
     }
 

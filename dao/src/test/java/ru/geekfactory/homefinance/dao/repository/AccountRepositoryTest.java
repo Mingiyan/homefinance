@@ -1,14 +1,15 @@
 package ru.geekfactory.homefinance.dao.repository;
 
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import ru.geekfactory.homefinace.dao.model.AccountModel;
 import ru.geekfactory.homefinace.dao.model.AccountType;
 import ru.geekfactory.homefinace.dao.model.CurrencyModel;
 import ru.geekfactory.homefinace.dao.repository.AccountRepository;
-import ru.geekfactory.homefinace.dao.repository.RepositoryCRUD;
 
 import java.math.BigDecimal;
-import java.sql.Connection;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -29,11 +30,12 @@ public class AccountRepositoryTest {
 
     @BeforeEach
     void beforeEach() {
+        databaseConnectorTest.getConnection();
     }
 
     @Test
     public void testContext() {
-        assertNotNull(accountRepository);
+//        assertNotNull(accountRepository);
     }
 
 
