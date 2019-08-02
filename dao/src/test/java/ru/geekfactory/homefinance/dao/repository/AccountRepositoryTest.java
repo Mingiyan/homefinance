@@ -1,15 +1,33 @@
 package ru.geekfactory.homefinance.dao.repository;
 
-import org.junit.jupiter.api.BeforeAll;
-import ru.geekfactory.homefinace.dao.model.AccountModel;
-import ru.geekfactory.homefinace.dao.repository.RepositoryCRUD;
+import org.junit.jupiter.api.*;
+import ru.geekfactory.homefinace.dao.repository.AccountRepository;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class AccountRepositoryTest {
 
-    private RepositoryCRUD<Long, AccountModel> accountModel;
+    private AccountRepository accountRepository;
 
     @BeforeAll
     static void beforeAll() {
         System.out.println("BeforeAll step.");
+    }
+
+    @BeforeEach
+    void beforeEach() {
+        accountRepository = new AccountRepository();
+    }
+
+    @Test
+    public void testContext() {
+        assertNotNull(accountRepository);
+    }
+
+
+    @Test
+    @DisplayName("save and findById operation test")
+    void saveAndFind() {
+//        accountRepository.save();
     }
 }
