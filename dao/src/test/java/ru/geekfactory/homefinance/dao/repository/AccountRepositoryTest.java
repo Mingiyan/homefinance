@@ -18,24 +18,23 @@ public class AccountRepositoryTest {
 
     private static DatabaseConnectorTest databaseConnectorTest = new DatabaseConnectorTest();
 
-    private AccountRepository accountRepository;
+    private AccountRepository accountRepository = new AccountRepository();
 
 
     @BeforeAll
     static void beforeAll() {
+        databaseConnectorTest.getConnection();
         databaseConnectorTest.initDB();
     }
 
-
-
     @BeforeEach
     void beforeEach() {
-        databaseConnectorTest.getConnection();
+//        databaseConnectorTest.getConnection();
     }
 
     @Test
     public void testContext() {
-//        assertNotNull(accountRepository);
+        assertNotNull(accountRepository);
     }
 
 

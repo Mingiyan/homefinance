@@ -6,6 +6,14 @@
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
 
+    <repositories>
+        <repository>
+            <id>proxy-maven</id>
+            <name>nexus-sbt-maven</name>
+            <url>http://sbt-osop-0256:10000/repository/proxy_maven/</url>
+        </repository>
+    </repositories>
+
     <modules>
         <module>dao</module>
         <module>service</module>
