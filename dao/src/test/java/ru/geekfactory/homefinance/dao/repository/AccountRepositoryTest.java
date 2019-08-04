@@ -1,23 +1,22 @@
 package ru.geekfactory.homefinance.dao.repository;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import ru.geekfactory.homefinace.dao.model.AccountModel;
 import ru.geekfactory.homefinace.dao.model.AccountType;
 import ru.geekfactory.homefinace.dao.model.CurrencyModel;
 import ru.geekfactory.homefinace.dao.repository.AccountRepository;
 import ru.geekfactory.homefinace.dao.repository.CurrencyRepository;
+import ru.geekfactory.homefinace.dao.repository.DatabaseConnector;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class AccountRepositoryTest {
 
-    private static DatabaseConnectorTest databaseConnectorTest = new DatabaseConnectorTest();
+    private static DatabaseConnector databaseConnectorTest = new DatabaseConnector();
 
     private AccountRepository accountRepository = new AccountRepository();
     private CurrencyRepository currencyRepository = new CurrencyRepository();
@@ -31,10 +30,11 @@ public class AccountRepositoryTest {
 
     @BeforeEach
     void beforeEach() {
-//        databaseConnectorTest.getConnection();
+
     }
 
     @Test
+    @Order(1)
     public void testContext() {
         assertNotNull(accountRepository);
     }
@@ -42,7 +42,7 @@ public class AccountRepositoryTest {
 
     @Test
     @DisplayName("save and findById operation test")
-    void saveAndFind() {
+    void saveAndFindTest() {
         CurrencyModel currencyNew = new CurrencyModel();
         currencyNew.setName("Dollar");
         AccountModel accountModel = new AccountModel();
@@ -53,6 +53,33 @@ public class AccountRepositoryTest {
         accountModel.setCurrency(currencyRepository.findById((long) 1).orElse(null));
         accountRepository.save(accountModel);
         assertEquals(1, accountRepository.findById((long) 1).get().getId());
-        assertEquals("test", accountRepository.findById((long) 1).get().getName());
     }
+
+    @Test
+    @DisplayName("update operation test")
+    void updateTest() {
+        CurrencyModel currencyNew = new CurrencyModel();
+        currencyNew.setName("Dollar");
+        AccountModel accountModel = new AccountModel();
+        accountModel.setName("test");
+        accountModel.setAccountType(AccountType.CASH);
+        accountModel.setAmount(BigDecimal.valueOf(1));
+        currencyRepository.save(currencyNew);
+        accountModel.setCurrency(currencyRepository.findById((long) 1).orElse(null));
+        accountRepository.save(accountModel);
+        assertNotNull(accountModel);
+        AccountModel accountUpdate = accountRepository.findById((long) 1).orElse(null);
+        accountUpdate.setName("test2");
+        accountRepository.update(accountUpdate);
+        assertEquals("test2", accountRepository.findById((long) 1).get().getName());
+    }
+
+    @Test
+    @DisplayName("findAll operation test")
+    void findAllTest() {
+        List<AccountModel> list = accountRepository.findAll();
+        list.forEach(accountModel -> assertEquals(1, accountModel.getId()));
+    }
+
+
 }

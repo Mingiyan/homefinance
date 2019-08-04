@@ -70,6 +70,7 @@ public class AccountRepository implements RepositoryCRUD<Long, AccountModel>{
                 preparedStatement.setBigDecimal(2, object.getAmount());
                 preparedStatement.setString(3, String.valueOf(object.getAccountType()));
                 preparedStatement.setLong(4, object.getCurrency().getId());
+                preparedStatement.setLong(5, object.getId());
                 preparedStatement.executeUpdate();
                 ResultSet resultSet = preparedStatement.getGeneratedKeys();
                 if (resultSet.next()) {

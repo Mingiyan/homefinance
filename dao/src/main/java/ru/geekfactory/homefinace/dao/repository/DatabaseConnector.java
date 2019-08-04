@@ -1,7 +1,8 @@
 package ru.geekfactory.homefinace.dao.repository;
 
-import java.io.IOException;
-import java.io.InputStream;
+import org.h2.tools.RunScript;
+
+import java.io.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -27,6 +28,17 @@ public class DatabaseConnector {
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    public void initDB() {
+        try (Connection connection = getConnection()){
+            File script = new File(getClass().getResource("/init_ddl.sql").getFile());
+            RunScript.execute(connection, new FileReader(script));
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException("Could not initialize with script");
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }
