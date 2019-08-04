@@ -9,22 +9,36 @@ import ru.geekfactory.homefinace.dao.repository.TransactionRepository;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Optional;
 
 
 public class Application {
     public static void main(String[] args) {
-//        CurrencyRepository currencyRepository = new CurrencyRepository();
-//        CurrencyModel currencyModel = currencyRepository.findById((long) 1).orElse(null);
-//        AccountModel accountModel = new AccountModel();
-//        accountModel.setName("test");
-//        accountModel.setAccountType(AccountType.CASH);
-//        accountModel.setAmount(BigDecimal.valueOf(123));
-//        accountModel.setCurrency(currencyModel);
-//        AccountRepository accountRepository = new AccountRepository();
-//        AccountModel accountModel = accountRepository.findById((long) 4).orElse(null);
-//        accountModel.setName("test2");
-//        accountRepository.update(accountModel);
-//        System.out.println(accountRepository.findById((long) 4).orElse(null));
+        TransactionRepository transactionRepository = new TransactionRepository();
+        AccountRepository accountRepository = new AccountRepository();
+        CategoryTransactionRepository categoryTransactionRepository = new CategoryTransactionRepository();
+        CurrencyRepository currencyRepository = new CurrencyRepository();
+        CurrencyModel currencyModel = new CurrencyModel();
+        currencyModel.setName("euro");
+        currencyRepository.save(currencyModel);
+        AccountModel accountModel = new AccountModel();
+        accountModel.setName("account");
+        accountModel.setAmount(BigDecimal.valueOf(1));
+        accountModel.setAccountType(AccountType.CASH);
+        accountModel.setCurrency(currencyRepository.findById((long) 1).get());
+        accountRepository.save(accountModel);
+        CategoryTransactionModel categoryTransactionModel = new CategoryTransactionModel();
+        categoryTransactionModel.setName("category");
+        categoryTransactionRepository.save(categoryTransactionModel);
+        TransactionModel transactionModel = new TransactionModel();
+        transactionModel.setName("transaction");
+        transactionModel.setAccount(accountRepository.findById((long) 1).orElse(null));
+        transactionModel.setDateTime(LocalDateTime.now());
+        Collection<CategoryTransactionModel> collection = new HashSet<>();
+        collection.add(categoryTransactionRepository.findById((long) 1).orElse(null));
+        transactionModel.setCategoryTransaction(collection);
+        transactionRepository.save(transactionModel);
+        System.out.println(categoryTransactionRepository.findById((long)1).get().getId());
     }
 }

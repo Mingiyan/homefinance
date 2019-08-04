@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class CategoryTransactionRepositoryTest {
 
     private static DatabaseConnector databaseConnectorTest = new DatabaseConnector();
-    CategoryTransactionRepository categoryTransactionRepository = new CategoryTransactionRepository();
+    private CategoryTransactionRepository categoryTransactionRepository = new CategoryTransactionRepository();
 
     @BeforeAll
     static void beforeAll() {
