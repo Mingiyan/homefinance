@@ -10,5 +10,4 @@ public class CategoryTransactionModel {
     private Long id;
     private String name;
     private CategoryTransactionModel parentCategory;
-
 }

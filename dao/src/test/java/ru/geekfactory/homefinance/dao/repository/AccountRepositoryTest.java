@@ -11,9 +11,9 @@ import ru.geekfactory.homefinace.dao.repository.DatabaseConnector;
 import java.math.BigDecimal;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class AccountRepositoryTest {
 
     private static DatabaseConnector databaseConnectorTest = new DatabaseConnector();
@@ -34,15 +34,15 @@ public class AccountRepositoryTest {
     }
 
     @Test
-    @Order(1)
-    public void testContext() {
+    void testContext() {
         assertNotNull(accountRepository);
     }
 
 
     @Test
+    @Order(1)
     @DisplayName("save and findById operation test")
-    void saveAndFindTest() {
+    void testSaveAndFind() {
         CurrencyModel currencyNew = new CurrencyModel();
         currencyNew.setName("Dollar");
         AccountModel accountModel = new AccountModel();
@@ -56,8 +56,9 @@ public class AccountRepositoryTest {
     }
 
     @Test
+    @Order(3)
     @DisplayName("update operation test")
-    void updateTest() {
+    void testUpdate() {
         CurrencyModel currencyNew = new CurrencyModel();
         currencyNew.setName("Dollar");
         AccountModel accountModel = new AccountModel();
@@ -75,11 +76,20 @@ public class AccountRepositoryTest {
     }
 
     @Test
+    @Order(2)
     @DisplayName("findAll operation test")
-    void findAllTest() {
+    void testFindAll() {
         List<AccountModel> list = accountRepository.findAll();
         list.forEach(accountModel -> assertEquals(1, accountModel.getId()));
     }
 
-
+    @Test
+    @Order(4)
+    @DisplayName("remove operation test")
+    void testRemove() {
+        AccountModel accountModel = accountRepository.findById((long) 1).orElse(null);
+        accountRepository.remove(accountModel);
+        AccountModel removedAccount = accountRepository.findById((long) 1).orElse(null);
+        assertNull(removedAccount);
+    }
 }
