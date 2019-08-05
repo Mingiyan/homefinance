@@ -84,7 +84,7 @@ class AccountServiceMock {
     }
 
     @Test
-    void spyObjectTest() {
+    void testWithSpy() {
         AccountModel accountModel = new AccountModel();
         accountModel.setId((long) 1);
         accountModel.setName("test");
