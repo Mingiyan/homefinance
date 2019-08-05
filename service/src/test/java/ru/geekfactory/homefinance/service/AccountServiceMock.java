@@ -11,6 +11,7 @@ import ru.geekfactory.homefinace.dao.model.AccountModel;
 import ru.geekfactory.homefinace.dao.repository.AccountRepository;
 import ru.geekfactory.homefinace.dao.repository.DatabaseConnector;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -26,9 +27,6 @@ class AccountServiceMock {
 
     @Mock
     private AccountRepository accountRepositoryMock;
-
-    @Mock
-    private AccountModel accountModel;
 
     @InjectMocks
     private AccountService accountService;
@@ -50,13 +48,20 @@ class AccountServiceMock {
 
     @Test
     void testAccountService() {
-        when(accountRepositoryMock.findById(anyLong())).thenReturn(Optional.of(accountModel));
+        AccountModel accountModel = new AccountModel();
+        accountModel.setId((long) 1);
+        accountModel.setName("test");
+        accountModel.setAmount(BigDecimal.valueOf(1));
+        when(accountRepositoryMock.findById(anyLong())).thenReturn(Optional.ofNullable(accountModel));
 
         assertNotNull(accountService);
         assertEquals((long) 1, accountService.findById((long) 4).get().getId());
+        assertEquals("test", accountService.findById((long) 20).get().getName());
         assertNotEquals((long) 4, accountService.findById((long) 4).get().getId());
 
-        verify(accountRepositoryMock, times(2)).findById(anyLong()).orElse(null);
+        verify(accountRepositoryMock, times(3)).findById(anyLong());
         verify(accountRepositoryMock, never()).findAll();
+        verify(accountRepositoryMock, never()).remove(accountModel);
+        verify(accountRepositoryMock, never()).save(accountModel);
     }
 }
