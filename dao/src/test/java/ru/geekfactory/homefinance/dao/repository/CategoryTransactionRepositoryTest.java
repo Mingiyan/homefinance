@@ -10,7 +10,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class CategoryTransactionRepositoryTest {
+class CategoryTransactionRepositoryTest {
 
     private static DatabaseConnector databaseConnectorTest = new DatabaseConnector();
     private CategoryTransactionRepository categoryTransactionRepository = new CategoryTransactionRepository();
