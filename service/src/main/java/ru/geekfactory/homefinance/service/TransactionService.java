@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public class TransactionService implements ServiceCRUD<Long, TransactionModel> {
 
-    TransactionRepository transactionRepository = new TransactionRepository();
+    private TransactionRepository transactionRepository = new TransactionRepository();
 
     @Override
     public void save(TransactionModel object) {

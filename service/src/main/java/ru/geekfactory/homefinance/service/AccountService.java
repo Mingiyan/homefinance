@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public class AccountService implements ServiceCRUD<Long, AccountModel> {
 
-    AccountRepository accountRepository = new AccountRepository();
+    private AccountRepository accountRepository = new AccountRepository();
 
     @Override
     public void save(AccountModel object) {

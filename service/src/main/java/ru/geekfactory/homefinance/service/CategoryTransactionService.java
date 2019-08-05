@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public class CategoryTransactionService implements ServiceCRUD<Long, CategoryTransactionModel> {
 
-    CategoryTransactionRepository categoryTransactionRepository = new CategoryTransactionRepository();
+    private CategoryTransactionRepository categoryTransactionRepository = new CategoryTransactionRepository();
     @Override
     public void save(CategoryTransactionModel object) {
         categoryTransactionRepository.save(object);

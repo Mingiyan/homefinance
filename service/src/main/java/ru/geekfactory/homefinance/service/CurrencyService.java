@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public class CurrencyService implements ServiceCRUD<Long, CurrencyModel> {
 
-    CurrencyRepository currencyRepository = new CurrencyRepository();
+    private CurrencyRepository currencyRepository = new CurrencyRepository();
 
     @Override
     public void save(CurrencyModel object) {
