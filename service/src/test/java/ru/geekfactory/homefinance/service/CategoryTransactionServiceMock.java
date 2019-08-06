@@ -22,7 +22,7 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 
-public class CategoryTransactionServiceMock {
+class CategoryTransactionServiceMock {
 
     private static DatabaseConnector databaseConnectorTest = new DatabaseConnector();
 
