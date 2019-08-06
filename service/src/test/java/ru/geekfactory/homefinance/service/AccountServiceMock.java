@@ -68,7 +68,7 @@ class AccountServiceMock {
     }
 
     @Test
-    void testService() {
+    void testServiceMock() {
         AccountModel accountModel = new AccountModel();
         accountModel.setId((long) 1);
         accountModel.setName("test");

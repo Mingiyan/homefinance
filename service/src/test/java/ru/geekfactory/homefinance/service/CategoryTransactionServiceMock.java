@@ -21,7 +21,6 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-
 class CategoryTransactionServiceMock {
 
     private static DatabaseConnector databaseConnectorTest = new DatabaseConnector();
@@ -68,7 +67,7 @@ class CategoryTransactionServiceMock {
     }
 
     @Test
-    void testService() {
+    void testServiceMock() {
         CategoryTransactionModel categoryTransactionModel = new CategoryTransactionModel();
         categoryTransactionModel.setName("test");
         categoryTransactionModel.setId((long) 1);
