@@ -30,7 +30,7 @@ class AccountRepositoryTest {
 
     @BeforeEach
     void beforeEach() {
-
+        // удаление данных из база делать чтобы не было зависимости между тестами
     }
 
     @Test
@@ -43,7 +43,7 @@ class AccountRepositoryTest {
     @Order(1)
     @DisplayName("save and findById operation test")
     void testSaveAndFind() {
-        CurrencyModel currencyNew = new CurrencyModel();
+        CurrencyModel currencyNew = new CurrencyModel(); // можно убрать Currency
         currencyNew.setName("Dollar");
         AccountModel accountModel = new AccountModel();
         accountModel.setName("test");
@@ -52,7 +52,7 @@ class AccountRepositoryTest {
         currencyRepository.save(currencyNew);
         accountModel.setCurrency(currencyRepository.findById((long) 1).orElse(null));
         accountRepository.save(accountModel);
-        assertEquals(1, accountRepository.findById((long) 1).get().getId());
+        assertEquals(1, accountRepository.findById((long) 1).get().getId()); // проверять модели
     }
 
     @Test
@@ -80,7 +80,8 @@ class AccountRepositoryTest {
     @DisplayName("findAll operation test")
     void testFindAll() {
         List<AccountModel> list = accountRepository.findAll();
-        list.forEach(accountModel -> assertEquals(1, accountModel.getId()));
+        //assertNotNull
+        list.forEach(accountModel -> assertEquals(1, accountModel.getId())); // модели сравнивать
     }
 
     @Test

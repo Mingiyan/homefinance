@@ -31,21 +31,11 @@ class AccountServiceMock {
     private AccountService accountService;
 
     @Spy
-    AccountService spy;
+    AccountService spy; // это скорее всего не нужно и тест с ним тоже, или обосновать нахрена она
 
     @BeforeAll
     static void beforeAll() {
         databaseConnectorTest.getConnection();
-    }
-
-    @BeforeEach
-    void beforeEach() {
-
-    }
-
-    @Test
-    void testContext() {
-        assertNotNull(accountRepositoryMock);
     }
 
     @Test
@@ -56,8 +46,9 @@ class AccountServiceMock {
         accountModel.setAmount(BigDecimal.valueOf(1));
         when(accountRepositoryMock.findById(anyLong())).thenReturn(Optional.ofNullable(accountModel));
 
+        assertNotNull(accountRepositoryMock);
         assertNotNull(accountService);
-        assertEquals((long) 22, accountService.findById((long) 4).get().getId());
+        assertEquals((long) 22, accountService.findById((long) 4).get().getId());  // поправить на сравнение моделей
         assertEquals("test", accountService.findById((long) 20).get().getName());
         assertNotEquals((long) 4, accountService.findById((long) 4).get().getId());
 
