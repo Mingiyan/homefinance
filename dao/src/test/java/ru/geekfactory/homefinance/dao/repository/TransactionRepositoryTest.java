@@ -61,14 +61,14 @@ class TransactionRepositoryTest {
         collection.add(categoryTransactionRepository.findById((long) 1).orElse(null));
         transactionModel.setCategoryTransaction(collection);
         transactionRepository.save(transactionModel);
-        assertEquals(1, categoryTransactionRepository.findById((long) 1).get().getId());
+        assertEquals(1, categoryTransactionRepository.findById((long) 1));
     }
 
     @Test
     @DisplayName("findAll operation test")
     void testFindAll() {
         List<TransactionModel> list = transactionRepository.findAll();
-        list.forEach(transaction -> assertEquals(1, transaction.getId()));
+        list.forEach(transaction -> assertEquals(1, transaction));
     }
 
     @Test

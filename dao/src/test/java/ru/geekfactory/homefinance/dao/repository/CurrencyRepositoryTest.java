@@ -43,7 +43,7 @@ class CurrencyRepositoryTest {
     @DisplayName("findAll operation test")
     void testFindAll() {
         List<CurrencyModel> list = currencyRepository.findAll();
-        list.forEach(currencyModel -> assertEquals(1, currencyModel.getId()));
+        list.forEach(currencyModel -> assertEquals(1, currencyModel));
     }
 
     @Test

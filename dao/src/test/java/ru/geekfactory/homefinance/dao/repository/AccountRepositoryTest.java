@@ -6,6 +6,7 @@ import ru.geekfactory.homefinance.dao.model.AccountType;
 import ru.geekfactory.homefinance.dao.model.CurrencyModel;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -15,8 +16,6 @@ class AccountRepositoryTest {
     private static DatabaseConnector databaseConnectorTest = new DatabaseConnector();
 
     private AccountRepository accountRepository = new AccountRepository();
-    private CurrencyRepository currencyRepository = new CurrencyRepository();
-
 
     @BeforeAll
     static void beforeAll() {
@@ -39,45 +38,57 @@ class AccountRepositoryTest {
     @DisplayName("save and findById operation test")
     void testSaveAndFind() {
         AccountModel accountModel = new AccountModel();
+        accountModel.setId(1L);
         accountModel.setName("test");
         accountModel.setAccountType(AccountType.CASH);
         accountModel.setAmount(BigDecimal.valueOf(1));
         accountRepository.save(accountModel);
-        assertEquals(accountModel, accountRepository.findById((long) 1)); // проверять модели
+        AccountModel fromData = accountRepository.findById((long) 1).orElse(null);
+        assertEquals(accountModel, fromData);
     }
 
     @Test
     @DisplayName("update operation test")
     void testUpdate() {
-        CurrencyModel currencyNew = new CurrencyModel();
-        currencyNew.setName("Dollar");
         AccountModel accountModel = new AccountModel();
         accountModel.setName("test");
         accountModel.setAccountType(AccountType.CASH);
         accountModel.setAmount(BigDecimal.valueOf(1));
-        currencyRepository.save(currencyNew);
-        accountModel.setCurrency(currencyRepository.findById((long) 1).orElse(null));
         accountRepository.save(accountModel);
-        assertNotNull(accountModel);
         AccountModel accountUpdate = accountRepository.findById((long) 1).orElse(null);
         accountUpdate.setName("test2");
         accountRepository.update(accountUpdate);
-        assertEquals("test2", accountRepository.findById((long) 1).get().getName());
+        assertNotEquals(accountModel, accountRepository.findById((long) 1));
     }
 
     @Test
     @DisplayName("findAll operation test")
     void testFindAll() {
+        AccountModel first = new AccountModel();
+        first.setName("first");
+        first.setAccountType(AccountType.DEBIT_CARD);
+        AccountModel second = new AccountModel();
+        second.setName("second");
+        second.setAmount(BigDecimal.valueOf(11));
+        accountRepository.save(first);
+        accountRepository.save(second);
+        List<AccountModel> firstList = new ArrayList<>();
         List<AccountModel> list = accountRepository.findAll();
-        //assertNotNull
-        list.forEach(accountModel -> assertEquals(1, accountModel.getId())); // модели сравнивать
+        firstList.add(first);
+        firstList.add(second);
+        assertNotNull(list);
+        assertEquals(firstList, list);
     }
 
     @Test
     @DisplayName("remove operation test")
     void testRemove() {
-        AccountModel accountModel = accountRepository.findById((long) 1).orElse(null);
-        accountRepository.remove(accountModel);
+        AccountModel firstAccount = new AccountModel();
+        firstAccount.setName("first");
+        firstAccount.setAmount(BigDecimal.valueOf(1));
+        accountRepository.save(firstAccount);
+        AccountModel secondAccount = accountRepository.findById((long) 1).orElse(null);
+        accountRepository.remove(secondAccount);
         AccountModel removedAccount = accountRepository.findById((long) 1).orElse(null);
         assertNull(removedAccount);
     }

@@ -6,8 +6,8 @@ create table currency_tbl (
 create table account_tbl (
   id serial primary key not null,
   name varchar(50) not null,
-  amount decimal(15, 2) not null,
-  type varchar(20) not null,
+  amount decimal(15),
+  type varchar(20),
   currency_id int
 );
 
