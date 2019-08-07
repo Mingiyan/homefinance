@@ -21,7 +21,7 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class CurrencyServiceMock {
+class CurrencyServiceMockTest {
 
     private static DatabaseConnector databaseConnectorTest = new DatabaseConnector();
 

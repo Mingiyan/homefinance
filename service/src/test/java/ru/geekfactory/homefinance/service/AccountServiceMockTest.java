@@ -20,7 +20,7 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class AccountServiceMock {
+class AccountServiceMockTest {
 
     private static DatabaseConnector databaseConnectorTest = new DatabaseConnector();
 

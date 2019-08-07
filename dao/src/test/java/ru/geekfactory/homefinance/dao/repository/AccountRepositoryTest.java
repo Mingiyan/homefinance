@@ -10,7 +10,6 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class AccountRepositoryTest {
 
     private static DatabaseConnector databaseConnectorTest = new DatabaseConnector();
@@ -37,7 +36,6 @@ class AccountRepositoryTest {
 
 
     @Test
-    @Order(1)
     @DisplayName("save and findById operation test")
     void testSaveAndFind() {
         CurrencyModel currencyNew = new CurrencyModel(); // можно убрать Currency
@@ -53,7 +51,6 @@ class AccountRepositoryTest {
     }
 
     @Test
-    @Order(3)
     @DisplayName("update operation test")
     void testUpdate() {
         CurrencyModel currencyNew = new CurrencyModel();
@@ -73,7 +70,6 @@ class AccountRepositoryTest {
     }
 
     @Test
-    @Order(2)
     @DisplayName("findAll operation test")
     void testFindAll() {
         List<AccountModel> list = accountRepository.findAll();
@@ -82,7 +78,6 @@ class AccountRepositoryTest {
     }
 
     @Test
-    @Order(4)
     @DisplayName("remove operation test")
     void testRemove() {
         AccountModel accountModel = accountRepository.findById((long) 1).orElse(null);
