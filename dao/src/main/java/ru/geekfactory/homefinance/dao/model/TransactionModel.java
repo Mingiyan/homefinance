@@ -1,4 +1,4 @@
-package ru.geekfactory.homefinace.dao.model;
+package ru.geekfactory.homefinance.dao.model;
 
 import lombok.*;
 
@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 
 @Data
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class TransactionModel {

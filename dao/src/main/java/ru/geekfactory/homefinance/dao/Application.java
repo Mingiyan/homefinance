@@ -1,10 +1,10 @@
-package ru.geekfactory.homefinace.dao;
+package ru.geekfactory.homefinance.dao;
 
-import ru.geekfactory.homefinace.dao.model.*;
-import ru.geekfactory.homefinace.dao.repository.AccountRepository;
-import ru.geekfactory.homefinace.dao.repository.CategoryTransactionRepository;
-import ru.geekfactory.homefinace.dao.repository.CurrencyRepository;
-import ru.geekfactory.homefinace.dao.repository.TransactionRepository;
+import ru.geekfactory.homefinance.dao.model.*;
+import ru.geekfactory.homefinance.dao.repository.AccountRepository;
+import ru.geekfactory.homefinance.dao.repository.CategoryTransactionRepository;
+import ru.geekfactory.homefinance.dao.repository.CurrencyRepository;
+import ru.geekfactory.homefinance.dao.repository.TransactionRepository;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

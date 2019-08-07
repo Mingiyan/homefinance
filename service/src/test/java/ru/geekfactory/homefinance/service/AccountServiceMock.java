@@ -6,9 +6,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ru.geekfactory.homefinace.dao.model.AccountModel;
-import ru.geekfactory.homefinace.dao.repository.AccountRepository;
-import ru.geekfactory.homefinace.dao.repository.DatabaseConnector;
+import ru.geekfactory.homefinance.dao.model.AccountModel;
+import ru.geekfactory.homefinance.dao.repository.AccountRepository;
+import ru.geekfactory.homefinance.dao.repository.DatabaseConnector;
 
 import java.math.BigDecimal;
 import java.util.Optional;

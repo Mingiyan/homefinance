@@ -1,7 +1,7 @@
 package ru.geekfactory.homefinance.service;
 
-import ru.geekfactory.homefinace.dao.model.AccountModel;
-import ru.geekfactory.homefinace.dao.repository.AccountRepository;
+import ru.geekfactory.homefinance.dao.model.AccountModel;
+import ru.geekfactory.homefinance.dao.repository.AccountRepository;
 
 import java.util.List;
 import java.util.Optional;

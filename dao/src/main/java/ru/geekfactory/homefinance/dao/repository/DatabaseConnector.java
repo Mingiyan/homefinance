@@ -1,4 +1,4 @@
-package ru.geekfactory.homefinace.dao.repository;
+package ru.geekfactory.homefinance.dao.repository;
 
 import org.h2.tools.RunScript;
 

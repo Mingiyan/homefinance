@@ -1,8 +1,7 @@
 package ru.geekfactory.homefinance.dao.repository;
 
 import org.junit.jupiter.api.*;
-import ru.geekfactory.homefinace.dao.model.*;
-import ru.geekfactory.homefinace.dao.repository.*;
+import ru.geekfactory.homefinance.dao.model.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

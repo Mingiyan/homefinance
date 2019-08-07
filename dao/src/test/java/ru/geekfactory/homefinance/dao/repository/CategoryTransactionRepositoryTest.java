@@ -1,9 +1,9 @@
 package ru.geekfactory.homefinance.dao.repository;
 
 import org.junit.jupiter.api.*;
-import ru.geekfactory.homefinace.dao.model.CategoryTransactionModel;
-import ru.geekfactory.homefinace.dao.repository.CategoryTransactionRepository;
-import ru.geekfactory.homefinace.dao.repository.DatabaseConnector;
+import ru.geekfactory.homefinance.dao.model.CategoryTransactionModel;
+import ru.geekfactory.homefinance.dao.repository.CategoryTransactionRepository;
+import ru.geekfactory.homefinance.dao.repository.DatabaseConnector;
 
 import java.util.List;
 

@@ -1,12 +1,9 @@
 package ru.geekfactory.homefinance.dao.repository;
 
 import org.junit.jupiter.api.*;
-import ru.geekfactory.homefinace.dao.model.AccountModel;
-import ru.geekfactory.homefinace.dao.model.AccountType;
-import ru.geekfactory.homefinace.dao.model.CurrencyModel;
-import ru.geekfactory.homefinace.dao.repository.AccountRepository;
-import ru.geekfactory.homefinace.dao.repository.CurrencyRepository;
-import ru.geekfactory.homefinace.dao.repository.DatabaseConnector;
+import ru.geekfactory.homefinance.dao.model.AccountModel;
+import ru.geekfactory.homefinance.dao.model.AccountType;
+import ru.geekfactory.homefinance.dao.model.CurrencyModel;
 
 import java.math.BigDecimal;
 import java.util.List;

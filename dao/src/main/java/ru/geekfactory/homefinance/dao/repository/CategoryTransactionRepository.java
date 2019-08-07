@@ -1,7 +1,7 @@
-package ru.geekfactory.homefinace.dao.repository;
+package ru.geekfactory.homefinance.dao.repository;
 
-import ru.geekfactory.homefinace.dao.HomeFinanceDaoException;
-import ru.geekfactory.homefinace.dao.model.CategoryTransactionModel;
+import ru.geekfactory.homefinance.dao.HomeFinanceDaoException;
+import ru.geekfactory.homefinance.dao.model.CategoryTransactionModel;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

@@ -1,7 +1,7 @@
 package ru.geekfactory.homefinance.service;
 
-import ru.geekfactory.homefinace.dao.model.CurrencyModel;
-import ru.geekfactory.homefinace.dao.repository.CurrencyRepository;
+import ru.geekfactory.homefinance.dao.model.CurrencyModel;
+import ru.geekfactory.homefinance.dao.repository.CurrencyRepository;
 
 import java.util.List;
 import java.util.Optional;

@@ -1,9 +1,9 @@
 package ru.geekfactory.homefinance.dao.repository;
 
 import org.junit.jupiter.api.*;
-import ru.geekfactory.homefinace.dao.model.CurrencyModel;
-import ru.geekfactory.homefinace.dao.repository.CurrencyRepository;
-import ru.geekfactory.homefinace.dao.repository.DatabaseConnector;
+import ru.geekfactory.homefinance.dao.model.CurrencyModel;
+import ru.geekfactory.homefinance.dao.repository.CurrencyRepository;
+import ru.geekfactory.homefinance.dao.repository.DatabaseConnector;
 
 import java.util.List;
 

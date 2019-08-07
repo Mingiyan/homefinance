@@ -1,11 +1,10 @@
-package ru.geekfactory.homefinace.dao.model;
+package ru.geekfactory.homefinance.dao.model;
 
 import lombok.*;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 public class CategoryTransactionModel {
     private Long id;
     private String name;

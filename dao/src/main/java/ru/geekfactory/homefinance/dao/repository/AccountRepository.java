@@ -1,9 +1,9 @@
-package ru.geekfactory.homefinace.dao.repository;
+package ru.geekfactory.homefinance.dao.repository;
 
-import ru.geekfactory.homefinace.dao.HomeFinanceDaoException;
-import ru.geekfactory.homefinace.dao.model.AccountModel;
-import ru.geekfactory.homefinace.dao.model.AccountType;
-import ru.geekfactory.homefinace.dao.model.CurrencyModel;
+import ru.geekfactory.homefinance.dao.HomeFinanceDaoException;
+import ru.geekfactory.homefinance.dao.model.AccountModel;
+import ru.geekfactory.homefinance.dao.model.AccountType;
+import ru.geekfactory.homefinance.dao.model.CurrencyModel;
 
 import java.math.BigDecimal;
 import java.sql.Connection;

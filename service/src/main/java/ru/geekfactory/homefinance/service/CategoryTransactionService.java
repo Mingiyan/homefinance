@@ -1,7 +1,7 @@
 package ru.geekfactory.homefinance.service;
 
-import ru.geekfactory.homefinace.dao.model.CategoryTransactionModel;
-import ru.geekfactory.homefinace.dao.repository.CategoryTransactionRepository;
+import ru.geekfactory.homefinance.dao.model.CategoryTransactionModel;
+import ru.geekfactory.homefinance.dao.repository.CategoryTransactionRepository;
 
 import java.util.List;
 import java.util.Optional;

@@ -8,9 +8,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ru.geekfactory.homefinace.dao.model.CategoryTransactionModel;
-import ru.geekfactory.homefinace.dao.repository.CategoryTransactionRepository;
-import ru.geekfactory.homefinace.dao.repository.DatabaseConnector;
+import ru.geekfactory.homefinance.dao.model.CategoryTransactionModel;
+import ru.geekfactory.homefinance.dao.repository.CategoryTransactionRepository;
+import ru.geekfactory.homefinance.dao.repository.DatabaseConnector;
 
 import java.util.ArrayList;
 import java.util.List;

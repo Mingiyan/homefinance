@@ -1,4 +1,4 @@
-package ru.geekfactory.homefinace.dao;
+package ru.geekfactory.homefinance.dao;
 
 public class HomeFinanceDaoException extends RuntimeException{
 
