@@ -32,11 +32,19 @@ public class DatabaseConnector {
     }
 
     public void initDB() {
+        executeScript("/init_ddl.sql");
+    }
+
+    public void clearTables() {
+        executeScript("/clear_tables.sql");
+    }
+
+    private void executeScript(String path) {
         try (Connection connection = getConnection()){
-            File script = new File(getClass().getResource("/init_ddl.sql").getFile());
+            File script = new File(getClass().getResource(path).getFile());
             RunScript.execute(connection, new FileReader(script));
         } catch (FileNotFoundException e) {
-            throw new RuntimeException("Could not initialize with script");
+            throw new RuntimeException("Could not execute with script");
         } catch (SQLException e) {
             e.printStackTrace();
         }

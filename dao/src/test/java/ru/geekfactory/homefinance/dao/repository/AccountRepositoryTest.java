@@ -26,7 +26,7 @@ class AccountRepositoryTest {
 
     @BeforeEach
     void beforeEach() {
-        // удаление данных из база делать чтобы не было зависимости между тестами
+        databaseConnectorTest.clearTables();
     }
 
     @Test
@@ -38,16 +38,12 @@ class AccountRepositoryTest {
     @Test
     @DisplayName("save and findById operation test")
     void testSaveAndFind() {
-        CurrencyModel currencyNew = new CurrencyModel(); // можно убрать Currency
-        currencyNew.setName("Dollar");
         AccountModel accountModel = new AccountModel();
         accountModel.setName("test");
         accountModel.setAccountType(AccountType.CASH);
         accountModel.setAmount(BigDecimal.valueOf(1));
-        currencyRepository.save(currencyNew);
-        accountModel.setCurrency(currencyRepository.findById((long) 1).orElse(null));
         accountRepository.save(accountModel);
-        assertEquals(1, accountRepository.findById((long) 1).get().getId()); // проверять модели
+        assertEquals(accountModel, accountRepository.findById((long) 1)); // проверять модели
     }
 
     @Test

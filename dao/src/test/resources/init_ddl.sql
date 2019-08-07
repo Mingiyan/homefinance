@@ -8,7 +8,7 @@ create table account_tbl (
   name varchar(50) not null,
   amount decimal(15, 2) not null,
   type varchar(20) not null,
-  currency_id int not null
+  currency_id int
 );
 
 alter table account_tbl
@@ -29,7 +29,7 @@ create table transaction_tbl (
   id serial primary key not null,
   name varchar(50) not null,
   date_time date not null,
-  account_id int not null
+  account_id int
 );
 
 alter table transaction_tbl
