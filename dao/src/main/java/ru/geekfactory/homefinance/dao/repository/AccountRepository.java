@@ -73,13 +73,13 @@ public class AccountRepository implements RepositoryCRUD<Long, AccountModel>{
                 preparedStatement.setString(1, object.getName());
                 preparedStatement.setBigDecimal(2, object.getAmount());
                 preparedStatement.setString(3, String.valueOf(object.getAccountType()));
-                preparedStatement.setLong(4, object.getCurrency().getId());
+                if (object.getCurrency() != null) {
+                    preparedStatement.setLong(4, object.getCurrency().getId());
+                } else {
+                    preparedStatement.setObject(4, null);
+                }
                 preparedStatement.setLong(5, object.getId());
                 preparedStatement.executeUpdate();
-                ResultSet resultSet = preparedStatement.getGeneratedKeys();
-                if (resultSet.next()) {
-                    object.setId(resultSet.getLong(1));
-                }
                 connection.commit();
                 return object;
             } catch (SQLException e) {
@@ -115,8 +115,8 @@ public class AccountRepository implements RepositoryCRUD<Long, AccountModel>{
                 String name = resultSet.getString("name");
                 BigDecimal amount = resultSet.getBigDecimal("amount");
                 String type = resultSet.getString("type");
-                Optional<CurrencyModel> currency = currencyRepository.findById(resultSet.getLong("currency_id"));
-                list.add(new AccountModel (id, name, amount, AccountType.valueOf(type), currency.get()));
+                CurrencyModel currency = currencyRepository.findById(resultSet.getLong("currency_id")).orElse(null);
+                list.add(new AccountModel (id, name, amount, AccountType.valueOf(type), currency));
             }
             return list;
         } catch (SQLException e) {
