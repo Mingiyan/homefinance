@@ -25,7 +25,5 @@
     <transaction id="3">
         <name>transaction 3</name>
         <time>2019-08-10 12:16:00</time>
-        <account></account>
-        <categories></categories>
     </transaction>
 </transactions>

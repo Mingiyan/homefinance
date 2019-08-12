@@ -42,41 +42,45 @@ public class DOMParser implements Parser<TransactionModel> {
                     Node cNode = childNodes.item(j);
 
                     if (cNode instanceof Element) {
-                        if (cNode.hasChildNodes()) {
-                            String content = cNode.getLastChild().getTextContent().trim();
-                            switch (cNode.getNodeName()) {
-                                case "name":
-                                    transaction.setName(content);
-                                    break;
-                                case "time":
-                                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                                    transaction.setDateTime(LocalDateTime.parse(content, formatter));
-                                    break;
-                                case "account":
-                                    AccountModel account = null;
-                                    account = new AccountModel();
-                                    account.setId(Long.valueOf(content));
-                                    transaction.setAccount(account);
-                                    break;
-
-                            }
-                        } else {
-                            NodeList categoryList = cNode.getChildNodes();
-                            Collection<CategoryTransactionModel> collection = new ArrayList<>();
-
-                            for (int c = 0; c < categoryList.getLength(); c++) {
-                                Node categoryNode = categoryList.item(c);
-                                if (categoryNode instanceof Element) {
-                                    CategoryTransactionModel categoryTransactionModel = new CategoryTransactionModel();
-                                    categoryTransactionModel.setId(Long.valueOf(categoryNode.getAttributes().getNamedItem("id").getNodeValue()));
-                                    String categoryContext = categoryNode.getLastChild().getTextContent().trim();
-                                    categoryTransactionModel.setName(categoryContext);
-                                    collection.add(categoryTransactionModel);
+                        String content = cNode.getLastChild().getTextContent().trim();
+                        switch (cNode.getNodeName()) {
+                            case "name":
+                                transaction.setName(content);
+                                break;
+                            case "time":
+                                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                                transaction.setDateTime(LocalDateTime.parse(content, formatter));
+                                break;
+                            case "account":
+                                AccountModel account = new AccountModel();
+                                account.setId(Long.valueOf(content));
+                                transaction.setAccount(account);
+                                break;
+                            case "categories":
+                                Collection<CategoryTransactionModel> categoryTransactionModels = new ArrayList<>();
+                                NodeList categoryNodes = cNode.getChildNodes();
+                                for (int c = 0; c < categoryNodes.getLength(); c++) {
+                                    Node categoryNode = categoryNodes.item(c);
+                                    if (categoryNode instanceof Element) {
+                                        CategoryTransactionModel categoryTransactionModel = new CategoryTransactionModel();
+                                        categoryTransactionModel.setId(Long.valueOf(categoryNode.getAttributes().getNamedItem("id").getNodeValue()));
+                                        NodeList categoryChild = categoryNode.getChildNodes();
+                                        for (int k = 0; k < categoryChild.getLength(); k++) {
+                                            Node childCNode = categoryChild.item(k);
+                                            if (childCNode instanceof Element) {
+                                                if ("name".equals(childCNode.getNodeName())) {
+                                                    categoryTransactionModel.setName(childCNode.getLastChild().getTextContent().trim());
+                                                }
+                                            }
+                                        }
+                                        categoryTransactionModels.add(categoryTransactionModel);
+                                    }
                                 }
-                            }
-                            transaction.setCategoryTransaction(collection);
+                                transaction.setCategoryTransaction(categoryTransactionModels);
                         }
+
                     }
+
                 }
                 transactionList.add(transaction);
             }
