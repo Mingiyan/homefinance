@@ -1,0 +1,31 @@
+<transactions>
+    <transaction id="1">
+        <name>transaction 1</name>
+        <time>2019-08-01 12:56:50</time>
+        <account>1</account>
+        <categories>
+            <category id="1">
+                <name>category 1</name>
+            </category>
+            <category id="2">
+                <name>category 2</name>
+            </category>
+        </categories>
+    </transaction>
+    <transaction id="2">
+        <name>transaction 2</name>
+        <time>2019-08-05 12:36:40</time>
+        <account>1</account>
+        <categories>
+            <category id="1">
+                <name>category 1</name>
+            </category>
+        </categories>
+    </transaction>
+    <transaction id="3">
+        <name>transaction 3</name>
+        <time>2019-08-10 12:16:00</time>
+        <account></account>
+        <categories></categories>
+    </transaction>
+</transactions>
