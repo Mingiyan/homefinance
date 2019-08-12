@@ -42,30 +42,39 @@ public class DOMParser implements Parser<TransactionModel> {
                     Node cNode = childNodes.item(j);
 
                     if (cNode instanceof Element) {
-                        String content = cNode.getLastChild().getTextContent().trim();
-                        switch (cNode.getNodeName()) {
-                            case "name":
-                                transaction.setName(content);
-                                break;
-                            case "time":
-                                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                                transaction.setDateTime(LocalDateTime.parse(content, formatter));
-                                break;
-                            case "account":
-                                AccountModel account = null;
-                                if (!content.isEmpty()) {
+                        if (cNode.hasChildNodes()) {
+                            String content = cNode.getLastChild().getTextContent().trim();
+                            switch (cNode.getNodeName()) {
+                                case "name":
+                                    transaction.setName(content);
+                                    break;
+                                case "time":
+                                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                                    transaction.setDateTime(LocalDateTime.parse(content, formatter));
+                                    break;
+                                case "account":
+                                    AccountModel account = null;
                                     account = new AccountModel();
                                     account.setId(Long.valueOf(content));
                                     transaction.setAccount(account);
+                                    break;
+
+                            }
+                        } else {
+                            NodeList categoryList = cNode.getChildNodes();
+                            Collection<CategoryTransactionModel> collection = new ArrayList<>();
+
+                            for (int c = 0; c < categoryList.getLength(); c++) {
+                                Node categoryNode = categoryList.item(c);
+                                if (categoryNode instanceof Element) {
+                                    CategoryTransactionModel categoryTransactionModel = new CategoryTransactionModel();
+                                    categoryTransactionModel.setId(Long.valueOf(categoryNode.getAttributes().getNamedItem("id").getNodeValue()));
+                                    String categoryContext = categoryNode.getLastChild().getTextContent().trim();
+                                    categoryTransactionModel.setName(categoryContext);
+                                    collection.add(categoryTransactionModel);
                                 }
-                                break;
-                            case "categories":
-                                Collection<CategoryTransactionModel> categoryList = null;
-                                if (!content.isEmpty()) {
-                                    categoryList = getCategories(content);
-                                }
-                                transaction.setCategoryTransaction(categoryList);
-                                break;
+                            }
+                            transaction.setCategoryTransaction(collection);
                         }
                     }
                 }
@@ -73,30 +82,5 @@ public class DOMParser implements Parser<TransactionModel> {
             }
         }
         return transactionList;
-    }
-
-    private Collection<CategoryTransactionModel> getCategories(String content) throws ParserConfigurationException, IOException, SAXException {
-        Collection<CategoryTransactionModel> categoryTransactionModels = new ArrayList<>();
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = factory.newDocumentBuilder();
-        Document document = builder.parse(content);
-        NodeList nodeList = document.getDocumentElement().getChildNodes();
-        for (int i = 0; i < nodeList.getLength(); i++) {
-            Node node = nodeList.item(i);
-            if (node instanceof Element) {
-                CategoryTransactionModel categoryTransactionModel = new CategoryTransactionModel();
-                categoryTransactionModel.setId(Long.valueOf(node.getAttributes().getNamedItem("id").getNodeValue()));
-                NodeList childNodes = node.getChildNodes();
-                for (int j = 0; j < childNodes.getLength(); j++) {
-                    Node cNode = childNodes.item(j);
-                    if (cNode instanceof Element) {
-                        String category = cNode.getLastChild().getTextContent().trim();
-                        categoryTransactionModel.setName(category);
-                    }
-                }
-                categoryTransactionModels.add(categoryTransactionModel);
-            }
-        }
-        return categoryTransactionModels;
     }
 }
