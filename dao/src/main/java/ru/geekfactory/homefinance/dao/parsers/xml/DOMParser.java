@@ -44,7 +44,7 @@ public class DOMParser implements Parser<TransactionModel> {
                     if (cNode instanceof Element) {
                         String content = cNode.getLastChild().getTextContent().trim();
                         switch (cNode.getNodeName()) {
-                            case "name":
+                            case "transactionName":
                                 transaction.setName(content);
                                 break;
                             case "time":
@@ -68,7 +68,7 @@ public class DOMParser implements Parser<TransactionModel> {
                                         for (int k = 0; k < categoryChild.getLength(); k++) {
                                             Node childCNode = categoryChild.item(k);
                                             if (childCNode instanceof Element) {
-                                                if ("name".equals(childCNode.getNodeName())) {
+                                                if ("categoryName".equals(childCNode.getNodeName())) {
                                                     categoryTransactionModel.setName(childCNode.getLastChild().getTextContent().trim());
                                                 }
                                             }
