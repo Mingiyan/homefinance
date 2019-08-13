@@ -18,6 +18,7 @@ public class SaxHandler extends DefaultHandler {
     List<TransactionModel> transactionsList = new ArrayList<>();
     TransactionModel transaction = null;
     String content = null;
+    Collection<CategoryTransactionModel> categories = null;
     CategoryTransactionModel categoryTransactionModel = null;
 
     @Override
@@ -26,6 +27,7 @@ public class SaxHandler extends DefaultHandler {
             case "transaction":
                 transaction = new TransactionModel();
                 transaction.setId(Long.valueOf(attributes.getValue("id")));
+                categories = new ArrayList<>();
                 break;
             case "category":
                 categoryTransactionModel = new CategoryTransactionModel();
@@ -37,7 +39,7 @@ public class SaxHandler extends DefaultHandler {
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
         switch (qName) {
-            case "name":
+            case "transactionName":
                 transaction.setName(content);
                 break;
             case "time":
@@ -49,15 +51,15 @@ public class SaxHandler extends DefaultHandler {
                 account.setId(Long.valueOf(content));
                 transaction.setAccount(account);
                 break;
-            case "categories":
-                Collection<CategoryTransactionModel> categories = new ArrayList<>();
-
-                categories.add(categoryTransactionModel);
-
-                transaction.setCategoryTransaction(categories);
+            case "categoryName":
+                categoryTransactionModel.setName(content);
                 break;
             case "transaction":
+                transaction.setCategoryTransaction(categories);
                 transactionsList.add(transaction);
+                break;
+            case "category":
+                categories.add(categoryTransactionModel);
                 break;
         }
     }
