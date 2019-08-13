@@ -60,7 +60,6 @@ public class SaxHandler extends DefaultHandler {
                 break;
             case "category":
                 categories.add(categoryTransactionModel);
-                break;
         }
     }
 
