@@ -79,9 +79,7 @@ public class DOMParser implements Parser<TransactionModel> {
                                 transaction.setCategoryTransaction(categoryTransactionModels);
                                 break;
                         }
-
                     }
-
                 }
                 transactionList.add(transaction);
             }
