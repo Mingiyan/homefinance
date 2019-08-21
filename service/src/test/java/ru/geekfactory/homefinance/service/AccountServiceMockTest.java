@@ -30,9 +30,6 @@ class AccountServiceMockTest {
     @InjectMocks
     private AccountService accountService;
 
-    @Spy
-    AccountService spy; // это скорее всего не нужно и тест с ним тоже, или обосновать нахрена она
-
     @BeforeAll
     static void beforeAll() {
         databaseConnectorTest.getConnection();
@@ -41,18 +38,19 @@ class AccountServiceMockTest {
     @Test
     void testAccountService() {
         AccountModel accountModel = new AccountModel();
-        accountModel.setId((long) 22);
+        accountModel.setId(22L);
         accountModel.setName("test");
         accountModel.setAmount(BigDecimal.valueOf(1));
         when(accountRepositoryMock.findById(anyLong())).thenReturn(Optional.ofNullable(accountModel));
+        AccountModel accountFromData = accountService.findById(4L).orElse(null);
 
         assertNotNull(accountRepositoryMock);
         assertNotNull(accountService);
-        assertEquals((long) 22, accountService.findById((long) 4).get().getId());  // поправить на сравнение моделей
-        assertEquals("test", accountService.findById((long) 20).get().getName());
-        assertNotEquals((long) 4, accountService.findById((long) 4).get().getId());
+        assertEquals(accountModel, accountFromData);
+        assertEquals("test", accountFromData.getName());
+        assertNotEquals(4L, accountFromData.getId());
 
-        verify(accountRepositoryMock, times(3)).findById(anyLong());
+        verify(accountRepositoryMock, times(1)).findById(anyLong());
         verify(accountRepositoryMock, never()).findAll();
         verify(accountRepositoryMock, never()).remove(accountModel);
         verify(accountRepositoryMock, never()).save(accountModel);
@@ -61,28 +59,17 @@ class AccountServiceMockTest {
     @Test
     void testServiceMock() {
         AccountModel accountModel = new AccountModel();
-        accountModel.setId((long) 1);
+        accountModel.setId(1L);
         accountModel.setName("test");
         accountModel.setAmount(BigDecimal.valueOf(1));
         when(accountRepositoryMock.findById(anyLong())).thenReturn(Optional.ofNullable(accountModel));
+        AccountModel accountFromData = accountRepositoryMock.findById(4L).orElse(null);
 
         assertNotNull(accountRepositoryMock);
-        assertEquals((long) 1, accountRepositoryMock.findById((long) 4).get().getId());
-        assertEquals("test", accountRepositoryMock.findById((long) 20).get().getName());
-        assertNotEquals((long) 4, accountRepositoryMock.findById((long) 4).get().getId());
+        assertEquals(accountModel, accountFromData);
+        assertEquals("test", accountFromData.getName());
+        assertNotEquals(4L, accountFromData.getId());
 
-        verify(accountRepositoryMock, times(3)).findById(anyLong());
-    }
-
-    @Test
-    void testWithSpy() {
-        AccountModel accountModel = new AccountModel();
-        accountModel.setId((long) 1);
-        accountModel.setName("test");
-        accountModel.setAmount(BigDecimal.valueOf(1));
-        when(spy.findById(anyLong())).thenReturn(Optional.ofNullable(accountModel));
-
-        assertEquals(1, spy.findById((long) 66).get().getId());
-        assertEquals("test", spy.findById((long) 20).get().getName());
+        verify(accountRepositoryMock, times(1)).findById(anyLong());
     }
 }

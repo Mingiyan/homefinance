@@ -3,9 +3,9 @@ package ru.geekfactory.homefinance.dao.repository;
 import org.junit.jupiter.api.*;
 import ru.geekfactory.homefinance.dao.model.AccountModel;
 import ru.geekfactory.homefinance.dao.model.AccountType;
-import ru.geekfactory.homefinance.dao.model.CurrencyModel;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -15,8 +15,6 @@ class AccountRepositoryTest {
     private static DatabaseConnector databaseConnectorTest = new DatabaseConnector();
 
     private AccountRepository accountRepository = new AccountRepository();
-    private CurrencyRepository currencyRepository = new CurrencyRepository();
-
 
     @BeforeAll
     static void beforeAll() {
@@ -30,55 +28,71 @@ class AccountRepositoryTest {
     }
 
     @Test
-    void testContext() {
-        assertNotNull(accountRepository);
-    }
-
-
-    @Test
     @DisplayName("save and findById operation test")
     void testSaveAndFind() {
         AccountModel accountModel = new AccountModel();
+        accountModel.setId(3L);
         accountModel.setName("test");
         accountModel.setAccountType(AccountType.CASH);
         accountModel.setAmount(BigDecimal.valueOf(1));
         accountRepository.save(accountModel);
-        assertEquals(accountModel, accountRepository.findById((long) 1)); // проверять модели
+        AccountModel fromData = accountRepository.findById(3L).orElse(null);
+
+        assertEquals(accountModel, fromData);
     }
 
     @Test
     @DisplayName("update operation test")
     void testUpdate() {
-        CurrencyModel currencyNew = new CurrencyModel();
-        currencyNew.setName("Dollar");
         AccountModel accountModel = new AccountModel();
+        accountModel.setId(4L);
         accountModel.setName("test");
         accountModel.setAccountType(AccountType.CASH);
         accountModel.setAmount(BigDecimal.valueOf(1));
-        currencyRepository.save(currencyNew);
-        accountModel.setCurrency(currencyRepository.findById((long) 1).orElse(null));
         accountRepository.save(accountModel);
-        assertNotNull(accountModel);
-        AccountModel accountUpdate = accountRepository.findById((long) 1).orElse(null);
+        AccountModel accountUpdate = accountRepository.findById(4L).orElse(null);
         accountUpdate.setName("test2");
         accountRepository.update(accountUpdate);
-        assertEquals("test2", accountRepository.findById((long) 1).get().getName());
+
+        assertNotEquals(accountUpdate, accountRepository.findById(4L));
     }
 
     @Test
     @DisplayName("findAll operation test")
     void testFindAll() {
+        AccountModel first = new AccountModel();
+        first.setId(1L);
+        first.setName("first");
+        first.setAccountType(AccountType.DEBIT_CARD);
+        AccountModel second = new AccountModel();
+        second.setId(2L);
+        second.setName("second");
+        second.setAmount(BigDecimal.valueOf(11));
+        second.setAccountType(AccountType.CASH);
+        accountRepository.save(first);
+        accountRepository.save(second);
+        List<AccountModel> firstList = new ArrayList<>();
         List<AccountModel> list = accountRepository.findAll();
-        //assertNotNull
-        list.forEach(accountModel -> assertEquals(1, accountModel.getId())); // модели сравнивать
+        firstList.add(first);
+        firstList.add(second);
+
+        assertNotNull(list);
+        assertEquals(firstList, list);
     }
 
     @Test
     @DisplayName("remove operation test")
     void testRemove() {
-        AccountModel accountModel = accountRepository.findById((long) 1).orElse(null);
-        accountRepository.remove(accountModel);
-        AccountModel removedAccount = accountRepository.findById((long) 1).orElse(null);
+        AccountModel firstAccount = new AccountModel();
+        firstAccount.setId(1L);
+        firstAccount.setName("first");
+        firstAccount.setAccountType(AccountType.CREDIT_CARD);
+        firstAccount.setAmount(BigDecimal.valueOf(1));
+        accountRepository.save(firstAccount);
+        AccountModel secondAccount = accountRepository.findById(1L).orElse(null);
+        accountRepository.remove(secondAccount);
+        AccountModel removedAccount = accountRepository.findById(1L).orElse(null);
+
         assertNull(removedAccount);
     }
 }

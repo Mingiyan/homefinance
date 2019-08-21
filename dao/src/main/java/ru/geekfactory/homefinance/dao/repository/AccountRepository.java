@@ -15,11 +15,11 @@ import java.util.List;
 import java.util.Optional;
 
 public class AccountRepository implements RepositoryCRUD<Long, AccountModel>{
-    private static final String INSERT = "insert into account_tbl (name, amount, type, currency_id) values (?, ?, ?, ?)";
-    private static final String FIND_BY_ID = "select id, name, amount, type, currency_id from account_tbl where id = ?";
-    private static final String UPDATE = "update account_tbl set name = ?, amount = ?, type = ?, currency_id = ? where id = ?";
-    private static final String DELETE = "delete from account_tbl where id = ?";
-    private static final String FIND_ALL = "select id, name, amount, type, currency_id from account_tbl";
+    private static final String INSERT = "INSERT INTO account_tbl (name, amount, type, currency_id) VALUES (?, ?, ?, ?)";
+    private static final String FIND_BY_ID = "SELECT id, name, amount, type, currency_id FROM account_tbl WHERE id = ?";
+    private static final String UPDATE = "UPDATE account_tbl SET name = ?, amount = ?, type = ?, currency_id = ? WHERE id = ?";
+    private static final String DELETE = "DELETE FROM account_tbl WHERE id = ?";
+    private static final String FIND_ALL = "SELECT id, name, amount, type, currency_id FROM account_tbl";
     private DatabaseConnector databaseConnector = new DatabaseConnector();
     private CurrencyRepository currencyRepository = new CurrencyRepository();
     public AccountRepository() {
@@ -33,7 +33,11 @@ public class AccountRepository implements RepositoryCRUD<Long, AccountModel>{
             preparedStatement.setString(1, object.getName());
             preparedStatement.setBigDecimal(2, object.getAmount());
             preparedStatement.setString(3, String.valueOf(object.getAccountType()));
-            preparedStatement.setLong(4, object.getCurrency().getId());
+            if (object.getCurrency() != null) {
+                preparedStatement.setLong(4, object.getCurrency().getId());
+            } else {
+                preparedStatement.setObject(4, null);
+            }
             preparedStatement.executeUpdate();
             connection.commit();
         } catch (SQLException e) {
@@ -52,8 +56,8 @@ public class AccountRepository implements RepositoryCRUD<Long, AccountModel>{
                 String name = resultSet.getString("name");
                 BigDecimal amount = resultSet.getBigDecimal("amount");
                 String type = resultSet.getString("type");
-                Optional<CurrencyModel> currency = currencyRepository.findById(resultSet.getLong("currency_id"));
-                account = new AccountModel(id ,name, amount, AccountType.valueOf(type), currency.get());
+                CurrencyModel currency = currencyRepository.findById(resultSet.getLong("currency_id")).orElse(null);
+                account = new AccountModel(id ,name, amount, AccountType.valueOf(type), currency);
             }
             return Optional.ofNullable(account);
 
@@ -69,13 +73,13 @@ public class AccountRepository implements RepositoryCRUD<Long, AccountModel>{
                 preparedStatement.setString(1, object.getName());
                 preparedStatement.setBigDecimal(2, object.getAmount());
                 preparedStatement.setString(3, String.valueOf(object.getAccountType()));
-                preparedStatement.setLong(4, object.getCurrency().getId());
+                if (object.getCurrency() != null) {
+                    preparedStatement.setLong(4, object.getCurrency().getId());
+                } else {
+                    preparedStatement.setObject(4, null);
+                }
                 preparedStatement.setLong(5, object.getId());
                 preparedStatement.executeUpdate();
-                ResultSet resultSet = preparedStatement.getGeneratedKeys();
-                if (resultSet.next()) {
-                    object.setId(resultSet.getLong(1));
-                }
                 connection.commit();
                 return object;
             } catch (SQLException e) {
@@ -111,8 +115,8 @@ public class AccountRepository implements RepositoryCRUD<Long, AccountModel>{
                 String name = resultSet.getString("name");
                 BigDecimal amount = resultSet.getBigDecimal("amount");
                 String type = resultSet.getString("type");
-                Optional<CurrencyModel> currency = currencyRepository.findById(resultSet.getLong("currency_id"));
-                list.add(new AccountModel (id, name, amount, AccountType.valueOf(type), currency.get()));
+                CurrencyModel currency = currencyRepository.findById(resultSet.getLong("currency_id")).orElse(null);
+                list.add(new AccountModel (id, name, amount, AccountType.valueOf(type), currency));
             }
             return list;
         } catch (SQLException e) {
