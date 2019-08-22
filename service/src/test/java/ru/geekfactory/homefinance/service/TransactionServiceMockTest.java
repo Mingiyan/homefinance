@@ -19,7 +19,7 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class TransactionServiceMockTest {
+class TransactionServiceMockTest {
 
     private static DatabaseConnector databaseConnectorTest = new DatabaseConnector();
 
