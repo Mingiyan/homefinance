@@ -22,10 +22,11 @@ public class DatabaseConnector {
         String DB_USER = properties.getProperty("dbuser");
         String DB_PASSWORD = properties.getProperty("dbpassword");
         try {
+            Class.forName("org.postgresql.Driver");
             Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
             connection.setAutoCommit(false);
             return connection;
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e){
             e.printStackTrace();
             return null;
         }
