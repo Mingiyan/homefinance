@@ -116,7 +116,7 @@ public class TransactionRepository implements RepositoryCRUD<Long, TransactionMo
 
     @Override
     public List<TransactionModel> findAll() {
-        try (Connection connection = databaseConnector.getConnection()){
+        try (Connection connection = databaseConnector.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL);
             ResultSet resultSet = preparedStatement.executeQuery();
             List<TransactionModel> list = new ArrayList<>();

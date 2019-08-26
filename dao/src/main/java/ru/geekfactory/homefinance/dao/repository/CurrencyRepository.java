@@ -51,10 +51,11 @@ public class CurrencyRepository implements RepositoryCRUD<Long, CurrencyModel> {
             throw new HomeFinanceDaoException("error while find CurrencyModel model by id", e);
         }
     }
-        @Override
+
+    @Override
     public CurrencyModel update(CurrencyModel object) {
         try (Connection connection = databaseConnector.getConnection()) {
-            try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE)){
+            try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE)) {
                 preparedStatement.setString(1, object.getName());
                 preparedStatement.setLong(2, object.getId());
                 preparedStatement.executeUpdate();
