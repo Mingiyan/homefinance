@@ -9,10 +9,12 @@
     <modules>
         <module>dao</module>
         <module>service</module>
+        <module>web</module>
     </modules>
 
     <properties>
         <lombok>1.16.20</lombok>
+        <servlet>4.0.1</servlet>
         <postgresql>42.2.5</postgresql>
         <junit-jupiter>5.5.1</junit-jupiter>
         <junit-platform>1.5.1</junit-platform>
@@ -27,6 +29,11 @@
                 <artifactId>lombok</artifactId>
                 <version>${lombok}</version>
                 <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>${servlet}</version>
             </dependency>
             <dependency>
                 <groupId>org.postgresql</groupId>
