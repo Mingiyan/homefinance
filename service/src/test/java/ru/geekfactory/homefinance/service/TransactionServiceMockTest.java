@@ -42,6 +42,7 @@ class TransactionServiceMockTest {
         transaction.setDateTime(LocalDateTime.now());
 
         when(transactionRepositoryMock.findById(anyLong())).thenReturn(Optional.ofNullable(transaction));
+
         TransactionModel transactionFromData = transactionService.findById(34L).orElse(null);
 
         assertNotNull(transactionRepositoryMock);
@@ -62,6 +63,7 @@ class TransactionServiceMockTest {
         transaction.setDateTime(LocalDateTime.of(2017, 4, 14, 9, 22));
 
         when(transactionRepositoryMock.findById(anyLong())).thenReturn(Optional.ofNullable(transaction));
+
         TransactionModel transactionFromData = transactionRepositoryMock.findById(4L).orElse(null);
 
         assertNotNull(transactionRepositoryMock);

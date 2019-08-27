@@ -40,6 +40,7 @@ class AccountServiceMockTest {
         accountModel.setName("test");
         accountModel.setAmount(BigDecimal.valueOf(1));
         when(accountRepositoryMock.findById(anyLong())).thenReturn(Optional.ofNullable(accountModel));
+
         AccountModel accountFromData = accountService.findById(4L).orElse(null);
 
         assertNotNull(accountRepositoryMock);
@@ -61,6 +62,7 @@ class AccountServiceMockTest {
         accountModel.setName("test");
         accountModel.setAmount(BigDecimal.valueOf(1));
         when(accountRepositoryMock.findById(anyLong())).thenReturn(Optional.ofNullable(accountModel));
+
         AccountModel accountFromData = accountRepositoryMock.findById(4L).orElse(null);
 
         assertNotNull(accountRepositoryMock);

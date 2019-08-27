@@ -38,9 +38,9 @@ class CategoryTransactionServiceMockTest {
         categoryTransactionModel.setId((long) 2);
         categoryTransactionModel.setName("test");
         when(categoryTransactionRepositoryMock.findById(anyLong())).thenReturn(Optional.ofNullable(categoryTransactionModel));
+
         CategoryTransactionModel categoryFromData = categoryTransactionService.findById(33L).orElse(null);
 
-        assertNotNull(categoryTransactionRepositoryMock);
         assertNotNull(categoryTransactionService);
         assertEquals(categoryTransactionModel, categoryFromData);
         assertEquals("test", categoryFromData.getName());
@@ -57,6 +57,7 @@ class CategoryTransactionServiceMockTest {
         categoryTransactionModel.setName("test");
         categoryTransactionModel.setId(1L);
         when(categoryTransactionRepositoryMock.findById(anyLong())).thenReturn(Optional.ofNullable(categoryTransactionModel));
+
         CategoryTransactionModel categoryFromData = categoryTransactionRepositoryMock.findById(33L).orElse(null);
 
         assertNotNull(categoryTransactionRepositoryMock);

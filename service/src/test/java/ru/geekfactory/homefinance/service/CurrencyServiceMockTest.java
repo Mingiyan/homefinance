@@ -41,6 +41,7 @@ class CurrencyServiceMockTest {
         currency.setId((long) 23);
         currency.setName("currency");
         when(currencyRepositoryMock.findById(anyLong())).thenReturn(Optional.ofNullable(currency));
+
         CurrencyModel currencyFromData = currencyService.findById(55L).orElse(null);
 
         assertNotNull(currencyRepositoryMock);
