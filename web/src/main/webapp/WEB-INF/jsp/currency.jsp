@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!doctype html>
 <html>
@@ -5,6 +6,16 @@
     <meta charset="UTF-8">
     <title>Currency</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        .center {
+            margin-top: 100px;
+            width: 60%;
+            padding: 10px;
+            background: none;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
 </head>
 <body class="bg-light">
     <!-- Navigation -->
@@ -35,6 +46,24 @@
             </div>
         </div>
     </nav>
-
+    <!-- Page Content -->
+    <div class="center">
+        <table class="table table-dark">
+            <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Имя</th>
+            </tr>
+            </thead>
+            <c:forEach var="currency" items="${currencies}">
+                <tbody>
+                <tr>
+                    <th scope="row">${currency.id}</th>
+                    <td>${currency.name}</td>
+                </tr>
+                </tbody>
+            </c:forEach>
+        </table>
+    </div>
 </body>
 </html>

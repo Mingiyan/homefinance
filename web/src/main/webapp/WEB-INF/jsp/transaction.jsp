@@ -9,7 +9,7 @@
     <style>
         .center {
             margin-top: 100px;
-            width: 80%;
+            width: 60%;
             padding: 10px;
             background: none;
             margin-left: auto;

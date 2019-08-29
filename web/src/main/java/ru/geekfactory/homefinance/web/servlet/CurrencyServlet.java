@@ -1,5 +1,8 @@
 package ru.geekfactory.homefinance.web.servlet;
 
+import ru.geekfactory.homefinance.service.CurrencyService;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -10,8 +13,13 @@ import java.io.IOException;
 @WebServlet("/currency")
 public class CurrencyServlet extends HttpServlet {
 
+    private CurrencyService currencyService = new CurrencyService();
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        req.setCharacterEncoding("UTF-8");
+        req.setAttribute("currencies", currencyService.findAll());
+        RequestDispatcher requestDispatcher = req.getRequestDispatcher("WEB-INF/jsp/currency.jsp");
+        requestDispatcher.forward(req, resp);
     }
 }
