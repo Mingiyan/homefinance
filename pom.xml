@@ -14,7 +14,7 @@
 
     <properties>
         <lombok>1.16.20</lombok>
-        <servlet>4.0.0</servlet>
+        <servlet>4.0.1</servlet>
         <postgresql>42.2.5</postgresql>
         <junit-jupiter>5.5.1</junit-jupiter>
         <junit-platform>1.5.1</junit-platform>
@@ -35,6 +35,11 @@
                 <artifactId>javax.servlet-api</artifactId>
                 <version>${servlet}</version>
                 <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>jstl</artifactId>
+                <version>1.2</version>
             </dependency>
             <dependency>
                 <groupId>org.postgresql</groupId>

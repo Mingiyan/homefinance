@@ -18,6 +18,10 @@
             <artifactId>javax.servlet-api</artifactId>
         </dependency>
         <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+        </dependency>
+        <dependency>
             <groupId>geekfactory_web_04_dordzhiev</groupId>
             <artifactId>service</artifactId>
             <version>1.0-SNAPSHOT</version>
