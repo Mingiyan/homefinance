@@ -46,6 +46,7 @@
             </div>
         </div>
     </nav>
+
     <!-- Page Content -->
     <div class="center">
         <table class="table table-dark">
