@@ -73,6 +73,32 @@
                     </td>
                 </tr>
                 </tbody>
+                <div class="modal fade" id="myModal_${currency.id}" tabindex="-1" role="dialog" aria-labelledby="formLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="modal-title" id="myModalLabel">Редактирование валюты</h3>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <form method="put">
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label for="recipient-name" class="col-form-label">Название валюты:</label>
+                                        <input type="text" name="id" class="form-control" readonly value="${currency.id}" id="${currency.id}">
+                                        <input type="text" name="name" class="form-control" contenteditable="true" value="${currency.name}" id="${currency.id}">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
+                                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                                    <button type="submit" formmethod="delete" class="btn btn-primary">Удалить</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </c:forEach>
         </table>
     </div>
@@ -103,34 +129,5 @@
         </div>
     </div>
 
-    <!-- Edit modal -->
-    <c:forEach var="currency" items="${currencies}">
-        <div class="modal fade" id="myModal_${currency.id}" tabindex="-1" role="dialog" aria-labelledby="formLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h3 class="modal-title" id="myModalLabel">Редактирование валюты</h3>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <form method="put">
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <label for="recipient-name" class="col-form-label">Название валюты:</label>
-                                <input type="text" name="id" class="form-control" contenteditable="false" value="${currency.id}" id="${currency.id}">
-                                <input type="text" name="name" class="form-control" contenteditable="true" value="${currency.name}" id="${currency.id}">
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
-                            <button type="submit" class="btn btn-primary">Сохранить</button>
-                            <button type="submit" formmethod="delete" class="btn btn-primary">Удалить</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </c:forEach>
 </body>
 </html>
