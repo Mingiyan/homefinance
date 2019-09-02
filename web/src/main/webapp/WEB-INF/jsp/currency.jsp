@@ -75,6 +75,7 @@
                     </td>
                 </tr>
                 </tbody>
+                <!-- modal form update -->
                 <div class="modal fade" id="myModal_${currency.id}" tabindex="-1" role="dialog" aria-labelledby="formLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
@@ -102,6 +103,7 @@
                         </div>
                     </div>
                 </div>
+                <!-- modal form delete -->
                 <div class="modal fade" id="deleteModal_${currency.id}" tabindex="-1" role="dialog" aria-labelledby="formLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
@@ -132,7 +134,7 @@
         </table>
     </div>
 
-    <!-- Modal form -->
+    <!-- modal form save -->
     <div class="modal fade" id="currencyForm" tabindex="-1" role="dialog" aria-labelledby="requestFormLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
