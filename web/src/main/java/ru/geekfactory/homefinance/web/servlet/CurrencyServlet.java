@@ -32,4 +32,22 @@ public class CurrencyServlet extends HttpServlet {
         currencyService.save(currencyModel);
         resp.sendRedirect("/currency");
     }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        req.setCharacterEncoding("UTF-8");
+        CurrencyModel currencyModel = new CurrencyModel();
+        currencyModel.setId(Long.valueOf(req.getParameter("id")));
+        currencyModel.setName(req.getParameter("name"));
+        currencyService.update(currencyModel);
+        resp.sendRedirect("/currency");
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        req.setCharacterEncoding("UTF-8");
+        CurrencyModel currencyModel = currencyService.findById(Long.valueOf(req.getParameter("id"))).orElse(null);
+        currencyService.remove(currencyModel);
+        resp.sendRedirect("/currency");
+    }
 }
