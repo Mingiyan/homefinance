@@ -70,6 +70,8 @@
                     <td>${currency.name}</td>
                     <td>
                         <a data-toggle="modal" data-target="#myModal_${currency.id}" href="#myModal_${currency.id}">Редактировать</a>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <a data-toggle="modal" data-target="#deleteModal_${currency.id}" href="#deleteModal_${currency.id}">Удалить</a>
                     </td>
                 </tr>
                 </tbody>
@@ -82,18 +84,45 @@
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                            <form method="put">
+                            <form method="post">
                                 <div class="modal-body">
                                     <div class="form-group">
-                                        <label for="recipient-name" class="col-form-label">Название валюты:</label>
+                                        <input type="hidden" name="_method" value="PUT">
+                                        <label for="recipient-name" class="col-form-label">ID валюты:</label>
                                         <input type="text" name="id" class="form-control" readonly value="${currency.id}" id="${currency.id}">
+                                        <label for="recipient-name" class="col-form-label">Название валюты:</label>
                                         <input type="text" name="name" class="form-control" contenteditable="true" value="${currency.name}" id="${currency.id}">
                                     </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
                                     <button type="submit" class="btn btn-primary">Сохранить</button>
-                                    <button type="submit" formmethod="delete" class="btn btn-primary">Удалить</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="deleteModal_${currency.id}" tabindex="-1" role="dialog" aria-labelledby="formLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="modal-title" id="deleteModalLabel">Редактирование валюты</h3>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <form method="post">
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <p>Вы действительно хотите удалить валюту "${currency.name}" c ID = ${currency.id}? </p>
+                                        <input type="hidden" name="id" class="form-control" readonly value="${currency.id}" id="${currency.id}">
+                                        <input type="hidden" name="name" class="form-control" contenteditable="true" value="${currency.name}" id="${currency.id}">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Нет</button>
+                                    <button type="submit" class="btn btn-primary">Удалить</button>
                                 </div>
                             </form>
                         </div>
