@@ -145,6 +145,7 @@
                 <form method="post">
                     <div class="modal-body">
                         <div class="form-group">
+                            <input type="hidden" name="_method" value="post">
                             <label for="recipient-name" class="col-form-label">Название валюты:</label>
                             <input type="text" name="name" class="form-control" id="recipient-name">
                         </div>
