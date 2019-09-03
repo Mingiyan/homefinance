@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/currency")
+@WebServlet(name = "CurrencyServlet", urlPatterns = {"/currency"})
 public class CurrencyServlet extends HttpServlet {
 
     private CurrencyService currencyService = new CurrencyService();
@@ -27,28 +27,33 @@ public class CurrencyServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         req.setCharacterEncoding("UTF-8");
-        String action = req.getParameter("_method");
-        switch (action.toLowerCase()) {
-            case "put":
-                edit(req, resp);
-                break;
-            case "delete":
-                delete(req, resp);
-                break;
-            default:
-                save(req, resp);
-                break;
-        }
-    }
-
-    private void save(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         CurrencyModel currencyModel = new CurrencyModel();
         currencyModel.setName(req.getParameter("name"));
         currencyService.save(currencyModel);
         resp.sendRedirect("/currency");
+//        String action = req.getParameter("_method");
+//        switch (action.toLowerCase()) {
+//            case "put":
+//                edit(req, resp);
+//                break;
+//            case "delete":
+//                delete(req, resp);
+//                break;
+//            default:
+//                save(req, resp);
+//                break;
+//        }
     }
+//
+//    private void save(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+//        CurrencyModel currencyModel = new CurrencyModel();
+//        currencyModel.setName(req.getParameter("name"));
+//        currencyService.save(currencyModel);
+//        resp.sendRedirect("/currency");
+//    }
 
-    private void edit(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         CurrencyModel currencyModel = new CurrencyModel();
         currencyModel.setId(Long.valueOf(req.getParameter("id")));
         currencyModel.setName(req.getParameter("name"));
@@ -56,7 +61,8 @@ public class CurrencyServlet extends HttpServlet {
         resp.sendRedirect("/currency");
     }
 
-    private void delete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         CurrencyModel currencyModel = currencyService.findById(Long.valueOf(req.getParameter("id"))).orElse(null);
         currencyService.remove(currencyModel);
         resp.sendRedirect("/currency");
