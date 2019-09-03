@@ -94,18 +94,16 @@
                                         <label for="categoryName" class="col-form-label">Имя категории:</label>
                                         <input type="text" name="name" class="form-control" contenteditable="true" value="${category.name}" id="categoryName">
                                         <select name="parent" form="parentCategory">
+                                            <option selected>-</option>
                                             <c:forEach var="parentCategory" items="${categories}">
                                                 <c:choose>
-                                                    <c:when test="${category.parentCategory ne parentCategory}">
-                                                        <option value="${parentCategory.id}">${parentCategory.name}</option>
-                                                    </c:when>
-                                                    <c:when test="${category.parentCategory eq null}">
-                                                        <option selected value="">-</option>
+                                                    <c:when test="${category.parentCategory eq parentCategory}">
+                                                        <option selected value="${parentCategory.id}">${parentCategory.name}</option>
                                                     </c:when>
                                                     <c:otherwise>
-                                                        <option selected value="${parentCategory.id}">${parentCategory.name}</option>
+                                                        <option value="${parentCategory.id}">${parentCategory.name}</option>
                                                     </c:otherwise>
-                                                    </c:choose>
+                                                </c:choose>
                                             </c:forEach>
                                         </select>
                                     </div>
