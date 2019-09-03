@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/account")
+@WebServlet(name = "accountServlet", urlPatterns = "/account")
 public class AccountServlet extends HttpServlet {
 
     private AccountService accountService = new AccountService();

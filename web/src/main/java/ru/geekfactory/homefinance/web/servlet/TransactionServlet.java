@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/transaction")
+@WebServlet(name = "transactionServlet", urlPatterns = "/transaction")
 public class TransactionServlet extends HttpServlet {
 
     private TransactionService transactionService = new TransactionService();

@@ -35,4 +35,14 @@
         <filter-name>formFilter</filter-name>
         <servlet-name>categoryServlet</servlet-name>
     </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>formFilter</filter-name>
+        <servlet-name>accountServlet</servlet-name>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>formFilter</filter-name>
+        <servlet-name>transactionServlet</servlet-name>
+    </filter-mapping>
 </web-app>
