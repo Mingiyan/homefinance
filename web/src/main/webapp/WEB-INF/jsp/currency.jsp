@@ -60,7 +60,7 @@
             <tr>
                 <th scope="col">Id</th>
                 <th scope="col">Имя</th>
-                <th scope="col"></th>
+                <th scope="col">Действия</th>
             </tr>
             </thead>
             <c:forEach var="currency" items="${currencies}">
@@ -88,16 +88,16 @@
                             <form method="post">
                                 <div class="modal-body">
                                     <div class="form-group">
-                                        <input type="hidden" name="_method" value="PUT">
-                                        <label for="recipient-name" class="col-form-label">ID валюты:</label>
-                                        <input type="text" name="id" class="form-control" readonly value="${currency.id}" id="${currency.id}">
-                                        <label for="recipient-name" class="col-form-label">Название валюты:</label>
-                                        <input type="text" name="name" class="form-control" contenteditable="true" value="${currency.name}" id="${currency.id}">
+                                        <label for="currencyId" class="col-form-label">ID валюты:</label>
+                                        <input type="text" name="id" class="form-control" readonly value="${currency.id}" id="currencyId">
+                                        <label for="currencyName" class="col-form-label">Название валюты:</label>
+                                        <input type="text" name="name" class="form-control" contenteditable="true" value="${currency.name}" id="currencyName">
                                     </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
-                                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                                    <input type="hidden" name="_method" value="put">
+                                    <input type="submit" class="btn btn-primary" value="Сохранить">
                                 </div>
                             </form>
                         </div>
@@ -116,15 +116,15 @@
                             <form method="post">
                                 <div class="modal-body">
                                     <div class="form-group">
-                                        <input type="hidden" name="_method" value="DELETE">
-                                        <p>Вы действительно хотите удалить валюту "${currency.name}" c ID = ${currency.id}? </p>
+                                        <p>Вы действительно хотите удалить валюту "${currency.name}"? </p>
                                         <input type="hidden" name="id" class="form-control" readonly value="${currency.id}" id="${currency.id}">
                                         <input type="hidden" name="name" class="form-control" contenteditable="true" value="${currency.name}" id="${currency.id}">
                                     </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Нет</button>
-                                    <button type="submit" class="btn btn-primary">Удалить</button>
+                                    <input type="hidden" name="_method" value="delete">
+                                    <input type="submit" class="btn btn-primary" value="Удалить">
                                 </div>
                             </form>
                         </div>
@@ -147,7 +147,6 @@
                 <form method="post">
                     <div class="modal-body">
                         <div class="form-group">
-                            <input type="hidden" name="_method" value="post">
                             <label for="recipient-name" class="col-form-label">Название валюты:</label>
                             <input type="text" name="name" class="form-control" id="recipient-name">
                         </div>

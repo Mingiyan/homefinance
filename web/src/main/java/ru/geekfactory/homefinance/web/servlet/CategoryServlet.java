@@ -11,14 +11,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/category")
+@WebServlet(name = "categoryServlet", urlPatterns = "/category")
 public class CategoryServlet extends HttpServlet {
 
     private CategoryTransactionService categoryTransactionService = new CategoryTransactionService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setCharacterEncoding("UTF-8");
         req.setAttribute("categories", categoryTransactionService.findAll());
         RequestDispatcher requestDispatcher = req.getRequestDispatcher("WEB-INF/jsp/category.jsp");
         requestDispatcher.forward(req, resp);
@@ -26,7 +25,6 @@ public class CategoryServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        req.setCharacterEncoding("UTF-8");
         CategoryTransactionModel categoryTransactionModel = new CategoryTransactionModel();
         categoryTransactionModel.setName(req.getParameter("name"));
         if (req.getParameter("parentCategory") != null) {
@@ -38,11 +36,12 @@ public class CategoryServlet extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        req.setCharacterEncoding("UTF-8");
         CategoryTransactionModel categoryTransactionModel = new CategoryTransactionModel();
         categoryTransactionModel.setId(Long.valueOf(req.getParameter("id")));
         categoryTransactionModel.setName(req.getParameter("name"));
-        categoryTransactionModel.setParentCategory(categoryTransactionService.findById(Long.valueOf(req.getParameter("parentId"))).orElse(null));
+        if (req.getParameter("parent") != null) {
+            categoryTransactionModel.setParentCategory(categoryTransactionService.findById(Long.valueOf(req.getParameter("parent"))).orElse(null));
+        }
         categoryTransactionService.update(categoryTransactionModel);
         resp.sendRedirect("/category");
     }

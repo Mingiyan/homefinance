@@ -3,6 +3,24 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
 
+    <!-- Для того чтобы нормально отображались символы русские при записи -->
+    <filter>
+        <filter-name>encodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+        <init-param>
+            <param-name>forceEncoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>encodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
     <filter>
         <filter-name>formFilter</filter-name>
         <filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
@@ -10,7 +28,11 @@
 
     <filter-mapping>
         <filter-name>formFilter</filter-name>
-        <servlet-name>CurrencyServlet</servlet-name>
+        <servlet-name>currencyServlet</servlet-name>
     </filter-mapping>
 
+    <filter-mapping>
+        <filter-name>formFilter</filter-name>
+        <servlet-name>categoryServlet</servlet-name>
+    </filter-mapping>
 </web-app>
