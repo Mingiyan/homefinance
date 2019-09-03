@@ -86,14 +86,15 @@
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                            <form method="post" id="parentCategory">
+                            <form method="post" id="parentCategory_${category.id}">
                                 <div class="modal-body">
                                     <div class="form-group">
                                         <label for="categoryId" class="col-form-label">ID категории:</label>
                                         <input type="text" name="id" class="form-control" readonly value="${category.id}" id="categoryId">
                                         <label for="categoryName" class="col-form-label">Имя категории:</label>
                                         <input type="text" name="name" class="form-control" contenteditable="true" value="${category.name}" id="categoryName">
-                                        <select name="parent" form="parentCategory">
+                                        <label for="categoryName" class="col-form-label">Родительская категория:</label>
+                                        <select name="parent_${category.id}" form="parentCategory_${category.id}">
                                             <option selected>-</option>
                                             <c:forEach var="parentCategory" items="${categories}">
                                                 <c:choose>
