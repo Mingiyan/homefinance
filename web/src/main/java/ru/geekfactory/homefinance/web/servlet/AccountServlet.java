@@ -24,6 +24,7 @@ public class AccountServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setAttribute("accounts", accountService.findAll());
         req.setAttribute("currencies", currencyService.findAll());
+        req.setAttribute("accountTypes", AccountType.values());
         RequestDispatcher requestDispatcher = req.getRequestDispatcher("WEB-INF/jsp/account.jsp");
         requestDispatcher.forward(req, resp);
     }

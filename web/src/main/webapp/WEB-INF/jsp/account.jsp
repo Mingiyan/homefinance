@@ -63,6 +63,7 @@
                 <th scope="col">Остаток</th>
                 <th scope="col">Тип</th>
                 <th scope="col">Валюта</th>
+                <th scope="col">Действия</th>
             </tr>
             </thead>
             <c:forEach var="account" items="${accounts}">
@@ -73,8 +74,99 @@
                     <td>${account.amount}</td>
                     <td>${account.accountType}</td>
                     <td>${account.currency.name}</td>
+                    <td>
+                        <a data-toggle="modal" data-target="#myModal_${account.id}" href="#myModal_${account.id}">Редактировать</a>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <a data-toggle="modal" data-target="#deleteModal_${account.id}" href="#deleteModal_${account.id}">Удалить</a>
+                    </td>
                 </tr>
                 </tbody>
+
+                <!-- modal form update -->
+                <div class="modal fade" id="myModal_${account.id}" tabindex="-1" role="dialog" aria-labelledby="formLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="modal-title" id="myModalLabel">Редактирование счета</h3>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <form method="post" id="account_${account.id}">
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label for="accountId" class="col-form-label">ID счета:</label>
+                                        <input type="text" name="id" class="form-control" readonly value="${account.id}" id="accountId">
+                                        <label for="accountName" class="col-form-label">Название счета:</label>
+                                        <input type="text" name="name" class="form-control" contenteditable="true" value="${account.name}" id="accountName">
+                                        <label for="amountSave" class="col-form-label">Сумма на счете:</label>
+                                        <input type="number" name="amount" class="form-control" id="amountSave" value="${account.amount}" min="0.00" max="1000000.00" step="0.01" />
+                                        <label for="amount" class="col-form-label">Тип счета:</label>
+                                        <select name="accountType" form="account_${account.id}">
+                                            <c:forEach var="type" items="${accountTypes}">
+                                                <c:choose>
+                                                    <c:when test="${account.accountType eq type}">
+                                                        <option selected value="${type}">${type}</option>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <option value="${type}">${type}</option>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </c:forEach>
+                                        </select>
+                                        <label for="recipient-name" class="col-form-label">Укажите тип валюты счета:</label>"
+                                        <select name="currency" form="account_${account.id}">
+                                            <c:forEach var="currency" items="${currencies}">
+                                                <c:choose>
+                                                    <c:when test="${account.currency.id eq currency.id}">
+                                                        <option selected value="${currency.id}">${currency.name}</option>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <option value="${currency.id}">${currency.name}</option>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
+                                    <input type="hidden" name="_method" value="put">
+                                    <input type="submit" class="btn btn-primary" value="Сохранить">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- modal form delete -->
+                <div class="modal fade" id="deleteModal_${account.id}" tabindex="-1" role="dialog" aria-labelledby="formLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="modal-title" id="deleteModalLabel">Удаление счета</h3>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <form method="post">
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <p>Вы действительно хотите удалить счет "${account.name}"? </p>
+                                        <input type="hidden" name="id" class="form-control" readonly value="${account.id}" id="${account.id}">
+                                        <input type="hidden" name="name" class="form-control" contenteditable="true" value="${account.name}" id="${account.id}">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Нет</button>
+                                    <input type="hidden" name="_method" value="delete">
+                                    <input type="submit" class="btn btn-primary" value="Удалить">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
             </c:forEach>
         </table>
     </div>
@@ -98,9 +190,9 @@
                             <input type="number" name="amount" class="form-control" id="amount" value="0" min="0.00" max="1000000.00" step="0.01" />
                             <label for="amount" class="col-form-label">Выберите тип счета:</label>
                             <select name="accountType" form="accountSave">
-                                <option value="CASH">Наличка</option>
-                                <option value="CREDIT_CARD">Кредитная карта</option>
-                                <option value="DEBIT_CARD">Дебетовая карты</option>
+                                <option value="CASH">CASH</option>
+                                <option value="CREDIT_CARD">CREDIT_CARD</option>
+                                <option value="DEBIT_CARD">DEBIT_CARD</option>
                             </select>
                             <label for="recipient-name" class="col-form-label">Укажите тип валюты счета:</label>"
                             <select name="currency" form="accountSave">
