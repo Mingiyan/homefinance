@@ -95,7 +95,7 @@
                                         <input type="text" name="name" class="form-control" contenteditable="true" value="${category.name}" id="categoryName">
                                         <label for="categoryName" class="col-form-label">Родительская категория:</label>
                                         <select name="parent_${category.id}" form="parentCategory_${category.id}">
-                                            <option selected>-</option>
+                                            <option selected value="">-</option>
                                             <c:forEach var="parentCategory" items="${categories}">
                                                 <c:choose>
                                                     <c:when test="${category.parentCategory eq parentCategory}">

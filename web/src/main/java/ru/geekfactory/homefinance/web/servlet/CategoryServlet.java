@@ -39,7 +39,7 @@ public class CategoryServlet extends HttpServlet {
         CategoryTransactionModel categoryTransactionModel = new CategoryTransactionModel();
         categoryTransactionModel.setId(Long.valueOf(req.getParameter("id")));
         categoryTransactionModel.setName(req.getParameter("name"));
-        if (req.getParameter("parent_" + req.getParameter("id")) != null) {
+        if (!"".equals(req.getParameter("parent_" + req.getParameter("id")))) {
             categoryTransactionModel.setParentCategory(categoryTransactionService.findById(Long.valueOf(req.getParameter("parent_" + req.getParameter("id")))).orElse(null));
         }
         categoryTransactionService.update(categoryTransactionModel);
