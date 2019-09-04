@@ -38,4 +38,23 @@ public class AccountServlet extends HttpServlet {
         accountService.save(account);
         resp.sendRedirect("/account");
     }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        AccountModel account = new AccountModel();
+        account.setId(Long.valueOf(req.getParameter("id")));
+        account.setName(req.getParameter("name"));
+        account.setAmount(BigDecimal.valueOf(Double.valueOf(req.getParameter("amount"))));
+        account.setAccountType(AccountType.valueOf(req.getParameter("accountType")));
+        account.setCurrency(currencyService.findById(Long.valueOf(req.getParameter("currency"))).orElse(null));
+        accountService.update(account);
+        resp.sendRedirect("/account");
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        AccountModel account = accountService.findById(Long.valueOf(req.getParameter("id"))).orElse(null);
+        accountService.remove(account);
+        resp.sendRedirect("/account");
+    }
 }
