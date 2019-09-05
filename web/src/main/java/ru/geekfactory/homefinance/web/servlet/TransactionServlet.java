@@ -1,5 +1,6 @@
 package ru.geekfactory.homefinance.web.servlet;
 
+import ru.geekfactory.homefinance.dao.model.CategoryTransactionModel;
 import ru.geekfactory.homefinance.dao.model.TransactionModel;
 import ru.geekfactory.homefinance.service.AccountService;
 import ru.geekfactory.homefinance.service.TransactionService;
@@ -12,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @WebServlet(name = "transactionServlet", urlPatterns = "/transaction")
 public class TransactionServlet extends HttpServlet {
@@ -31,7 +34,11 @@ public class TransactionServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         TransactionModel transactionModel = new TransactionModel();
         transactionModel.setName(req.getParameter("name"));
-
+        transactionModel.setDateTime(LocalDateTime.parse(req.getParameter("dateTime")));
+        transactionModel.setAccount(accountService.findById(Long.valueOf(req.getParameter("account"))).orElse(null));
+        Collection<CategoryTransactionModel> collection = new ArrayList<>();
+        transactionService.save(transactionModel);
+        resp.sendRedirect("/transaction");
     }
 
     @Override

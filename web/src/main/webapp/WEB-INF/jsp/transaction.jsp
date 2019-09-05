@@ -127,6 +127,9 @@
                             <button type="button" class="btn btn-secondary" onclick="remove()">Remove</button>
                             <div class="form-group" id="new_chq"></div>
                             <input name="category" type="hidden" value="1" id="total_chq">
+                            <select>
+                                <option></option>
+                            </select>
                             <label for="recipient-name" class="col-form-label">Укажите тип счета:</label>"
                             <select name="account" form="transactionSave">
                                 <c:forEach var="account" items="${accounts}">
