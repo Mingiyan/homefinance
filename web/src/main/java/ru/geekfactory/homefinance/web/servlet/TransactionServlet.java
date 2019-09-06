@@ -3,6 +3,7 @@ package ru.geekfactory.homefinance.web.servlet;
 import ru.geekfactory.homefinance.dao.model.CategoryTransactionModel;
 import ru.geekfactory.homefinance.dao.model.TransactionModel;
 import ru.geekfactory.homefinance.service.AccountService;
+import ru.geekfactory.homefinance.service.CategoryTransactionService;
 import ru.geekfactory.homefinance.service.TransactionService;
 
 import javax.servlet.RequestDispatcher;
@@ -21,11 +22,13 @@ public class TransactionServlet extends HttpServlet {
 
     private TransactionService transactionService = new TransactionService();
     private AccountService accountService = new AccountService();
+    private CategoryTransactionService categoryTransactionService = new CategoryTransactionService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setAttribute("transactions", transactionService.findAll());
         req.setAttribute("accounts", accountService.findAll());
+        req.setAttribute("categories", categoryTransactionService.findAll());
         RequestDispatcher requestDispatcher = req.getRequestDispatcher("WEB-INF/jsp/transaction.jsp");
         requestDispatcher.forward(req, resp);
     }
@@ -37,6 +40,10 @@ public class TransactionServlet extends HttpServlet {
         transactionModel.setDateTime(LocalDateTime.parse(req.getParameter("dateTime")));
         transactionModel.setAccount(accountService.findById(Long.valueOf(req.getParameter("account"))).orElse(null));
         Collection<CategoryTransactionModel> collection = new ArrayList<>();
+        for (int i = 2; i <= Integer.valueOf(req.getParameter("category_counter")); i++) {
+            collection.add(categoryTransactionService.findById(Long.valueOf(req.getParameter("category_" + i))).orElse(null));
+        }
+        transactionModel.setCategoryTransaction(collection);
         transactionService.save(transactionModel);
         resp.sendRedirect("/transaction");
     }

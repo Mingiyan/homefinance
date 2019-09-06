@@ -24,14 +24,19 @@
         $('.remove').on('click', remove);
         function add(){
             var new_chq_no = parseInt($('#total_chq').val())+1;
-            var new_input="<input type='text' id='new_"+new_chq_no+"'>";
+            // var new_inp="<input name='category_"+new_chq_no+"' type='text' id='category_"+new_chq_no+"'>";
+            var new_input="<select name='category_"+new_chq_no+"' form='transactionSave'>\n"+
+                "<c:forEach var='category' items='${categories}'>\n" +
+                    "<option value='${category.id}'>${category.name}</option>\n" +
+                "</c:forEach>\n" +
+                "</select>";
             $('#new_chq').append(new_input);
             $('#total_chq').val(new_chq_no)
         }
         function remove(){
             var last_chq_no = $('#total_chq').val();
             if(last_chq_no>1){
-                $('#new_'+last_chq_no).remove();
+                $('#category_'+last_chq_no).remove();
                 $('#total_chq').val(last_chq_no-1);
             }
         }
@@ -83,24 +88,52 @@
                 </tr>
             </thead>
             <c:forEach var="transaction" items="${transactions}">
-            <tbody>
-                <tr>
-                    <th scope="row">${transaction.id}</th>
-                    <td>${transaction.name}</td>
-                    <td>${transaction.dateTime}</td>
-                    <td>${transaction.account.name}</td>
-                    <td>
-                        <c:forEach var="category" items="${transaction.categoryTransaction}">
-                            ${category.name} </br>
-                        </c:forEach>
-                    </td>
-                    <td>
-                        <a data-toggle="modal" data-target="#myModal_${transaction.id}" href="#myModal_${transaction.id}">Редактировать</a>
-                        &nbsp;&nbsp;&nbsp;&nbsp;
-                        <a data-toggle="modal" data-target="#deleteModal_${transaction.id}" href="#deleteModal_${transaction.id}">Удалить</a>
-                    </td>
-                </tr>
-            </tbody>
+                <tbody>
+                    <tr>
+                        <th scope="row">${transaction.id}</th>
+                        <td>${transaction.name}</td>
+                        <td>${transaction.dateTime}</td>
+                        <td>${transaction.account.name}</td>
+                        <td>
+                            <c:forEach var="category" items="${transaction.categoryTransaction}">
+                                ${category.name} </br>
+                            </c:forEach>
+                        </td>
+                        <td>
+                            <a data-toggle="modal" data-target="#myModal_${transaction.id}" href="#myModal_${transaction.id}">Редактировать</a>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <a data-toggle="modal" data-target="#deleteModal_${transaction.id}" href="#deleteModal_${transaction.id}">Удалить</a>
+                        </td>
+                    </tr>
+                </tbody>
+
+                <!-- modal form delete -->
+                <div class="modal fade" id="deleteModal_${transaction.id}" tabindex="-1" role="dialog" aria-labelledby="formLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="modal-title" id="deleteModalLabel">Удаление транзакции</h3>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <form method="post">
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <p>Вы действительно хотите удалить транзакцию "${transaction.name}"? </p>
+                                        <input type="hidden" name="id" class="form-control" readonly value="${transaction.id}" id="${transaction.id}">
+                                        <input type="hidden" name="name" class="form-control" contenteditable="true" value="${transaction.name}" id="${transaction.id}">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Нет</button>
+                                    <input type="hidden" name="_method" value="delete">
+                                    <input type="submit" class="btn btn-primary" value="Удалить">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </c:forEach>
         </table>
     </div>
@@ -126,11 +159,8 @@
                             <button type="button" class="btn btn-secondary" onclick="add()">Add</button>
                             <button type="button" class="btn btn-secondary" onclick="remove()">Remove</button>
                             <div class="form-group" id="new_chq"></div>
-                            <input name="category" type="hidden" value="1" id="total_chq">
-                            <select>
-                                <option></option>
-                            </select>
-                            <label for="recipient-name" class="col-form-label">Укажите тип счета:</label>"
+                            <input name="category_counter" type="hidden" value="1" id="total_chq">
+                            <label for="recipient-name" class="col-form-label">Укажите тип счета:</label>
                             <select name="account" form="transactionSave">
                                 <c:forEach var="account" items="${accounts}">
                                     <option value="${account.id}">${account.name}</option>
