@@ -72,6 +72,10 @@
     </nav>
     <!-- Page Content -->
     <div class="center">
+        <form>
+            <input type="search" name="search" placeholder="Поиск транзакции по ID">
+            <input type="submit" class="btn btn-secondary" value="Найти"></p>
+        </form>
         <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#transactionForm">Добавить транзакцию</button>
         <br>
         <p>Списко транзакций:</p>

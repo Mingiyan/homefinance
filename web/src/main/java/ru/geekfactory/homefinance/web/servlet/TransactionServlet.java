@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @WebServlet(name = "transactionServlet", urlPatterns = "/transaction")
 public class TransactionServlet extends HttpServlet {
@@ -26,7 +27,13 @@ public class TransactionServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("transactions", transactionService.findAll());
+        List<TransactionModel> list = new ArrayList<>();
+        if (req.getParameter("search") == null ) {
+            list = transactionService.findAll();
+        } else {
+            list.add(transactionService.findById(Long.valueOf(req.getParameter("search"))).orElse(null));
+        }
+        req.setAttribute("transactions", list);
         req.setAttribute("accounts", accountService.findAll());
         req.setAttribute("categories", categoryTransactionService.findAll());
         RequestDispatcher requestDispatcher = req.getRequestDispatcher("WEB-INF/jsp/transaction.jsp");
