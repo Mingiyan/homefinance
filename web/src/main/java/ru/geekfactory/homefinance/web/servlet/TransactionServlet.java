@@ -50,7 +50,18 @@ public class TransactionServlet extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-
+        TransactionModel transactionModel = new TransactionModel();
+        transactionModel.setId(Long.valueOf(req.getParameter("id")));
+        transactionModel.setName(req.getParameter("name"));
+        transactionModel.setDateTime(LocalDateTime.parse(req.getParameter("dateTime")));
+        transactionModel.setAccount(accountService.findById(Long.valueOf(req.getParameter("account"))).orElse(null));
+        Collection<CategoryTransactionModel> collection = new ArrayList<>();
+        for (String s : req.getParameterValues("categories")) {
+            collection.add(categoryTransactionService.findById(Long.valueOf(s)).orElse(null));
+        }
+        transactionModel.setCategoryTransaction(collection);
+        transactionService.update(transactionModel);
+        resp.sendRedirect("/transaction");
     }
 
     @Override

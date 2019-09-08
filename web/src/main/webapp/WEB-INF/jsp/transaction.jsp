@@ -24,7 +24,6 @@
         $('.remove').on('click', remove);
         function add(){
             var new_chq_no = parseInt($('#total_chq').val())+1;
-            // var new_inp="<input name='category_"+new_chq_no+"' type='text' id='category_"+new_chq_no+"'>";
             var new_input="<select name='category_"+new_chq_no+"' form='transactionSave'>\n"+
                 "<c:forEach var='category' items='${categories}'>\n" +
                     "<option value='${category.id}'>${category.name}</option>\n" +
@@ -107,6 +106,57 @@
                     </tr>
                 </tbody>
 
+                <!-- modal form update -->
+                <div class="modal fade" id="myModal_${transaction.id}" tabindex="-1" role="dialog" aria-labelledby="formLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="modal-title" id="myModalLabel">Редактирование счета</h3>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <form method="post" id="transaction_${transaction.id}">
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label for="transactionId" class="col-form-label">ID транзакции:</label>
+                                        <input type="text" name="id" class="form-control" readonly value="${transaction.id}" id="transactionId">
+                                        <label for="transactionName" class="col-form-label">Имя транзакции:</label>
+                                        <input type="text" name="name" class="form-control" value="${transaction.name}" id="transactionName">
+                                        <label for="transactionDateTime" class="col-form-label">Дата транзакции:</label>
+                                        <input type="datetime-local" name="dateTime" class="form-control" value="${transaction.dateTime}" id="transactionDateTime">
+                                        <label for="dateTime" class="col-form-label">Редактирование категорий транзакции:</label>
+                                        <select multiple name="categories" form="transaction_${transaction.id}">
+                                            <option value="">-</option>
+                                            <c:forEach var="category" items="${categories}">
+                                                <option value="${category.id}">${category.name}</option>
+                                            </c:forEach>
+                                        </select>
+                                        <label for="recipient-name" class="col-form-label">Укажите тип счета:</label>
+                                        <select name="account" form="transaction_${transaction.id}">
+                                            <c:forEach var="account" items="${accounts}">
+                                                <c:choose>
+                                                    <c:when test="${account.name eq transaction.account.name}">
+                                                        <option selected value="${account.id}">${account.name}</option>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <option value="${account.id}">${account.name}</option>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
+                                    <input type="hidden" name="_method" value="put">
+                                    <input type="submit" class="btn btn-primary" value="Сохранить">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- modal form delete -->
                 <div class="modal fade" id="deleteModal_${transaction.id}" tabindex="-1" role="dialog" aria-labelledby="formLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
@@ -153,7 +203,7 @@
                         <div class="form-group">
                             <label for="recipient-name" class="col-form-label">Имя транзакции:</label>
                             <input type="text" name="name" class="form-control" id="recipient-name">
-                            <label for="dateTime" class="col-form-label">Имя транзакции:</label>
+                            <label for="dateTime" class="col-form-label">Дата транзакции:</label>
                             <input type="datetime-local" name="dateTime" class="form-control" id="dateTime">
                             <label for="dateTime" class="col-form-label">Добавление категорий транзакции:</label>
                             <button type="button" class="btn btn-secondary" onclick="add()">Add</button>
