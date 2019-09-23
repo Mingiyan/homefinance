@@ -6,20 +6,18 @@
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
 
-    <modules>
-        <module>dao</module>
-        <module>service</module>
-        <module>web</module>
-    </modules>
+    <repositories>
+        <repository>
+            <id>proxy-maven</id>
+            <name>nexus-sbt-maven</name>
+            <url>http://sbt-osop-0256:10000/repository/proxy_maven/</url>
+        </repository>
+    </repositories>
 
     <properties>
         <lombok>1.16.20</lombok>
-        <servlet>4.0.1</servlet>
         <postgresql>42.2.5</postgresql>
-        <junit-jupiter>5.5.1</junit-jupiter>
-        <junit-platform>1.5.1</junit-platform>
-        <h2>1.4.197</h2>
-        <mockito>2.17.0</mockito>
+        <hibernate>5.4.2.Final</hibernate>
     </properties>
 
     <dependencyManagement>
@@ -31,66 +29,24 @@
                 <scope>provided</scope>
             </dependency>
             <dependency>
-                <groupId>javax.servlet</groupId>
-                <artifactId>javax.servlet-api</artifactId>
-                <version>${servlet}</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-webmvc</artifactId>
-                <version>5.1.6.RELEASE</version>
-            </dependency>
-            <dependency>
-                <groupId>javax.servlet</groupId>
-                <artifactId>jstl</artifactId>
-                <version>1.2</version>
-            </dependency>
-            <dependency>
                 <groupId>org.postgresql</groupId>
                 <artifactId>postgresql</artifactId>
                 <version>${postgresql}</version>
             </dependency>
             <dependency>
-                <groupId>com.h2database</groupId>
-                <artifactId>h2</artifactId>
-                <version>${h2}</version>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-jpa</artifactId>
+                <version>2.1.8.RELEASE</version>
             </dependency>
             <dependency>
-                <groupId>org.junit.jupiter</groupId>
-                <artifactId>junit-jupiter-api</artifactId>
-                <version>${junit-jupiter}</version>
-                <scope>test</scope>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-jpa</artifactId>
+                <version>2.1.1.RELEASE</version>
             </dependency>
             <dependency>
-                <groupId>org.junit.jupiter</groupId>
-                <artifactId>junit-jupiter-engine</artifactId>
-                <version>${junit-jupiter}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.junit.jupiter</groupId>
-                <artifactId>junit-jupiter-params</artifactId>
-                <version>${junit-jupiter}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.junit.platform</groupId>
-                <artifactId>junit-platform-runner</artifactId>
-                <version>${junit-platform}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.junit.platform</groupId>
-                <artifactId>junit-platform-launcher</artifactId>
-                <version>${junit-platform}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.mockito</groupId>
-                <artifactId>mockito-junit-jupiter</artifactId>
-                <version>${mockito}</version>
-                <scope>test</scope>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-core</artifactId>
+                <version>${hibernate}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -105,11 +61,6 @@
                     <source>1.8</source>
                     <target>1.8</target>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.22.0</version>
             </plugin>
         </plugins>
     </build>
