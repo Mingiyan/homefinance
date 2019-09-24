@@ -3,6 +3,7 @@ package ru.geekfactory.homefinance.dao.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -12,6 +13,7 @@ import java.util.Collection;
 @Table(name = "currency_tbl")
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString(exclude = "accounts")
 public class Currency {
 
     @Id

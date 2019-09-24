@@ -3,6 +3,7 @@ package ru.geekfactory.homefinance.dao.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -13,6 +14,7 @@ import java.util.Collection;
 @Table(name = "account_tbl")
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(exclude = "transactions")
 public class Account {
 
     @Id
