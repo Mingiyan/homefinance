@@ -66,7 +66,7 @@
         <tr th:each="category : ${categories}">
             <th th:text="${category.categoryId}" scope="row"></th>
             <td th:text="${category.name}"></td>
-            <td th:text="${category.parent.getCategoryId()}"></td>
+            <td th:text="${category.parent}"></td>
             <td>
                 <a data-toggle="modal" data-target="#myModal_${account.id}" href="#myModal_${account.id}">Редактировать</a>
                 &nbsp;&nbsp;&nbsp;&nbsp;
