@@ -11,6 +11,7 @@ import ru.geekfactory.homefinance.service.CurrencyService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class CurrencyController {
@@ -31,6 +32,27 @@ public class CurrencyController {
         Currency currency = new Currency();
         currency.setName(name);
         currencyService.save(currency);
+        return new ModelAndView("redirect:/currency");
+    }
+
+    @PostMapping("/editCurrency")
+    public ModelAndView editCurrency(HttpServletRequest request) {
+        Long id = Long.valueOf(request.getParameter("id"));
+        String name = request.getParameter("name");
+        Optional<Currency> optionalCurrency = currencyService.findById(id);
+        if (optionalCurrency.isPresent()) {
+            Currency currency = optionalCurrency.get();
+            currency.setName(name);
+            currencyService.update(currency);
+        }
+        return new ModelAndView("redirect:/currency");
+    }
+
+    @PostMapping("/deleteCurrency")
+    public ModelAndView deleteCurrency(HttpServletRequest request) {
+        Long id = Long.valueOf(request.getParameter("id"));
+        Optional<Currency> optionalCurrency = currencyService.findById(id);
+        optionalCurrency.ifPresent(currencyService::remove);
         return new ModelAndView("redirect:/currency");
     }
 }

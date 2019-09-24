@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service()
-public class TransactionService implements ServiceCRUD<String, Transaction> {
+public class TransactionService implements ServiceCRUD<Long, Transaction> {
 
     @Autowired
     private TransactionRepository transactionRepository;
@@ -20,7 +20,7 @@ public class TransactionService implements ServiceCRUD<String, Transaction> {
     }
 
     @Override
-    public Optional<Transaction> findById(String id) {
+    public Optional<Transaction> findById(Long id) {
         return transactionRepository.findById(id);
     }
 
