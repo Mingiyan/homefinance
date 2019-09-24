@@ -17,6 +17,7 @@ import java.util.Collection;
 public class CategoryTransaction {
 
     @Id
+    @GeneratedValue
     private Long categoryId;
 
     @Column(name = "name")

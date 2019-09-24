@@ -18,6 +18,7 @@ import java.util.Collection;
 public class Account {
 
     @Id
+    @GeneratedValue
     private Long accountId;
 
     @Column(name = "name")

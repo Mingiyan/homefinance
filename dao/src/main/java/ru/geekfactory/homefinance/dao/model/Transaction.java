@@ -16,6 +16,7 @@ import java.util.Collection;
 public class Transaction {
 
     @Id
+    @GeneratedValue
     private String transactionId;
 
     @Column(name = "name")

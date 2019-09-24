@@ -17,6 +17,7 @@ import java.util.Collection;
 public class Currency {
 
     @Id
+    @GeneratedValue
     private Long currencyId;
 
     @Column(name = "name")
