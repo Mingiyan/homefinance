@@ -18,7 +18,7 @@ public class AccountController {
     @GetMapping("/account")
     public String getAccounts(Model model) {
         List<Account> accounts = accountService.findAll();
-        model.addAttribute("account", accounts);
+        model.addAttribute("accounts", accounts);
         return "account";
     }
 }
