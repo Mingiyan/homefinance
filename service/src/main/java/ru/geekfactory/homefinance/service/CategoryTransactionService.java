@@ -8,7 +8,7 @@ import ru.geekfactory.homefinance.dao.repository.CategoryTransactionRepository;
 import java.util.List;
 import java.util.Optional;
 
-@Service()
+@Service
 public class CategoryTransactionService implements ServiceCRUD<Long, CategoryTransaction> {
 
     @Autowired

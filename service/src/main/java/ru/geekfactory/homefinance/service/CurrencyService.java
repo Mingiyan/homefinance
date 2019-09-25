@@ -8,7 +8,7 @@ import ru.geekfactory.homefinance.dao.repository.CurrencyRepository;
 import java.util.List;
 import java.util.Optional;
 
-@Service()
+@Service
 public class CurrencyService implements ServiceCRUD<Long, Currency> {
 
     @Autowired

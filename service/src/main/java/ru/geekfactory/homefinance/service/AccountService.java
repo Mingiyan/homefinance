@@ -8,7 +8,7 @@ import ru.geekfactory.homefinance.dao.repository.AccountRepository;
 import java.util.List;
 import java.util.Optional;
 
-@Service()
+@Service
 public class AccountService implements ServiceCRUD<Long, Account> {
 
     @Autowired
