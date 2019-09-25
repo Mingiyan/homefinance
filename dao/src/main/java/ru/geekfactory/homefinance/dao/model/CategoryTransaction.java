@@ -1,9 +1,6 @@
 package ru.geekfactory.homefinance.dao.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -13,7 +10,7 @@ import java.util.Collection;
 @Table(name = "category_tbl")
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = {"categories", "transactions"})
+@ToString(exclude = {"categories"})
 public class CategoryTransaction {
 
     @Id

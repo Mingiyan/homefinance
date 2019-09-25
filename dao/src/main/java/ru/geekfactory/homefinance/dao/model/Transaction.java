@@ -17,7 +17,7 @@ public class Transaction {
 
     @Id
     @GeneratedValue
-    private String transactionId;
+    private Long transactionId;
 
     @Column(name = "name")
     private String name;

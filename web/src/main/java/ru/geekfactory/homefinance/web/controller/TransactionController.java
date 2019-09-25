@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
+import ru.geekfactory.homefinance.dao.model.Account;
 import ru.geekfactory.homefinance.dao.model.CategoryTransaction;
 import ru.geekfactory.homefinance.dao.model.Transaction;
 import ru.geekfactory.homefinance.service.AccountService;
@@ -34,7 +35,11 @@ public class TransactionController {
     @GetMapping("/transaction")
     public String getTransactions(Model model) {
         List<Transaction> transactions = transactionService.findAll();
+        List<Account> accounts = accountService.findAll();
+        List<CategoryTransaction> categories = categoryTransactionService.findAll();
         model.addAttribute("transactions", transactions);
+        model.addAttribute("accounts", accounts);
+        model.addAttribute("categories", categories);
         return "transaction";
     }
 
@@ -45,8 +50,8 @@ public class TransactionController {
         transaction.setDateTime(LocalDateTime.parse(request.getParameter("dateTime")));
         transaction.setAccount(accountService.findById(Long.valueOf(request.getParameter("account"))).orElse(null));
         Collection<CategoryTransaction> collection = new ArrayList<>();
-        for (int i = 2; i <= Integer.valueOf(request.getParameter("category_counter")); i++) {
-            collection.add(categoryTransactionService.findById(Long.valueOf(request.getParameter("category_" + i))).orElse(null));
+        for (String s : request.getParameterValues("categories")) {
+            collection.add(categoryTransactionService.findById(Long.valueOf(s)).orElse(null));
         }
         transaction.setCategoryTransactions(collection);
         transactionService.save(transaction);
