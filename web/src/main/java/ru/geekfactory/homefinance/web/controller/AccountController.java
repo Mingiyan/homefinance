@@ -32,7 +32,7 @@ public class AccountController {
         return "account";
     }
 
-    @PostMapping("/createAccount")
+    @PostMapping("/saveAccount")
     public ModelAndView createAccount(HttpServletRequest request) {
         Account account = new Account();
         account.setName(request.getParameter("name"));

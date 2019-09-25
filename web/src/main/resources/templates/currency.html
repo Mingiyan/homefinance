@@ -66,9 +66,9 @@
             <th th:text="${currency.currencyId}" scope="row"></th>
             <td th:text="${currency.name}"></td>
             <td>
-                <a data-toggle="modal" data-target="#myModal_" th:href="@{#model_${currency.currencyId}}">Редактировать</a>
+                <a data-toggle="modal" data-th-target="'#myModal_' + ${currency.currencyId}" th:href="'#myModal_' + ${currency.currencyId}">Редактировать</a>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <a data-toggle="modal" data-target="#deleteModal_${account.id}" href="#deleteModal_" + th:value="${currency.currencyId}">Удалить</a>
+                <a data-toggle="modal" data-th-target="'#deleteModal_' + ${currency.currencyId}" th:href="'#deleteModal_' + ${currency.currencyId}">Удалить</a>
             </td>
         </tr>
         </tbody>
@@ -102,7 +102,7 @@
 </div>
 <div th:each="currency : ${currencies}">
     <!-- modal form update -->
-    <div class="modal fade" id="myModal_${currency.id}" tabindex="-1" role="dialog" aria-labelledby="formLabel" aria-hidden="true">
+    <div class="modal fade" th:id="'myModal_' + ${currency.currencyId}" tabindex="-1" role="dialog" aria-labelledby="formLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -111,18 +111,17 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form method="post">
+                <form method="post" action="/editCurrency">
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="currencyId" class="col-form-label">ID валюты:</label>
-                            <input type="text" name="id" class="form-control" readonly value="${currency.id}" id="currencyId">
+                            <input type="text" name="id" class="form-control" readonly th:value="${currency.currencyId}" id="currencyId">
                             <label for="currencyName" class="col-form-label">Название валюты:</label>
-                            <input type="text" name="name" class="form-control" contenteditable="true" value="${currency.name}" id="currencyName">
+                            <input type="text" name="name" class="form-control" contenteditable="true" th:value="${currency.name}" id="currencyName">
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
-                        <input type="hidden" name="_method" value="put">
                         <input type="submit" class="btn btn-primary" value="Сохранить">
                     </div>
                 </form>
@@ -130,7 +129,7 @@
         </div>
     </div>
     <!-- modal form delete -->
-    <div class="modal fade" id="deleteModal_${currency.id}" tabindex="-1" role="dialog" aria-labelledby="formLabel" aria-hidden="true">
+    <div class="modal fade" th:id="'deleteModal_' + ${currency.currencyId}" tabindex="-1" role="dialog" aria-labelledby="formLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -139,17 +138,16 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form method="post">
+                <form method="post" action="/deleteCurrency">
                     <div class="modal-body">
                         <div class="form-group">
-                            <p>Вы действительно хотите удалить валюту "${currency.name}"? </p>
-                            <input type="hidden" name="id" class="form-control" readonly value="${currency.id}" id="${currency.id}">
-                            <input type="hidden" name="name" class="form-control" contenteditable="true" value="${currency.name}" id="${currency.id}">
+                            <p>Вы действительно хотите удалить валюту"? </p>
+                            <input type="hidden" name="id" class="form-control" readonly th:value="${currency.currencyId}" th:id="${currency.currencyId}">
+                            <input type="hidden" name="name" class="form-control" contenteditable="true" th:value="${currency.name}" th:id="${currency.currencyId}">
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Нет</button>
-                        <input type="hidden" name="_method" value="delete">
                         <input type="submit" class="btn btn-primary" value="Удалить">
                     </div>
                 </form>

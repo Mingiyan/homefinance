@@ -38,7 +38,7 @@ public class TransactionController {
         return "transaction";
     }
 
-    @PostMapping("/createTransaction")
+    @PostMapping("/saveTransaction")
     public ModelAndView createTransaction(HttpServletRequest request) {
         Transaction transaction = new Transaction();
         transaction.setName(request.getParameter("name"));
