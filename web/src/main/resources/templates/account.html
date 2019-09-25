@@ -68,17 +68,16 @@
             <tr th:each="account : ${accounts}">
                 <th th:text="${account.accountId}" scope="row"></th>
                 <td th:text="${account.name}"></td>
-                <td th:text="${account.amount}"</td>
+                <td th:text="${account.amount}"></td>
                 <td th:text="${account.accountType}"></td>
                 <td th:text="${account.currency.name}"></td>
                 <td>
-                    <a data-toggle="modal" data-target="#myModal_${account.id}" href="#myModal_${account.id}">Редактировать</a>
+                    <a data-toggle="modal" data-th-target="'#myModal_' + ${account.accountId}" th:href="'#myModal_' + ${account.accountId}">Редактировать</a>
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    <a data-toggle="modal" data-target="#deleteModal_${account.id}" href="#deleteModal_${account.id}">Удалить</a>
+                    <a data-toggle="modal" data-th-target="'#deleteModal_' + ${account.accountId}" th:href="'#deleteModal_' + ${account.accountId}">Удалить</a>
                 </td>
             </tr>
             </tbody>
-        </th:each>
     </table>
 </div>
 
@@ -92,7 +91,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form method="post" id="accountSave">
+            <form method="post" action="/saveAccount" id="accountSave">
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Имя счета:</label>
@@ -106,8 +105,10 @@
                             <option value="DEBIT_CARD">DEBIT_CARD</option>
                         </select>
                         <label for="recipient-name" class="col-form-label">Укажите тип валюты счета:</label>"
-                        <select name="currency" form="accountSave" th:each="currency : ${currencies}">
-                                <option th:value="${currency.id}">th:text=${currency.name}</option>
+                        <select name="currency" form="accountSave">
+                            <p th:each="currency : ${currencies}">
+                                <option th:value="${currency.currencyId}" th:text="${currency.name}"></option>
+                            </p>
                         </select>
                     </div>
                 </div>
@@ -116,6 +117,86 @@
                     <button type="submit" class="btn btn-primary">Сохранить</button>
                 </div>
             </form>
+        </div>
+    </div>
+</div>
+<div th:each="account : ${accounts}">
+    <!-- modal form update -->
+    <div class="modal fade" th:id="'myModal_' + ${account.accountId}" tabindex="-1" role="dialog" aria-labelledby="formLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="myModalLabel">Редактирование счета</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="post" action="/editAccount" th:id="'account_' + ${account.accountId}">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="accountId" class="col-form-label">ID счета:</label>
+                            <input type="text" name="id" class="form-control" readonly th:value="${account.accountId}" id="accountId">
+                            <label for="accountName" class="col-form-label">Название счета:</label>
+                            <input type="text" name="name" class="form-control" contenteditable="true" th:value="${account.name}" id="accountName">
+                            <label for="amountSave" class="col-form-label">Сумма на счете:</label>
+                            <input type="number" name="amount" class="form-control" id="amountSave" th:value="${account.amount}" min="0.00" max="1000000.00" step="0.01" />
+                            <label for="amount" class="col-form-label">Тип счета:</label>
+                            <select name="accountType" th:form="'account_' + ${account.accountId}">
+                                <div th:each="type : ${accountTypes}">
+                                    <p th:if="${account.accountType} == ${type}">
+                                        <option selected th:value="${type}" th:text="${type}"></option>
+                                    </p>
+                                    <p th:unless="${account.accountType} == ${type}">
+                                        <option th:value="${type}" th:text="${type}"></option>
+                                    </p>
+                                </div>
+                            </select>
+                            <label for="recipient-name" class="col-form-label">Укажите тип валюты счета:</label>"
+                            <select name="currency" th:form="'account_' + ${account.accountId}">
+                                <div th:each="currency : ${currencies}">
+                                     <p th:if="${account.currency} == ${currency}">
+                                        <option selected th:value="${currency.currencyId}" th:text="${currency.name}"></option>
+                                     </p>
+                                    <<p th:unless="${account.currency} == ${currency}">
+                                        <option th:value="${currency.currencyId}" th:text="${currency.name}"></option>
+                                    </p>
+                                </div>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
+                        <input type="submit" class="btn btn-primary" value="Сохранить">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- modal form delete -->
+    <div class="modal fade" th:id="'deleteModal_' + ${account.accountId}" tabindex="-1" role="dialog" aria-labelledby="formLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="deleteModalLabel">Удаление счета</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="post" action="/deleteAccount">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <p>Вы действительно хотите удалить счет?</p>
+                            <input type="hidden" name="id" class="form-control" readonly th:value="${account.accountId}" th:id="${account.accountId}">
+                            <input type="hidden" name="name" class="form-control" contenteditable="true" th:value="${account.name}" th:id="${account.accountId}">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Нет</button>
+                        <input type="submit" class="btn btn-primary" value="Удалить">
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
