@@ -10,7 +10,7 @@ import java.util.Collection;
 @Table(name = "category_tbl")
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = {"categories"})
+@ToString(exclude = {"categories", "transactions"})
 public class CategoryTransaction {
 
     @Id
@@ -26,6 +26,6 @@ public class CategoryTransaction {
     @OneToMany(mappedBy = "parent")
     private Collection<CategoryTransaction> categories;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "categoryTransactions", fetch = FetchType.LAZY)
     private Collection<Transaction> transactions;
 }

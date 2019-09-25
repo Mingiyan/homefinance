@@ -3,6 +3,7 @@ package ru.geekfactory.homefinance.dao.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -25,7 +26,7 @@ public class Transaction {
     @Column(name = "date_time")
     private LocalDateTime dateTime;
 
-    @ManyToMany(mappedBy = "transactions", fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Collection<CategoryTransaction> categoryTransactions;
 
     @ManyToOne
