@@ -43,8 +43,8 @@ public class CategoryController {
         if (optionalCategory.isPresent()) {
             CategoryTransaction categoryTransaction = optionalCategory.get();
             categoryTransaction.setName(request.getParameter("name"));
-            if (request.getParameter("parentCategory") != null) {
-                categoryTransaction.setParent(categoryTransactionService.findById(Long.valueOf(request.getParameter("parentCategory"))).orElse(null));
+            if (!"".equals(request.getParameter("parent_" + request.getParameter("id")))) {
+                categoryTransaction.setParent(categoryTransactionService.findById(Long.valueOf(request.getParameter("parent_" + request.getParameter("id")))).orElse(null));
             }
             categoryTransactionService.save(categoryTransaction);
         }
