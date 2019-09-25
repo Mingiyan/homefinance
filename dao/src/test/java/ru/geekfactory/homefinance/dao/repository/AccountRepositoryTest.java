@@ -32,7 +32,7 @@ class AccountRepositoryTest {
         account.setAccountId(3L);
         account.setName("test");
         account.setAccountType(AccountType.CASH);
-        account.setAmount(BigDecimal.valueOf(1));
+        account.setAmount(BigDecimal.valueOf(1).setScale(2));
         accountRepository.save(account);
         Account fromData = accountRepository.findById(3L).orElse(null);
 
@@ -65,7 +65,7 @@ class AccountRepositoryTest {
         Account second = new Account();
         second.setAccountId(2L);
         second.setName("second");
-        second.setAmount(BigDecimal.valueOf(11));
+        second.setAmount(BigDecimal.valueOf(11).setScale(2));
         second.setAccountType(AccountType.CASH);
         accountRepository.save(first);
         accountRepository.save(second);
