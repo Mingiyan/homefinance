@@ -27,11 +27,11 @@ class TransactionRepositoryTest {
     @DisplayName("save and findById operation test")
     void testSaveAndFind() {
         Transaction transaction = new Transaction();
-        transaction.setTransactionId(3L);
+        transaction.setTransactionId(12L);
         transaction.setName("transaction");
         transaction.setDateTime(LocalDateTime.now());
         transactionRepository.save(transaction);
-        Transaction fromData = transactionRepository.findById(3L).orElse(null);
+        Transaction fromData = transactionRepository.findById(12L).orElse(null);
 
         assertEquals(transaction.getTransactionId(), fromData.getTransactionId());
     }
@@ -59,10 +59,10 @@ class TransactionRepositoryTest {
     @DisplayName("update operation test")
     void testUpdate() {
         Transaction transaction = new Transaction();
-        transaction.setTransactionId(4L);
+        transaction.setTransactionId(13L);
         transaction.setName("secondTransaction");
         transactionRepository.save(transaction);
-        Transaction fromData = transactionRepository.findById(4L).orElse(null);
+        Transaction fromData = transactionRepository.findById(13L).orElse(null);
 
         assertEquals(transaction.getTransactionId(), fromData.getTransactionId());
     }
@@ -70,9 +70,13 @@ class TransactionRepositoryTest {
     @Test
     @DisplayName("remove operation test")
     void testRemove() {
-        Transaction transaction = transactionRepository.findById(1L).orElse(null);
+        Transaction first = new Transaction();
+        first.setTransactionId(11L);
+        first.setName("test");
+        transactionRepository.save(first);
+        Transaction transaction = transactionRepository.findById(11L).orElse(null);
         transactionRepository.delete(transaction);
 
-        assertNull(transactionRepository.findById(1L).orElse(null));
+        assertNull(transactionRepository.findById(11L).orElse(null));
     }
 }
