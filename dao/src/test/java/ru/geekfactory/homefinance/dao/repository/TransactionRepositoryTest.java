@@ -70,13 +70,9 @@ class TransactionRepositoryTest {
     @Test
     @DisplayName("remove operation test")
     void testRemove() {
-        Transaction first = new Transaction();
-        first.setTransactionId(44L);
-        first.setName("test");
-        transactionRepository.save(first);
-        Transaction transaction = transactionRepository.findById(44L).orElse(null);
+        Transaction transaction = transactionRepository.findById(1L).orElse(null);
         transactionRepository.delete(transaction);
 
-        assertNull(transactionRepository.findById(4L).orElse(null));
+        assertNull(transactionRepository.findById(1L).orElse(null));
     }
 }

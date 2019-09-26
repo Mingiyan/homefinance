@@ -3,6 +3,7 @@ package ru.geekfactory.homefinance.dao.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -13,6 +14,7 @@ import java.util.Collection;
 @Table(name = "transaction_tbl")
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(exclude = "categoryTransactions")
 public class Transaction {
 
     @Id
