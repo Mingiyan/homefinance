@@ -27,11 +27,11 @@ class TransactionRepositoryTest {
     @DisplayName("save and findById operation test")
     void testSaveAndFind() {
         Transaction transaction = new Transaction();
-        transaction.setTransactionId(12L);
+        transaction.setTransactionId(10L);
         transaction.setName("transaction");
         transaction.setDateTime(LocalDateTime.now());
         transactionRepository.save(transaction);
-        Transaction fromData = transactionRepository.findById(12L).orElse(null);
+        Transaction fromData = transactionRepository.findById(10L).orElse(null);
 
         assertEquals(transaction.getTransactionId(), fromData.getTransactionId());
     }
@@ -59,10 +59,10 @@ class TransactionRepositoryTest {
     @DisplayName("update operation test")
     void testUpdate() {
         Transaction transaction = new Transaction();
-        transaction.setTransactionId(13L);
+        transaction.setTransactionId(12L);
         transaction.setName("secondTransaction");
         transactionRepository.save(transaction);
-        Transaction fromData = transactionRepository.findById(13L).orElse(null);
+        Transaction fromData = transactionRepository.findById(12L).orElse(null);
 
         assertEquals(transaction.getTransactionId(), fromData.getTransactionId());
     }

@@ -26,10 +26,10 @@ class CurrencyRepositoryTest {
     @DisplayName("save and findById operation test")
     void testSaveAndFind() {
         Currency currency = new Currency();
-        currency.setCurrencyId(9L);
+        currency.setCurrencyId(2L);
         currency.setName("euro");
         currencyRepository.save(currency);
-        Currency currencyFromData = currencyRepository.findById(9L).orElse(null);
+        Currency currencyFromData = currencyRepository.findById(2L).orElse(null);
 
         assertEquals(currency.getName(), currencyFromData.getName());
 
@@ -60,19 +60,19 @@ class CurrencyRepositoryTest {
         Currency currency = new Currency();
         currency.setName("test");
         currencyRepository.save(currency);
-        Currency updatedCurrency = currencyRepository.findById(10L).orElse(null);
+        Currency updatedCurrency = currencyRepository.findById(3L).orElse(null);
         updatedCurrency.setName("test2");
         currencyRepository.save(updatedCurrency);
-        Currency currencyFromData = currencyRepository.findById(10L).orElse(null);
+        Currency currencyFromData = currencyRepository.findById(3L).orElse(null);
         assertEquals(updatedCurrency.getCurrencyId(), currencyFromData.getCurrencyId());
     }
 
     @Test
     @DisplayName("remove operation test")
     void testRemove() {
-        Currency currency = currencyRepository.findById(8L).orElse(null);
+        Currency currency = currencyRepository.findById(1L).orElse(null);
         currencyRepository.delete(currency);
-        Currency removedCurrnecy = currencyRepository.findById(8L).orElse(null);
+        Currency removedCurrnecy = currencyRepository.findById(1L).orElse(null);
 
         assertNull(removedCurrnecy);
     }

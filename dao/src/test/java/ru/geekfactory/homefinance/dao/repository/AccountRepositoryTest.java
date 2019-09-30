@@ -27,12 +27,12 @@ class AccountRepositoryTest {
     @DisplayName("save and findById operation test")
     void testSaveAndFind() {
         Account account = new Account();
-        account.setAccountId(3L);
+        account.setAccountId(6L);
         account.setName("test");
         account.setAccountType(AccountType.CASH);
         account.setAmount(BigDecimal.valueOf(11));
         accountRepository.save(account);
-        Account fromData = accountRepository.findById(3L).orElse(null);
+        Account fromData = accountRepository.findById(6L).orElse(null);
 
         assertEquals(account.getAccountId(), fromData.getAccountId());
     }
@@ -41,16 +41,16 @@ class AccountRepositoryTest {
     @DisplayName("update operation test")
     void testUpdate() {
         Account account = new Account();
-        account.setAccountId(4L);
+        account.setAccountId(7L);
         account.setName("test");
         account.setAccountType(AccountType.CASH);
         account.setAmount(BigDecimal.valueOf(1));
         accountRepository.save(account);
-        Account accountUpdate = accountRepository.findById(4L).orElse(null);
+        Account accountUpdate = accountRepository.findById(7L).orElse(null);
         accountUpdate.setName("test2");
         accountRepository.save(accountUpdate);
 
-        assertNotEquals(accountUpdate, accountRepository.findById(4L));
+        assertNotEquals(accountUpdate, accountRepository.findById(7L));
     }
 
     @Test
@@ -80,14 +80,14 @@ class AccountRepositoryTest {
     @DisplayName("remove operation test")
     void testRemove() {
         Account firstAccount = new Account();
-        firstAccount.setAccountId(1L);
+        firstAccount.setAccountId(6L);
         firstAccount.setName("first");
         firstAccount.setAccountType(AccountType.CREDIT_CARD);
         firstAccount.setAmount(BigDecimal.valueOf(1));
         accountRepository.save(firstAccount);
-        Account secondAccount = accountRepository.findById(1L).orElse(null);
+        Account secondAccount = accountRepository.findById(6L).orElse(null);
         accountRepository.delete(secondAccount);
-        Account removedAccount = accountRepository.findById(1L).orElse(null);
+        Account removedAccount = accountRepository.findById(6L).orElse(null);
 
         assertNull(removedAccount);
     }

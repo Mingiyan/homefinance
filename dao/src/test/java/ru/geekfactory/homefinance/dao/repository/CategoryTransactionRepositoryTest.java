@@ -26,10 +26,10 @@ class CategoryTransactionRepositoryTest {
     @DisplayName("save and findById operation test")
     void testSaveAndFind() {
         CategoryTransaction category = new CategoryTransaction();
-        category.setCategoryId(6L);
+        category.setCategoryId(13L);
         category.setName("test");
         categoryTransactionRepository.save(category);
-        CategoryTransaction categoryFromData = categoryTransactionRepository.findById(6L).orElse(null);
+        CategoryTransaction categoryFromData = categoryTransactionRepository.findById(13L).orElse(null);
 
         assertEquals(category.getCategoryId(), categoryFromData.getCategoryId());
     }
@@ -58,13 +58,13 @@ class CategoryTransactionRepositoryTest {
     @DisplayName("update operation test")
     void testUpdate() {
         CategoryTransaction category = new CategoryTransaction();
-        category.setCategoryId(7L);
+        category.setCategoryId(14L);
         category.setName("test");
         categoryTransactionRepository.save(category);
-        CategoryTransaction updated = categoryTransactionRepository.findById(7L).orElse(null);
+        CategoryTransaction updated = categoryTransactionRepository.findById(14L).orElse(null);
         updated.setName("test2");
         categoryTransactionRepository.save(updated);
-        CategoryTransaction fromData = categoryTransactionRepository.findById(7L).orElse(null);
+        CategoryTransaction fromData = categoryTransactionRepository.findById(14L).orElse(null);
 
         assertEquals(updated.getCategoryId(), fromData.getCategoryId());
     }
@@ -73,12 +73,12 @@ class CategoryTransactionRepositoryTest {
     @DisplayName("remove operation test")
     void testRemove() {
         CategoryTransaction category = new CategoryTransaction();
-        category.setCategoryId(5L);
+        category.setCategoryId(13L);
         category.setName("test");
         categoryTransactionRepository.save(category);
-        CategoryTransaction categoryFromData = categoryTransactionRepository.findById(5L).orElse(null);
+        CategoryTransaction categoryFromData = categoryTransactionRepository.findById(13L).orElse(null);
         categoryTransactionRepository.delete(categoryFromData);
 
-        assertNull(categoryTransactionRepository.findById(1L).orElse(null));
+        assertNull(categoryTransactionRepository.findById(13L).orElse(null));
     }
 }
