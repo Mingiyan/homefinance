@@ -70,9 +70,4 @@ public class AccountController {
         optionalAccount.ifPresent(accountService::remove);
         return new ModelAndView("redirect:/account");
     }
-
-    @PostMapping(value = "/saveAccountJson", produces = MediaType.APPLICATION_JSON_VALUE)
-    public String saveAccountJson(@RequestBody Account account, Model model) {
-        return "account_save_success";
-    }
 }

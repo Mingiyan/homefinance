@@ -1,11 +1,14 @@
 package ru.geekfactory.homefinance.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.servlet.ModelAndView;
+import ru.geekfactory.homefinance.dao.model.Account;
 import ru.geekfactory.homefinance.dao.model.Currency;
 import ru.geekfactory.homefinance.service.CurrencyService;
 
@@ -54,5 +57,11 @@ public class CurrencyController {
         Optional<Currency> optionalCurrency = currencyService.findById(id);
         optionalCurrency.ifPresent(currencyService::remove);
         return new ModelAndView("redirect:/currency");
+    }
+
+    @PostMapping(value = "/saveCurrencyJson", produces = MediaType.APPLICATION_JSON_VALUE)
+    public String saveAccountJson(@RequestBody Currency currency) {
+        currencyService.save(currency);
+        return "currency_save_success";
     }
 }
