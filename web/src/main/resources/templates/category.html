@@ -66,7 +66,15 @@
         <tr th:each="category : ${categories}">
             <th th:text="${category.categoryId}" scope="row"></th>
             <td th:text="${category.name}"></td>
-            <td th:text="${category.parent}"></td>
+            <div th:if="${category.parent != null}">
+            <p th:each="par : ${category.parent}">
+                <td th:text="${par.name}"></td>
+            </p>
+            </div>
+            <div th:if="${category.parent == null}">
+                <td>No parent category</td>
+            </div>
+
             <td>
                 <a data-toggle="modal" data-th-target="'#myModal_' + ${category.categoryId}" th:href="'#myModal_' + ${category.categoryId}">Редактировать</a>
                 &nbsp;&nbsp;&nbsp;&nbsp;
