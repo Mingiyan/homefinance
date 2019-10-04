@@ -14,6 +14,7 @@ import ru.geekfactory.homefinance.service.CategoryTransactionService;
 import ru.geekfactory.homefinance.service.TransactionService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -49,6 +50,7 @@ public class TransactionController {
         transaction.setName(request.getParameter("name"));
         transaction.setDateTime(LocalDateTime.parse(request.getParameter("dateTime")));
         transaction.setAccount(accountService.findById(Long.valueOf(request.getParameter("account"))).orElse(null));
+        transaction.setAmount(BigDecimal.valueOf(Double.valueOf(request.getParameter("amount"))));
         Collection<CategoryTransaction> collection = new ArrayList<>();
         if (request.getParameterValues("categories") != null) {
             for (String s : request.getParameterValues("categories")) {
@@ -67,6 +69,7 @@ public class TransactionController {
             Transaction transaction = optionalTransaction.get();
             transaction.setName(request.getParameter("name"));
             transaction.setDateTime(LocalDateTime.parse(request.getParameter("dateTime")));
+            transaction.setAmount(BigDecimal.valueOf(Double.valueOf(request.getParameter("amount"))));
             transaction.setAccount(accountService.findById(Long.valueOf(request.getParameter("account"))).orElse(null));
             Collection<CategoryTransaction> collection = new ArrayList<>();
             if (request.getParameterValues("categories") != null) {

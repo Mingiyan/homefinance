@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Collection;
 
@@ -33,4 +34,7 @@ public class Transaction {
     @ManyToOne
     @JoinColumn(name = "accountId")
     private Account account;
+
+    @Column(name = "amount")
+    private BigDecimal amount;
 }

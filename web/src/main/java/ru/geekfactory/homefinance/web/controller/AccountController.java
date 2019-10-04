@@ -11,8 +11,10 @@ import org.springframework.web.servlet.ModelAndView;
 import ru.geekfactory.homefinance.dao.model.Account;
 import ru.geekfactory.homefinance.dao.model.AccountType;
 import ru.geekfactory.homefinance.dao.model.Currency;
+import ru.geekfactory.homefinance.dao.model.Transaction;
 import ru.geekfactory.homefinance.service.AccountService;
 import ru.geekfactory.homefinance.service.CurrencyService;
+import ru.geekfactory.homefinance.service.TransactionService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.awt.*;
@@ -29,12 +31,17 @@ public class AccountController {
     @Autowired
     private CurrencyService currencyService;
 
+    @Autowired
+    private TransactionService transactionService;
+
     @GetMapping("/account")
     public String getAccounts(Model model) {
         List<Account> accounts = accountService.findAll();
         List<Currency> currencies = currencyService.findAll();
+        List<Transaction> transactions = transactionService.findAll();
         model.addAttribute("currencies", currencies);
         model.addAttribute("accounts", accounts);
+        model.addAttribute("transactions", transactions);
         model.addAttribute("accountTypes", AccountType.values());
         return "account";
     }

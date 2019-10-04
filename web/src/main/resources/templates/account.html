@@ -68,7 +68,14 @@
             <tr th:each="account : ${accounts}">
                 <th th:text="${account.accountId}" scope="row"></th>
                 <td th:text="${account.name}"></td>
-                <td th:text="${account.amount}"></td>
+                <div th:with="amountCounter = ${account.amount}">
+                    <div th:each="tran : ${transactions}">
+                        <p th:if="${tran.account.accountId == account.accountId}">
+                            <p th:with="amountCounter = ${amountCounter} - ${tran.account.amount}"></p>
+                        </p>
+                    </div>
+                    <td th:text="${amountCounter}"></td>
+                </div>
                 <td th:text="${account.accountType}"></td>
                 <td th:text="${account.currency.name}"></td>
                 <td>

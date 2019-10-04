@@ -60,6 +60,7 @@
             <th scope="col">Имя</th>
             <th scope="col">Дата создания</th>
             <th scope="col">Счёт</th>
+            <th scope="col">Остаток на счете</th>
             <th scope="col">Категории</th>
             <th scope="col">Действия</th>
         </tr>
@@ -70,6 +71,7 @@
             <td th:text="${transaction.name}"></td>
             <td th:text="${transaction.dateTime}"></td>
             <td th:text="${transaction.account.name}"></td>
+            <td th:text="${transaction.amount}"></td>
             <td th:if="${transaction.categoryTransactions.isEmpty()}">
                 <p>no categories</p>
             </td>
@@ -118,6 +120,8 @@
                                 <option th:value="${account.accountId}" th:text="${account.name}"></option>
                             </p>
                         </select>
+                        <label for="amount" class="col-form-label">Сумма транзакции:</label>
+                        <input type="number" name="amount" class="form-control" id="amount" value="0" min="0.00" max="1000000.00" step="0.01" />
                     </div>
                 </div>
                 <div class="modal-footer">
