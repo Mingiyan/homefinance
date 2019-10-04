@@ -50,8 +50,10 @@ public class TransactionController {
         transaction.setDateTime(LocalDateTime.parse(request.getParameter("dateTime")));
         transaction.setAccount(accountService.findById(Long.valueOf(request.getParameter("account"))).orElse(null));
         Collection<CategoryTransaction> collection = new ArrayList<>();
-        for (String s : request.getParameterValues("categories")) {
-            collection.add(categoryTransactionService.findById(Long.valueOf(s)).orElse(null));
+        if (request.getParameterValues("categories") != null) {
+            for (String s : request.getParameterValues("categories")) {
+                collection.add(categoryTransactionService.findById(Long.valueOf(s)).orElse(null));
+            }
         }
         transaction.setCategoryTransactions(collection);
         transactionService.save(transaction);
@@ -67,8 +69,10 @@ public class TransactionController {
             transaction.setDateTime(LocalDateTime.parse(request.getParameter("dateTime")));
             transaction.setAccount(accountService.findById(Long.valueOf(request.getParameter("account"))).orElse(null));
             Collection<CategoryTransaction> collection = new ArrayList<>();
-            for (String s : request.getParameterValues("categories")) {
-                collection.add(categoryTransactionService.findById(Long.valueOf(s)).orElse(null));
+            if (request.getParameterValues("categories") != null) {
+                for (String s : request.getParameterValues("categories")) {
+                    collection.add(categoryTransactionService.findById(Long.valueOf(s)).orElse(null));
+                }
             }
             transaction.setCategoryTransactions(collection);
             transactionService.save(transaction);

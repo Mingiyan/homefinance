@@ -69,8 +69,15 @@
             <th th:text="${transaction.transactionId}" scope="row"></th>
             <td th:text="${transaction.name}"></td>
             <td th:text="${transaction.dateTime}"></td>
-            <td th:text="${transaction.account}"></td>
-            <td th:text="${transaction.categoryTransactions}"></td>
+            <td th:text="${transaction.account.name}"></td>
+            <td th:if="${transaction.categoryTransactions.isEmpty()}">
+                <p>no categories</p>
+            </td>
+            <td th:if="${!transaction.categoryTransactions.isEmpty()}">
+                <div th:each="cat : ${transaction.categoryTransactions}">
+                    <p th:text="${cat.name}"></p>
+                </div>
+            </td>
             <td>
                 <a data-toggle="modal" data-th-target="'#myModal_' + ${transaction.transactionId}" th:href="'#myModal_' + ${transaction.transactionId}">Редактировать</a>
                 &nbsp;&nbsp;&nbsp;&nbsp;
