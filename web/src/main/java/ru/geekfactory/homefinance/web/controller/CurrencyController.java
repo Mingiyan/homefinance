@@ -8,13 +8,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.servlet.ModelAndView;
-import ru.geekfactory.homefinance.dao.model.Account;
 import ru.geekfactory.homefinance.dao.model.Currency;
+import ru.geekfactory.homefinance.model.ConvertedCurrency;
 import ru.geekfactory.homefinance.service.CurrencyService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 public class CurrencyController {
@@ -24,7 +23,7 @@ public class CurrencyController {
 
     @GetMapping("/currency")
     public String getCurrencies(Model model) {
-        List<Currency> currencies = currencyService.findAll();
+        List<ConvertedCurrency> currencies = currencyService.findAllConverted();
         model.addAttribute("currencies", currencies);
         return "currency";
     }
@@ -32,9 +31,9 @@ public class CurrencyController {
     @PostMapping("/saveCurrency")
     public ModelAndView createCurrency(HttpServletRequest request) {
         String name = request.getParameter("name");
-        Currency currency = new Currency();
+        ConvertedCurrency currency = new ConvertedCurrency();
         currency.setName(name);
-        currencyService.save(currency);
+        currencyService.saveConverted(currency);
         return new ModelAndView("redirect:/currency");
     }
 
@@ -42,20 +41,17 @@ public class CurrencyController {
     public ModelAndView editCurrency(HttpServletRequest request) {
         Long id = Long.valueOf(request.getParameter("id"));
         String name = request.getParameter("name");
-        Optional<Currency> optionalCurrency = currencyService.findById(id);
-        if (optionalCurrency.isPresent()) {
-            Currency currency = optionalCurrency.get();
-            currency.setName(name);
-            currencyService.update(currency);
-        }
+        ConvertedCurrency currency = currencyService.findByIdConverted(id);
+        currency.setName(name);
+        currencyService.updateConverted(currency);
         return new ModelAndView("redirect:/currency");
     }
 
     @PostMapping("/deleteCurrency")
     public ModelAndView deleteCurrency(HttpServletRequest request) {
         Long id = Long.valueOf(request.getParameter("id"));
-        Optional<Currency> optionalCurrency = currencyService.findById(id);
-        optionalCurrency.ifPresent(currencyService::remove);
+        ConvertedCurrency currency = currencyService.findByIdConverted(id);
+        currencyService.removeConverted(currency);
         return new ModelAndView("redirect:/currency");
     }
 
