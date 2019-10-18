@@ -26,15 +26,15 @@
                 animationEnabled: true,
                 theme: "light2",
                 title:{
-                    text: "Actual vs Projected Sales"
+                    text: "Transactions"
                 },
                 axisX:{
                     valueFormatString: "DD MMM"
                 },
                 axisY: {
-                    title: "Number of Sales",
-                    suffix: "K",
-                    minimum: 30
+                    title: "Count",
+                    suffix: "",
+                    minimum: 0
                 },
                 toolTip:{
                     shared:true
@@ -181,7 +181,7 @@
         </tbody>
     </table>
 </div>
-<div id="chartContainer" style="height: 370px; width: 60%;"></div>
+<div id="chartContainer" class="center" style="height: 370px; width: 60%;"></div>
 <!-- modal form save -->
 <div class="modal fade" id="transactionForm" tabindex="-1" role="dialog" aria-labelledby="requestFormLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
