@@ -93,60 +93,45 @@
     </table>
 </div>
 
-<script th:each="tr : ${transactions}">
-    window.onload = function () {
+<script>
+    window.onload = function() {
 
-        var options = {
+        var dataPoints = [];
+        var options =  {
             animationEnabled: true,
             theme: "light2",
-            title:{
-                text: "Transactions"
+            title: {
+                text: "Transaction"
             },
-            axisX:{
-                valueFormatString: "DD MMM"
+            axisX: {
+                valueFormatString: "DD MMM YYYY",
             },
             axisY: {
-                title: "Count",
-                suffix: "",
-                minimum: 0
-            },
-            toolTip:{
-                shared:true
-            },
-            legend:{
-                cursor:"pointer",
-                verticalAlign: "bottom",
-                horizontalAlign: "left",
-                dockInsidePlotArea: true,
-                itemclick: toogleDataSeries
+                title: "Account",
+                titleFontSize: 24,
+                includeZero: false
             },
             data: [{
-                type: "line",
-                showInLegend: true,
-                name: "[[${tr.account.name}]]",
-                markerType: "square",
-                xValueFormatString: "DD MMM, YYYY",
-                yValueFormatString: "#,##0",
-                dataPoints: [
-                    { x: new Date("[[${tr.dateTime}]]"), y: "[[${tr.amount}]]" }
-                    // { x: new Date(2019, 10, 11), y: 86 },
-                    // { x: new Date(2019, 10, 12), y: 94 },
-                    // { x: new Date(2019, 10, 13), y: 97 },
-                    // { x: new Date(2019, 10, 14), y: 86 },
-                    // { x: new Date(2019, 10, 15), y: 89 }
-                ]
+                type: "spline",
+                yValueFormatString: "$##",
+                dataPoints: dataPoints
             }]
         };
-        $("#chartContainer").CanvasJSChart(options);
 
-        function toogleDataSeries(e){
-            if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
-                e.dataSeries.visible = false;
-            } else{
-                e.dataSeries.visible = true;
+        function addData(data) {
+            for (var k in data) {
+                for (var i = 0; i < data.length; i++) {
+                    if (data[k].account === data[i].account) {
+                        dataPoints.push({
+                            x: new Date(data[i].date),
+                            y: data[i].amount
+                        });
+                    }
+                }
             }
-            e.chart.render();
+            $("#chartContainer").CanvasJSChart(options);
         }
+        $.getJSON("/transactionJson", addData);
     }
 </script>
 

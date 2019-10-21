@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import ru.geekfactory.homefinance.dao.model.Account;
 import ru.geekfactory.homefinance.dao.model.CategoryTransaction;
@@ -16,10 +17,7 @@ import ru.geekfactory.homefinance.service.TransactionService;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 public class TransactionController {
@@ -42,6 +40,21 @@ public class TransactionController {
         model.addAttribute("accounts", accounts);
         model.addAttribute("categories", categories);
         return "transaction";
+    }
+
+    @GetMapping(value = "/transactionJson")
+    @ResponseBody
+    public List<Map> getJsonAccounts() {
+        List<Transaction> transactionList = transactionService.findAll();
+        List<Map> list = new LinkedList<>();
+        for(int i = 0; i < transactionList.size(); i++) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("date", transactionList.get(i).getDateTime().toString());
+            map.put("account", transactionList.get(i).getAccount().getName());
+            map.put("amount", transactionList.get(i).getAmount());
+            list.add(map);
+        }
+        return list;
     }
 
     @PostMapping("/saveTransaction")

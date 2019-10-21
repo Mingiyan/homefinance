@@ -1,12 +1,10 @@
 package ru.geekfactory.homefinance.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.servlet.ModelAndView;
 import ru.geekfactory.homefinance.dao.model.Account;
 import ru.geekfactory.homefinance.dao.model.AccountType;
@@ -17,7 +15,6 @@ import ru.geekfactory.homefinance.service.CurrencyService;
 import ru.geekfactory.homefinance.service.TransactionService;
 
 import javax.servlet.http.HttpServletRequest;
-import java.awt.*;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
