@@ -97,39 +97,43 @@
     window.onload = function() {
 
         var dataPoints = [];
-        var options =  {
-            animationEnabled: true,
-            theme: "light2",
-            title: {
-                text: "Transaction"
-            },
-            axisX: {
-                valueFormatString: "DD MMM YYYY",
-            },
-            axisY: {
-                title: "Account",
-                titleFontSize: 24,
-                includeZero: false
-            },
-            data: [{
-                type: "spline",
-                yValueFormatString: "$##",
-                dataPoints: dataPoints
-            }]
-        };
 
         function addData(data) {
             for (var k in data) {
+                var config = [];
                 for (var i = 0; i < data.length; i++) {
                     if (data[k].account === data[i].account) {
                         dataPoints.push({
                             x: new Date(data[i].date),
                             y: data[i].amount
                         });
+                        config.push({
+                            type: "spline",
+                            name: data[k].account,
+                            yValueFormatString: "$##",
+                            dataPoints: dataPoints
+                        })
                     }
                 }
+
+                var options =  {
+                    animationEnabled: true,
+                    theme: "light2",
+                    title: {
+                        text: "Transaction"
+                    },
+                    axisX: {
+                        valueFormatString: "DD MMM YYYY",
+                    },
+                    axisY: {
+                        title: "Account",
+                        titleFontSize: 24,
+                        includeZero: false
+                    },
+                    data: config
+                };
+                $("#chartContainer").CanvasJSChart(options);
             }
-            $("#chartContainer").CanvasJSChart(options);
         }
         $.getJSON("/transactionJson", addData);
     }
