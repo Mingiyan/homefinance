@@ -47,11 +47,11 @@ public class TransactionController {
     public List<Map> getJsonAccounts() {
         List<Transaction> transactionList = transactionService.findAll();
         List<Map> list = new LinkedList<>();
-        for(int i = 0; i < transactionList.size(); i++) {
+        for (Transaction transaction : transactionList) {
             Map<String, Object> map = new HashMap<>();
-            map.put("date", transactionList.get(i).getDateTime().toString());
-            map.put("account", transactionList.get(i).getAccount().getName());
-            map.put("amount", transactionList.get(i).getAmount());
+            map.put("date", transaction.getDateTime().toString());
+            map.put("account", transaction.getAccount().getName());
+            map.put("amount", transaction.getAmount());
             list.add(map);
         }
         return list;
