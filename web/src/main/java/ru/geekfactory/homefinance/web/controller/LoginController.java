@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 import ru.geekfactory.homefinance.dao.model.User;
+import ru.geekfactory.homefinance.dao.model.UserRole;
 import ru.geekfactory.homefinance.service.UserService;
 import ru.geekfactory.homefinance.web.handler.Encryption;
 
@@ -53,6 +54,9 @@ public class LoginController {
         Optional<User> optionalUser = userService.findByLogin(login);
         if (optionalUser.isPresent()) { return new ModelAndView("redirect:/loginFailed");}
         User newUser = new User();
+        newUser.setLogin(login);
+        newUser.setPassword(Encryption.encode(password));
+        newUser.setRole(UserRole.USER);
         userService.save(newUser);
         HttpSession session = req.getSession();
         session.setAttribute("login" , login);
