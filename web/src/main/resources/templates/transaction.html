@@ -21,7 +21,7 @@
     <script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
 
 </head>
-<body class="bg-light">
+<p class="bg-light">
 <!-- Navigation -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
@@ -95,51 +95,59 @@
 
 <script>
     window.onload = function() {
+        $.getJSON("/accountJson", toArr);
+        function toArr(arr) {
 
-        var dataPoints = [];
+            for (var j in arr.accounts) {
 
-        function addData(data) {
-            for (var k in data) {
-                var config = [];
-                for (var i = 0; i < data.length; i++) {
-                    if (data[k].account === data[i].account) {
-                        dataPoints.push({
-                            x: new Date(data[i].date),
-                            y: data[i].amount
-                        });
-                        config.push({
-                            type: "spline",
-                            name: data[k].account,
-                            yValueFormatString: "$##",
-                            dataPoints: dataPoints
-                        })
+                console.log(arr.accounts[j])
+
+
+                var dataPoints = [];
+                $.getJSON("/transactionJson", addData);
+                function addData(data) {
+                    for (var k in data) {
+                        for (var i = 0; i < data.length; i++) {
+                            if (arr.accounts[j] === data[i].account) {
+                                dataPoints.push({
+                                    x: new Date(data[i].date),
+                                    y: data[i].amount
+                                });
+                            }
+                        }
+                        var options = {
+                            animationEnabled: true,
+                            theme: "light2",
+                            title: {
+                                text: "Transaction"
+                            },
+                            axisX: {
+                                valueFormatString: "DD MMM YYYY",
+                            },
+                            axisY: {
+                                title: "Account",
+                                titleFontSize: 24,
+                                includeZero: false
+                            },
+                            data: {
+                                type: "spline",
+                                name: arr.accounts[j],
+                                yValueFormatString: "$##",
+                                dataPoints: dataPoints
+                            }
+                        };
+                        $("#" + arr.accounts[j]).CanvasJSChart(options);
                     }
-                }
 
-                var options =  {
-                    animationEnabled: true,
-                    theme: "light2",
-                    title: {
-                        text: "Transaction"
-                    },
-                    axisX: {
-                        valueFormatString: "DD MMM YYYY",
-                    },
-                    axisY: {
-                        title: "Account",
-                        titleFontSize: 24,
-                        includeZero: false
-                    },
-                    data: config
-                };
-                $("#chartContainer").CanvasJSChart(options);
+                }
             }
+
         }
-        $.getJSON("/transactionJson", addData);
     }
 </script>
-
-<div id="chartContainer" class="center" style="height: 370px; width: 60%;"></div>
+<span th:each="acc : ${accounts}">
+    <div th:id="${acc.name}" class="center" style="height: 370px; width: 60%;"></div>
+</span>
 <!-- modal form save -->
 <div class="modal fade" id="transactionForm" tabindex="-1" role="dialog" aria-labelledby="requestFormLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
