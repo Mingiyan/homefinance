@@ -13,11 +13,14 @@ public class User {
     @GeneratedValue
     private Long userId;
 
-    @Column(name = "login")
+    @Column(name = "login", nullable = false, unique = true)
     private String login;
 
     @Column(name = "password")
     private String password;
+
+    @Column(name = "enabled")
+    private Boolean enabled;
 
     @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)

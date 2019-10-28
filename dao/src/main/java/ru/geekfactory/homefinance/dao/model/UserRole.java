@@ -1,5 +1,5 @@
 package ru.geekfactory.homefinance.dao.model;
 
 public enum UserRole {
-    ADMIN, USER
+    ROLE_ADMIN, ROLE_USER
 }

@@ -21,28 +21,28 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private DataSource dataSource;
 
+    @Autowired
+    protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth.jdbcAuthentication()
+                .dataSource(dataSource)
+                .passwordEncoder(passwordEncoder())
+                .usersByUsernameQuery("select u.login, u.password, u.enabled from user_tbl u where u.login=?")
+                .authoritiesByUsernameQuery("select login, role from user_tbl where login=?");
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .formLogin().loginPage("/login").permitAll()
+                .usernameParameter("login").passwordParameter("password")
                 .and()
                 .logout().permitAll()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/registration").permitAll()
-                .antMatchers("/users/**").access("hasRole('ADMIN')")
+                .antMatchers("/users/**").access("hasRole('ROLE_ADMIN')")
                 .anyRequest().authenticated()
                 .and()
                 .csrf().disable();
-    }
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.jdbcAuthentication()
-                .dataSource(dataSource)
-                .passwordEncoder(passwordEncoder())
-                .usersByUsernameQuery("select u.login, u.password from user_tbl u where u.login=?")
-                .authoritiesByUsernameQuery("select u.login, u.role from user_tbl u where u.login=?");
     }
 
     @Bean
