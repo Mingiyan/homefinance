@@ -98,59 +98,47 @@
 
 <script>
     window.onload = function() {
-        $.getJSON("/accountJson", toArr);
-        function toArr(arr) {
 
-            for (var j in arr.accounts) {
+        var dataPoints = [];
+        var options =  {
+            animationEnabled: true,
+            theme: "light2",
+            title: {
+                text: "Transaction"
+            },
+            axisX: {
+                valueFormatString: "DD MMM YYYY",
+            },
+            axisY: {
+                title: "Account",
+                titleFontSize: 24,
+                includeZero: false
+            },
+            data: [{
+                type: "spline",
+                yValueFormatString: "$##",
+                dataPoints: dataPoints
+            }]
+        };
 
-                console.log(arr.accounts[j])
-
-
-                var dataPoints = [];
-                $.getJSON("/transactionJson", addData);
-                function addData(data) {
-                    for (var k in data) {
-                        for (var i = 0; i < data.length; i++) {
-                            if (arr.accounts[j] === data[i].account) {
-                                dataPoints.push({
-                                    x: new Date(data[i].date),
-                                    y: data[i].amount
-                                });
-                            }
-                        }
-                        var options = {
-                            animationEnabled: true,
-                            theme: "light2",
-                            title: {
-                                text: "Transaction"
-                            },
-                            axisX: {
-                                valueFormatString: "DD MMM YYYY",
-                            },
-                            axisY: {
-                                title: "Account",
-                                titleFontSize: 24,
-                                includeZero: false
-                            },
-                            data: {
-                                type: "spline",
-                                name: arr.accounts[j],
-                                yValueFormatString: "$##",
-                                dataPoints: dataPoints
-                            }
-                        };
-                        $("#" + arr.accounts[j]).CanvasJSChart(options);
+        function addData(data) {
+            for (var k in data) {
+                for (var i = 0; i < data.length; i++) {
+                    if (data[k].account === data[i].account) {
+                        dataPoints.push({
+                            x: new Date(data[i].date),
+                            y: data[i].amount
+                        });
                     }
-
                 }
             }
-
+            $("#myCanvas").CanvasJSChart(options);
         }
+        $.getJSON("/transactionJson", addData);
     }
+
 </script>
-<span th:each="acc : ${accounts}">
-    <div th:id="${acc.name}" class="center" style="height: 370px; width: 60%;"></div>
-</span>
+<div id="myCanvas" class="center" style="height: 370px; width: 60%;"></div>
 <!-- modal form save -->
 <div class="modal fade" id="transactionForm" tabindex="-1" role="dialog" aria-labelledby="requestFormLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
