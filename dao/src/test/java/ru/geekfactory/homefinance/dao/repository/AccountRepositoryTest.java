@@ -1,7 +1,13 @@
 package ru.geekfactory.homefinance.dao.repository;
 
-import org.junit.jupiter.api.*;
-import ru.geekfactory.homefinance.dao.model.AccountModel;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import ru.geekfactory.homefinance.dao.config.DaoConfig;
+import ru.geekfactory.homefinance.dao.model.Account;
 import ru.geekfactory.homefinance.dao.model.AccountType;
 
 import java.math.BigDecimal;
@@ -10,88 +16,78 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = {DaoConfig.class})
 class AccountRepositoryTest {
 
-    private static DatabaseConnector databaseConnectorTest = new DatabaseConnector();
-
-    private AccountRepository accountRepository = new AccountRepository();
-
-    @BeforeAll
-    static void beforeAll() {
-        databaseConnectorTest.getConnection();
-        databaseConnectorTest.initDB();
-    }
-
-    @BeforeEach
-    void beforeEach() {
-        databaseConnectorTest.clearTables();
-    }
+    @Autowired
+    private AccountRepository accountRepository;
 
     @Test
     @DisplayName("save and findById operation test")
     void testSaveAndFind() {
-        AccountModel accountModel = new AccountModel();
-        accountModel.setId(3L);
-        accountModel.setName("test");
-        accountModel.setAccountType(AccountType.CASH);
-        accountModel.setAmount(BigDecimal.valueOf(1));
-        accountRepository.save(accountModel);
-        AccountModel fromData = accountRepository.findById(3L).orElse(null);
+        Account account = new Account();
+        account.setAccountId(6L);
+        account.setName("test");
+        account.setAccountType(AccountType.CASH);
+        account.setAmount(BigDecimal.valueOf(11));
+        accountRepository.save(account);
+        Account fromData = accountRepository.findById(6L).orElse(null);
 
-        assertEquals(accountModel, fromData);
+        assertEquals(account.getAccountId(), fromData.getAccountId());
     }
 
     @Test
     @DisplayName("update operation test")
     void testUpdate() {
-        AccountModel accountModel = new AccountModel();
-        accountModel.setId(4L);
-        accountModel.setName("test");
-        accountModel.setAccountType(AccountType.CASH);
-        accountModel.setAmount(BigDecimal.valueOf(1));
-        accountRepository.save(accountModel);
-        AccountModel accountUpdate = accountRepository.findById(4L).orElse(null);
+        Account account = new Account();
+        account.setAccountId(7L);
+        account.setName("test");
+        account.setAccountType(AccountType.CASH);
+        account.setAmount(BigDecimal.valueOf(1));
+        accountRepository.save(account);
+        Account accountUpdate = accountRepository.findById(7L).orElse(null);
         accountUpdate.setName("test2");
-        accountRepository.update(accountUpdate);
+        accountRepository.save(accountUpdate);
 
-        assertNotEquals(accountUpdate, accountRepository.findById(4L));
+        assertNotEquals(accountUpdate, accountRepository.findById(7L));
     }
 
     @Test
     @DisplayName("findAll operation test")
     void testFindAll() {
-        AccountModel first = new AccountModel();
-        first.setId(1L);
+        Account first = new Account();
+        first.setAccountId(1L);
         first.setName("first");
         first.setAccountType(AccountType.DEBIT_CARD);
-        AccountModel second = new AccountModel();
-        second.setId(2L);
+        Account second = new Account();
+        second.setAccountId(2L);
         second.setName("second");
-        second.setAmount(BigDecimal.valueOf(11));
+        second.setAmount(BigDecimal.ONE);
         second.setAccountType(AccountType.CASH);
         accountRepository.save(first);
         accountRepository.save(second);
-        List<AccountModel> firstList = new ArrayList<>();
-        List<AccountModel> list = accountRepository.findAll();
+        List<Account> firstList = new ArrayList<>();
+        List<Account> list = accountRepository.findAll();
         firstList.add(first);
         firstList.add(second);
 
         assertNotNull(list);
-        assertEquals(firstList, list);
+        assertEquals(firstList.size(), list.size());
     }
 
     @Test
     @DisplayName("remove operation test")
     void testRemove() {
-        AccountModel firstAccount = new AccountModel();
-        firstAccount.setId(1L);
+        Account firstAccount = new Account();
+        firstAccount.setAccountId(6L);
         firstAccount.setName("first");
         firstAccount.setAccountType(AccountType.CREDIT_CARD);
         firstAccount.setAmount(BigDecimal.valueOf(1));
         accountRepository.save(firstAccount);
-        AccountModel secondAccount = accountRepository.findById(1L).orElse(null);
-        accountRepository.remove(secondAccount);
-        AccountModel removedAccount = accountRepository.findById(1L).orElse(null);
+        Account secondAccount = accountRepository.findById(6L).orElse(null);
+        accountRepository.delete(secondAccount);
+        Account removedAccount = accountRepository.findById(6L).orElse(null);
 
         assertNull(removedAccount);
     }

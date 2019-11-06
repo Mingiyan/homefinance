@@ -1,36 +1,41 @@
 package ru.geekfactory.homefinance.service;
 
-import ru.geekfactory.homefinance.dao.model.CategoryTransactionModel;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import ru.geekfactory.homefinance.dao.model.CategoryTransaction;
 import ru.geekfactory.homefinance.dao.repository.CategoryTransactionRepository;
 
 import java.util.List;
 import java.util.Optional;
 
-public class CategoryTransactionService implements ServiceCRUD<Long, CategoryTransactionModel> {
+@Service
+public class CategoryTransactionService implements ServiceCRUD<Long, CategoryTransaction> {
 
-    private CategoryTransactionRepository categoryTransactionRepository = new CategoryTransactionRepository();
+    @Autowired
+    private CategoryTransactionRepository categoryTransactionRepository;
+
     @Override
-    public void save(CategoryTransactionModel object) {
+    public void save(CategoryTransaction object) {
         categoryTransactionRepository.save(object);
     }
 
     @Override
-    public Optional<CategoryTransactionModel> findById(Long id) {
+    public Optional<CategoryTransaction> findById(Long id) {
         return categoryTransactionRepository.findById(id);
     }
 
     @Override
-    public CategoryTransactionModel update(CategoryTransactionModel object) {
-        return categoryTransactionRepository.update(object);
+    public CategoryTransaction update(CategoryTransaction object) {
+        return categoryTransactionRepository.save(object);
     }
 
     @Override
-    public void remove(CategoryTransactionModel object) {
-        categoryTransactionRepository.remove(object);
+    public void remove(CategoryTransaction object) {
+        categoryTransactionRepository.delete(object);
     }
 
     @Override
-    public List<CategoryTransactionModel> findAll() {
+    public List<CategoryTransaction> findAll() {
         return categoryTransactionRepository.findAll();
     }
 }

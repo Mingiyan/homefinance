@@ -1,37 +1,41 @@
 package ru.geekfactory.homefinance.service;
 
-import ru.geekfactory.homefinance.dao.model.AccountModel;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import ru.geekfactory.homefinance.dao.model.Account;
 import ru.geekfactory.homefinance.dao.repository.AccountRepository;
 
 import java.util.List;
 import java.util.Optional;
 
-public class AccountService implements ServiceCRUD<Long, AccountModel> {
+@Service
+public class AccountService implements ServiceCRUD<Long, Account> {
 
-    private AccountRepository accountRepository = new AccountRepository();
+    @Autowired
+    private AccountRepository accountRepository;
 
     @Override
-    public void save(AccountModel object) {
+    public void save(Account object) {
         accountRepository.save(object);
     }
 
     @Override
-    public Optional<AccountModel> findById(Long id) {
+    public Optional<Account> findById(Long id) {
         return accountRepository.findById(id);
     }
 
     @Override
-    public AccountModel update(AccountModel object) {
-        return accountRepository.update(object);
+    public Account update(Account object) {
+        return accountRepository.save(object);
     }
 
     @Override
-    public void remove(AccountModel object) {
-        accountRepository.remove(object);
+    public void remove(Account object) {
+        accountRepository.delete(object);
     }
 
     @Override
-    public List<AccountModel> findAll() {
+    public List<Account> findAll() {
         return accountRepository.findAll();
     }
 }

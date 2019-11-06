@@ -1,84 +1,78 @@
 package ru.geekfactory.homefinance.dao.repository;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import ru.geekfactory.homefinance.dao.model.CurrencyModel;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import ru.geekfactory.homefinance.dao.config.DaoConfig;
+import ru.geekfactory.homefinance.dao.model.Currency;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = {DaoConfig.class})
 class CurrencyRepositoryTest {
 
-    private static DatabaseConnector databaseConnectorTest = new DatabaseConnector();
-    private CurrencyRepository currencyRepository = new CurrencyRepository();
-
-    @BeforeAll
-    static void beforeAll() {
-        databaseConnectorTest.getConnection();
-        databaseConnectorTest.initDB();
-    }
-
-    @BeforeEach
-    void beforeEach() {
-        databaseConnectorTest.clearTables();
-    }
+    @Autowired
+    private CurrencyRepository currencyRepository;
 
     @Test
     @DisplayName("save and findById operation test")
     void testSaveAndFind() {
-        CurrencyModel currencyModel = new CurrencyModel();
-        currencyModel.setId(3L);
-        currencyModel.setName("euro");
-        currencyRepository.save(currencyModel);
-        CurrencyModel currencyFromData = currencyRepository.findById(3L).orElse(null);
+        Currency currency = new Currency();
+        currency.setCurrencyId(2L);
+        currency.setName("euro");
+        currencyRepository.save(currency);
+        Currency currencyFromData = currencyRepository.findById(2L).orElse(null);
 
-        assertEquals(currencyModel, currencyFromData);
+        assertEquals(currency.getName(), currencyFromData.getName());
 
     }
 
     @Test
     @DisplayName("findAll operation test")
     void testFindAll() {
-        List<CurrencyModel> list = new ArrayList<>();
-        CurrencyModel first = new CurrencyModel();
-        first.setId(1L);
+        List<Currency> list = new ArrayList<>();
+        Currency first = new Currency();
+        first.setCurrencyId(1L);
         first.setName("first");
         list.add(first);
         currencyRepository.save(first);
-        CurrencyModel second = new CurrencyModel();
-        second.setId(2L);
+        Currency second = new Currency();
+        second.setCurrencyId(2L);
         second.setName("second");
         list.add(second);
         currencyRepository.save(second);
-        List<CurrencyModel> listFromData = currencyRepository.findAll();
+        List<Currency> listFromData = currencyRepository.findAll();
 
-        assertEquals(list, listFromData);
+        assertEquals(list.size(), listFromData.size());
     }
 
     @Test
-    @DisplayName("update and findByName operation test")
+    @DisplayName("update and findById operation test")
     void testUpdate() {
-        CurrencyModel currencyModel = new CurrencyModel();
-        currencyModel.setName("test");
-        currencyRepository.save(currencyModel);
-        CurrencyModel updatedCurrency = currencyRepository.findByName("test").get();
+        Currency currency = new Currency();
+        currency.setName("test");
+        currencyRepository.save(currency);
+        Currency updatedCurrency = currencyRepository.findById(3L).orElse(null);
         updatedCurrency.setName("test2");
-        currencyRepository.update(updatedCurrency);
-        CurrencyModel currencyFromData = currencyRepository.findByName("test2").orElse(null);
-
-        assertEquals(updatedCurrency, currencyFromData);
+        currencyRepository.save(updatedCurrency);
+        Currency currencyFromData = currencyRepository.findById(3L).orElse(null);
+        assertEquals(updatedCurrency.getCurrencyId(), currencyFromData.getCurrencyId());
     }
 
     @Test
     @DisplayName("remove operation test")
     void testRemove() {
-        CurrencyModel currencyModel = currencyRepository.findById(1L).orElse(null);
-        currencyRepository.remove(currencyModel);
-        CurrencyModel removedCurrnecy = currencyRepository.findById(1L).orElse(null);
+        Currency currency = currencyRepository.findById(1L).orElse(null);
+        currencyRepository.delete(currency);
+        Currency removedCurrnecy = currencyRepository.findById(1L).orElse(null);
 
         assertNull(removedCurrnecy);
     }

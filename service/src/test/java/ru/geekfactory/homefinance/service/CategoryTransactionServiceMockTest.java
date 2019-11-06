@@ -1,25 +1,23 @@
 package ru.geekfactory.homefinance.service;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ru.geekfactory.homefinance.dao.model.CategoryTransactionModel;
+import ru.geekfactory.homefinance.dao.model.CategoryTransaction;
 import ru.geekfactory.homefinance.dao.repository.CategoryTransactionRepository;
-import ru.geekfactory.homefinance.dao.repository.DatabaseConnector;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class CategoryTransactionServiceMockTest {
-
-    private static DatabaseConnector databaseConnectorTest = new DatabaseConnector();
 
     @Mock
     private CategoryTransactionRepository categoryTransactionRepositoryMock;
@@ -27,42 +25,38 @@ class CategoryTransactionServiceMockTest {
     @InjectMocks
     private CategoryTransactionService categoryTransactionService;
 
-    @BeforeAll
-    static void beforeAll() {
-        databaseConnectorTest.getConnection();
-    }
-
     @Test
     void testCategoryTransactionService() {
-        CategoryTransactionModel categoryTransactionModel = new CategoryTransactionModel();
-        categoryTransactionModel.setId((long) 2);
-        categoryTransactionModel.setName("test");
-        when(categoryTransactionRepositoryMock.findById(anyLong())).thenReturn(Optional.ofNullable(categoryTransactionModel));
-        CategoryTransactionModel categoryFromData = categoryTransactionService.findById(33L).orElse(null);
+        CategoryTransaction categoryTransaction = new CategoryTransaction();
+        categoryTransaction.setCategoryId(2L);
+        categoryTransaction.setName("test");
+        when(categoryTransactionRepositoryMock.findById(anyLong())).thenReturn(Optional.ofNullable(categoryTransaction));
 
-        assertNotNull(categoryTransactionRepositoryMock);
+        CategoryTransaction categoryFromData = categoryTransactionService.findById(33L).orElse(null);
+
         assertNotNull(categoryTransactionService);
-        assertEquals(categoryTransactionModel, categoryFromData);
+        assertEquals(categoryTransaction, categoryFromData);
         assertEquals("test", categoryFromData.getName());
-        assertNotEquals((long) 3, categoryFromData.getId());
+        assertNotEquals( 3L, categoryFromData.getCategoryId());
 
         verify(categoryTransactionRepositoryMock, times(1)).findById(anyLong());
         verify(categoryTransactionRepositoryMock, never()).findAll();
-        verify(categoryTransactionRepositoryMock, never()).remove(categoryTransactionModel);
+        verify(categoryTransactionRepositoryMock, never()).delete(categoryTransaction);
     }
 
     @Test
     void testServiceMock() {
-        CategoryTransactionModel categoryTransactionModel = new CategoryTransactionModel();
+        CategoryTransaction categoryTransactionModel = new CategoryTransaction();
         categoryTransactionModel.setName("test");
-        categoryTransactionModel.setId(1L);
+        categoryTransactionModel.setCategoryId(1L);
         when(categoryTransactionRepositoryMock.findById(anyLong())).thenReturn(Optional.ofNullable(categoryTransactionModel));
-        CategoryTransactionModel categoryFromData = categoryTransactionRepositoryMock.findById(33L).orElse(null);
+
+        CategoryTransaction categoryFromData = categoryTransactionRepositoryMock.findById(33L).orElse(null);
 
         assertNotNull(categoryTransactionRepositoryMock);
         assertEquals(categoryTransactionModel, categoryFromData);
         assertEquals("test", categoryFromData.getName());
-        assertNotEquals(3L, categoryFromData.getId());
+        assertNotEquals(3L, categoryFromData.getCategoryId());
 
         verify(categoryTransactionRepositoryMock, times(1)).findById(anyLong());
     }

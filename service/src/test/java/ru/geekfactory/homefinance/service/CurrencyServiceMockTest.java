@@ -1,14 +1,13 @@
 package ru.geekfactory.homefinance.service;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ru.geekfactory.homefinance.dao.model.CurrencyModel;
+import org.springframework.beans.factory.annotation.Autowired;
+import ru.geekfactory.homefinance.dao.model.Currency;
 import ru.geekfactory.homefinance.dao.repository.CurrencyRepository;
-import ru.geekfactory.homefinance.dao.repository.DatabaseConnector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,26 +21,21 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class CurrencyServiceMockTest {
 
-    private static DatabaseConnector databaseConnectorTest = new DatabaseConnector();
-
     @Mock
     private CurrencyRepository currencyRepositoryMock;
 
     @InjectMocks
+    @Autowired
     private CurrencyService currencyService;
-
-    @BeforeAll
-    static void beforeAll() {
-        databaseConnectorTest.getConnection();
-    }
 
     @Test
     void testCurrencyService() {
-        CurrencyModel currency = new CurrencyModel();
-        currency.setId((long) 23);
+        Currency currency = new Currency();
+        currency.setCurrencyId(23L);
         currency.setName("currency");
         when(currencyRepositoryMock.findById(anyLong())).thenReturn(Optional.ofNullable(currency));
-        CurrencyModel currencyFromData = currencyService.findById(55L).orElse(null);
+
+        Currency currencyFromData = currencyService.findById(55L).orElse(null);
 
         assertNotNull(currencyRepositoryMock);
         assertNotNull(currencyService);
@@ -53,13 +47,13 @@ class CurrencyServiceMockTest {
 
     @Test
     void testServiceMock() {
-        CurrencyModel first = new CurrencyModel();
-        first.setId(1L);
+        Currency first = new Currency();
+        first.setCurrencyId(1L);
         first.setName("first");
-        CurrencyModel second = new CurrencyModel();
-        second.setId(2L);
+        Currency second = new Currency();
+        second.setCurrencyId(2L);
         second.setName("second");
-        List<CurrencyModel> list = new ArrayList<>();
+        List<Currency> list = new ArrayList<>();
         when(currencyRepositoryMock.findAll()).thenReturn(list);
 
         assertNotNull(currencyRepositoryMock);

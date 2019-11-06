@@ -1,37 +1,41 @@
 package ru.geekfactory.homefinance.service;
 
-import ru.geekfactory.homefinance.dao.model.TransactionModel;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import ru.geekfactory.homefinance.dao.model.Transaction;
 import ru.geekfactory.homefinance.dao.repository.TransactionRepository;
 
 import java.util.List;
 import java.util.Optional;
 
-public class TransactionService implements ServiceCRUD<Long, TransactionModel> {
+@Service
+public class TransactionService implements ServiceCRUD<Long, Transaction> {
 
-    private TransactionRepository transactionRepository = new TransactionRepository();
+    @Autowired
+    private TransactionRepository transactionRepository;
 
     @Override
-    public void save(TransactionModel object) {
+    public void save(Transaction object) {
         transactionRepository.save(object);
     }
 
     @Override
-    public Optional<TransactionModel> findById(Long id) {
+    public Optional<Transaction> findById(Long id) {
         return transactionRepository.findById(id);
     }
 
     @Override
-    public TransactionModel update(TransactionModel object) {
-        return transactionRepository.update(object);
+    public Transaction update(Transaction object) {
+        return transactionRepository.save(object);
     }
 
     @Override
-    public void remove(TransactionModel object) {
-        transactionRepository.remove(object);
+    public void remove(Transaction object) {
+        transactionRepository.delete(object);
     }
 
     @Override
-    public List<TransactionModel> findAll() {
+    public List<Transaction> findAll() {
         return transactionRepository.findAll();
     }
 }

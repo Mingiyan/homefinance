@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+    <title>Registration</title>
+    <style>
+        .center {
+            margin-top: 100px;
+            width: 20%;
+            padding: 10px;
+            background: none;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+<body>
+<form class="center" th:action="@{/registration}" method="post">
+    <h2 class="form-signin-heading">Please sign up</h2>
+
+    <label for="inputLogin" class="sr-only">Login</label>
+    <input type="text" id="inputLogin" name="login" class="form-control" placeholder="login"
+           th:required="required" th:autofocus="autofocus"/>
+    <label for="inputPassword" class="sr-only">Password</label>
+    <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password"
+           th:required="required"/>
+    <br>
+    <button class="btn btn-lg btn-primary btn-block bg-dark" type="submit">Sign up</button>
+</form>
+</body>
+</html>

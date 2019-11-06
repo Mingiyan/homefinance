@@ -1,0 +1,232 @@
+<!doctype html>
+<div lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Transaction</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        .center {
+            margin-top: 100px;
+            width: 60%;
+            padding: 10px;
+            background: none;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+    <script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("#myInput").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("#myTable tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
+
+</head>
+<p class="bg-light">
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="/">GeekFactory - Home Finance</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Главная</a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="/account">Счета</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/currency">Валюты</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/transaction">Транзакции</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/category">Категории</a>
+                </li>
+                <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
+                    <a class="nav-link" href="/users">Пользователи</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">Выйти</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="center">
+    <input class="form-control" id="myInput" type="text" placeholder="Search..">
+    <br>
+    <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#transactionForm">Добавить транзакцию</button>
+    <br>
+    <p>Список транзакций:</p>
+    <table class="table table-dark">
+        <thead>
+        <tr>
+            <th scope="col">Имя</th>
+            <th scope="col">Дата создания</th>
+            <th scope="col">Счёт</th>
+            <th scope="col">Сумма транцакции</th>
+            <th scope="col">Категории</th>
+            <th scope="col">Действия</th>
+        </tr>
+        </thead>
+        <tbody id="myTable">
+        <tr th:each="transaction : ${transactions}">
+            <td th:text="${transaction.name}" scope="row"></td>
+            <td th:text="${transaction.dateTime}"></td>
+            <td th:text="${transaction.account.name}"></td>
+            <td th:text="${transaction.amount}"></td>
+            <td th:if="${transaction.categoryTransactions.isEmpty()}">
+                <p>no categories</p>
+            </td>
+            <td th:if="${!transaction.categoryTransactions.isEmpty()}">
+                <div th:each="cat : ${transaction.categoryTransactions}">
+                    <p th:text="${cat.name}"></p>
+                </div>
+            </td>
+            <td>
+                <a data-toggle="modal" data-th-target="'#myModal_' + ${transaction.transactionId}" th:href="'#myModal_' + ${transaction.transactionId}">Редактировать</a>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <a data-toggle="modal" data-th-target="'#deleteModal_' + ${transaction.transactionId}" th:href="'#deleteModal_' + ${transaction.transactionId}">Удалить</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div id="myCanvas" class="center" style="height: 370px; width: 60%;"></div>
+<!-- modal form save -->
+<div class="modal fade" id="transactionForm" tabindex="-1" role="dialog" aria-labelledby="requestFormLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="exampleModalLabel">Добавить транзакцию</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="post" action="/saveTransaction" id="transactionSave">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Имя транзакции:</label>
+                        <input type="text" name="name" class="form-control" id="recipient-name">
+                        <label for="dateTime" class="col-form-label">Дата транзакции:</label>
+                        <input type="datetime-local" name="dateTime" class="form-control" id="dateTime">
+                        <label for="dateTime" class="col-form-label">Добавление категорий транзакции:</label>
+                        <select multiple name="categories" form="transactionSave">
+                            <option value="">-</option>
+                            <p th:each="category : ${categories}">
+                                <option th:value="${category.categoryId}" th:text="${category.name}"></option>
+                            </p>
+                        </select>
+                        <label for="recipient-name" class="col-form-label">Укажите тип счета:</label>
+                        <select name="account" form="transactionSave">
+                            <p th:each="account : ${accounts}">
+                                <option th:value="${account.accountId}" th:text="${account.name}"></option>
+                            </p>
+                        </select>
+                        <label for="amount" class="col-form-label">Сумма транзакции:</label>
+                        <input type="number" name="amount" class="form-control" id="amount" value="0" min="0.00" max="1000000.00" step="0.01" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div th:each="transaction : ${transactions}">
+    <!-- modal form update -->
+    <div class="modal fade" th:id="'myModal_' + ${transaction.transactionId}" tabindex="-1" role="dialog" aria-labelledby="formLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="myModalLabel">Редактирование счета</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="post" action="/editTransaction" th:id="'transaction_' + ${transaction.transactionId}">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="transactionId" class="col-form-label">ID транзакции:</label>
+                            <input type="text" name="id" class="form-control" readonly th:value="${transaction.transactionId}" id="transactionId">
+                            <label for="transactionName" class="col-form-label">Имя транзакции:</label>
+                            <input type="text" name="name" class="form-control" th:value="${transaction.name}" id="transactionName">
+                            <label for="transactionDateTime" class="col-form-label">Дата транзакции:</label>
+                            <input type="datetime-local" name="dateTime" class="form-control" th:value="${transaction.dateTime}" id="transactionDateTime">
+                            <label for="dateTime" class="col-form-label">Редактирование категорий транзакции:</label>
+                            <select multiple name="categories" th:form="'transaction_' + ${transaction.transactionId}">
+                                <option value="">-</option>
+                                <p th:each="category : ${categories}">
+                                    <option th:value="${category.categoryId}" th:text="${category.name}"></option>
+                                </p>
+                            </select>
+                            <label for="recipient-name" class="col-form-label">Укажите тип счета:</label>
+                            <select name="account" th:form="'transaction_' + ${transaction.transactionId}">
+                                <div th:each="account : ${accounts}">
+                                    <p th:if="${account} == ${transaction.account}">
+                                        <option selected th:value="${account.accountId}" th:text="${account.name}"></option>
+                                    </p>
+                                    <p th:unless="${account} == ${transaction.account}">
+                                        <option th:value="${account.accountId}" th:text="${account.name}"></option>
+                                    </p>
+                                </div>
+                            </select>
+                            <label for="amount" class="col-form-label">Сумма транзакции:</label>
+                            <input type="number" name="amount" class="form-control" id="amountUpdate" th:value="${transaction.amount}" min="0.00" max="1000000.00" step="0.01" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
+                        <input type="submit" class="btn btn-primary" value="Сохранить">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- modal form delete -->
+    <div class="modal fade" th:id="'deleteModal_'+ ${transaction.transactionId}" tabindex="-1" role="dialog" aria-labelledby="formLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="deleteModalLabel">Удаление транзакции</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="post" action="/deleteTransaction">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <p>Вы действительно хотите удалить транзакцию? </p>
+                            <input type="hidden" name="id" class="form-control" readonly th:value="${transaction.transactionId}" th:id="${transaction.transactionId}">
+                            <input type="hidden" name="name" class="form-control" contenteditable="true" th:value="${transaction.name}" th:id="${transaction.transactionId}">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Нет</button>
+                        <input type="submit" class="btn btn-primary" value="Удалить">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
