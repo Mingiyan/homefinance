@@ -96,48 +96,6 @@
     </table>
 </div>
 
-<script>
-    window.onload = function() {
-
-        var dataPoints = [];
-        var options =  {
-            animationEnabled: true,
-            theme: "light2",
-            title: {
-                text: "Transaction"
-            },
-            axisX: {
-                valueFormatString: "DD MMM YYYY",
-            },
-            axisY: {
-                title: "Account",
-                titleFontSize: 24,
-                includeZero: false
-            },
-            data: [{
-                type: "spline",
-                yValueFormatString: "$##",
-                dataPoints: dataPoints
-            }]
-        };
-
-        function addData(data) {
-            for (var k in data) {
-                for (var i = 0; i < data.length; i++) {
-                    if (data[k].account === data[i].account) {
-                        dataPoints.push({
-                            x: new Date(data[i].date),
-                            y: data[i].amount
-                        });
-                    }
-                }
-            }
-            $("#myCanvas").CanvasJSChart(options);
-        }
-        $.getJSON("/transactionJson", addData);
-    }
-
-</script>
 <div id="myCanvas" class="center" style="height: 370px; width: 60%;"></div>
 <!-- modal form save -->
 <div class="modal fade" id="transactionForm" tabindex="-1" role="dialog" aria-labelledby="requestFormLabel" aria-hidden="true">
