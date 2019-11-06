@@ -1,29 +1,30 @@
+
 ## Домашняя бухгалтерия
-#####Приложение для ведения учета домашнего бюджета
+##### Приложение для ведения учета домашнего бюджета
 
 
 ##### Используемые технологии:
 
-+ Maven
-+ Spring Boot
-+ Spring Data JPA
-+ Spring MVC
-+ Spring Security Database Authentication
-+ Postresql
-+ Tomcat
-+ Bootstrap
+- Maven
+- Spring Boot
+- Spring Data JPA
+- Spring MVC
+- Spring Security Database Authentication
+- Postresql
+- Tomcat
+- Bootstrap
 
-####Модули:
-+ dao 
-+ service 
-+ web
+#### Модули:
+- dao 
+- service 
+- web
 
 #### Сборка проекта:
 
 ##### Для сборки нужен *Maven 3.3.9* и выше
 
  собирается командой: 
- ```
+ ```java
  mvn package
  ```
  или если в модулях нужно удалить папку `target`:
