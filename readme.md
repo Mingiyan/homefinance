@@ -1,5 +1,18 @@
 ## Домашняя бухгалтерия
 #####Приложение для ведения учета домашнего бюджета
+
+
+##### Используемые технологии:
+
++ Maven
++ Spring Boot
++ Spring Data JPA
++ Spring MVC
++ Spring Security Database Authentication
++ Postresql
++ Tomcat
++ Bootstrap
+
 ####Модули:
 + dao 
 + service 
