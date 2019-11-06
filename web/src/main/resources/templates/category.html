@@ -62,7 +62,6 @@
     <table class="table table-dark">
         <thead>
         <tr>
-            <th scope="col">Id</th>
             <th scope="col">Имя</th>
             <th scope="col">Родительская категория</th>
             <th scope="col">Действия</th>
@@ -70,8 +69,7 @@
         </thead>
         <tbody>
         <tr th:each="category : ${categories}">
-            <th th:text="${category.categoryId}" scope="row"></th>
-            <td th:text="${category.name}"></td>
+            <td th:text="${category.name}" scope="row"></td>
             <div th:if="${category.parent != null}">
             <p th:each="par : ${category.parent}">
                 <td th:text="${par.name}"></td>

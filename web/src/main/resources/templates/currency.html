@@ -62,15 +62,13 @@
     <table class="table table-dark">
         <thead>
         <tr>
-            <th scope="col">Id</th>
             <th scope="col">Имя</th>
             <th scope="col">Действия</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="currency : ${currencies}">
-            <th th:text="${currency.currencyId}" scope="row"></th>
-            <td th:text="${currency.name}"></td>
+            <td th:text="${currency.name}" scope="row"></td>
             <td>
                 <a data-toggle="modal" data-th-target="'#myModal_' + ${currency.currencyId}" th:href="'#myModal_' + ${currency.currencyId}">Редактировать</a>
                 &nbsp;&nbsp;&nbsp;&nbsp;

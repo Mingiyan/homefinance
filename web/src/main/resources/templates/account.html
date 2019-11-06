@@ -62,7 +62,6 @@
     <table class="table table-dark">
         <thead>
         <tr>
-            <th scope="col">Id</th>
             <th scope="col">Имя</th>
             <th scope="col">Остаток</th>
             <th scope="col">Тип</th>
@@ -72,8 +71,7 @@
         </thead>
             <tbody>
             <tr th:each="account : ${accounts}">
-                <th th:text="${account.accountId}" scope="row"></th>
-                <td th:text="${account.name}"></td>
+                <td th:text="${account.name}" scope="row"></td>
                 <td th:text="${account.amount}"></td>
                 <td th:text="${account.accountType}"></td>
                 <td th:text="${account.currency.name}"></td>

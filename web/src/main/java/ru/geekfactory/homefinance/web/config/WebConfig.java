@@ -55,7 +55,7 @@ public class WebConfig implements WebMvcConfigurer {
     public SpringTemplateEngine templateEngine(ITemplateResolver templateResolver, SpringSecurityDialect sec) {
         final SpringTemplateEngine templateEngine = new SpringTemplateEngine();
         templateEngine.setTemplateResolver(templateResolver);
-        templateEngine.addDialect(sec); // Enable use of "sec"
+        templateEngine.addDialect(sec);
         return templateEngine;
     }
 }
