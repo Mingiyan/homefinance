@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Transaction</title>
@@ -19,6 +19,16 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
     <script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("#myInput").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("#myTable tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
 
 </head>
 <p class="bg-light">
@@ -56,9 +66,9 @@
         </div>
     </div>
 </nav>
-
-<!-- Page Content -->
 <div class="center">
+    <input class="form-control" id="myInput" type="text" placeholder="Search..">
+    <br>
     <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#transactionForm">Добавить транзакцию</button>
     <br>
     <p>Список транзакций:</p>
@@ -73,7 +83,7 @@
             <th scope="col">Действия</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody id="myTable">
         <tr th:each="transaction : ${transactions}">
             <td th:text="${transaction.name}" scope="row"></td>
             <td th:text="${transaction.dateTime}"></td>
