@@ -13,8 +13,12 @@ import java.util.Optional;
 @Service
 public class CurrencyService implements ServiceCRUD<Long, Currency> {
 
-    @Autowired
     private CurrencyRepository currencyRepository;
+
+    @Autowired
+    public CurrencyService(CurrencyRepository currencyRepository) {
+        this.currencyRepository = currencyRepository;
+    }
 
     @Override
     public void save(Currency object) {

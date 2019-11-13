@@ -22,14 +22,16 @@ import java.util.Optional;
 @Controller
 public class AccountController {
 
-    @Autowired
     private AccountService accountService;
-
-    @Autowired
     private CurrencyService currencyService;
+    private TransactionService transactionService;
 
     @Autowired
-    private TransactionService transactionService;
+    public AccountController(AccountService accountService, CurrencyService currencyService, TransactionService transactionService) {
+        this.accountService = accountService;
+        this.currencyService = currencyService;
+        this.transactionService = transactionService;
+    }
 
     @GetMapping("/account")
     public String getAccounts(Model model) {

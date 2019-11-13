@@ -16,8 +16,12 @@ import java.util.Optional;
 @Controller
 public class CategoryController {
 
-    @Autowired
     private CategoryTransactionService categoryTransactionService;
+
+    @Autowired
+    public CategoryController(CategoryTransactionService categoryTransactionService) {
+        this.categoryTransactionService = categoryTransactionService;
+    }
 
     @GetMapping("/category")
     public String getCategories(Model model) {

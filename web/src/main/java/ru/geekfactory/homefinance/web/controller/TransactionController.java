@@ -24,14 +24,16 @@ import java.util.Optional;
 @Controller
 public class TransactionController {
 
-    @Autowired
     private TransactionService transactionService;
-
-    @Autowired
     private AccountService accountService;
+    private CategoryTransactionService categoryTransactionService;
 
     @Autowired
-    private CategoryTransactionService categoryTransactionService;
+    public TransactionController(TransactionService transactionService, AccountService accountService, CategoryTransactionService categoryTransactionService) {
+        this.transactionService = transactionService;
+        this.accountService = accountService;
+        this.categoryTransactionService = categoryTransactionService;
+    }
 
     @GetMapping("/transaction")
     public String getTransactions(Model model) {

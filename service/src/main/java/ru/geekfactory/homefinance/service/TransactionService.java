@@ -11,8 +11,12 @@ import java.util.Optional;
 @Service
 public class TransactionService implements ServiceCRUD<Long, Transaction> {
 
-    @Autowired
     private TransactionRepository transactionRepository;
+
+    @Autowired
+    public TransactionService(TransactionRepository transactionRepository) {
+        this.transactionRepository = transactionRepository;
+    }
 
     @Override
     public void save(Transaction object) {

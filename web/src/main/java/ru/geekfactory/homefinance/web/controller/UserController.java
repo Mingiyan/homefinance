@@ -18,11 +18,14 @@ import java.util.Optional;
 @Controller
 public class UserController {
 
-    @Autowired
     private UserService userService;
+    private BCryptPasswordEncoder encoder;
 
     @Autowired
-    private BCryptPasswordEncoder encoder;
+    public UserController(UserService userService, BCryptPasswordEncoder encoder) {
+        this.userService = userService;
+        this.encoder = encoder;
+    }
 
     @GetMapping("/users")
     public String getUsers(Model model) {

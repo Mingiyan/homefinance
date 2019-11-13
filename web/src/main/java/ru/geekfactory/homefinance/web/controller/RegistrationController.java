@@ -16,8 +16,12 @@ import java.util.Optional;
 @Controller
 public class RegistrationController {
 
-    @Autowired
     private UserService userService;
+
+    @Autowired
+    public RegistrationController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping("/registration")
     public String registration() {

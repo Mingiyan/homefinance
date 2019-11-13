@@ -11,8 +11,12 @@ import java.util.Optional;
 @Service
 public class AccountService implements ServiceCRUD<Long, Account> {
 
-    @Autowired
     private AccountRepository accountRepository;
+
+    @Autowired
+    public AccountService(AccountRepository accountRepository) {
+        this.accountRepository = accountRepository;
+    }
 
     @Override
     public void save(Account object) {
