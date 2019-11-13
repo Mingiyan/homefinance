@@ -11,8 +11,12 @@ import java.util.Optional;
 @Service
 public class UserService implements ServiceCRUD<Long, User> {
 
-    @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    public UserService(UserRepository userRepository){
+        this.userRepository = userRepository;
+    }
 
     @Override
     public void save(User object) {

@@ -18,8 +18,12 @@ import java.util.List;
 @Controller
 public class CurrencyController {
 
-    @Autowired
     private CurrencyService currencyService;
+
+    @Autowired
+    public CurrencyController(CurrencyService currencyService) {
+        this.currencyService = currencyService;
+    }
 
     @GetMapping("/currency")
     public String getCurrencies(Model model) {
