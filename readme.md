@@ -1,62 +1,62 @@
 
-## Домашняя бухгалтерия
-##### Приложение для ведения учета домашнего бюджета
+## Home bookkeeping
+##### Home budget accounting app
 
 
-##### Используемые технологии:
+##### Technologies used:
 
 - Maven
 - Spring Boot
 - Spring Data JPA
 - Spring MVC
 - Spring Security Database Authentication
-- Postresql
+- PostgreSQL
 - Tomcat
 - Bootstrap
 
-#### Модули:
+#### Modules:
 - dao 
 - service 
 - web
 
-#### Сборка проекта:
+#### How to build project:
 
-##### Для сборки нужен *Maven 3.3.9* и выше
+##### To build you need *Maven 3.3.9* or higher
 
-собирается командой: 
+command for build: 
 ```yaml
 mvn package
 ```
-или если в модулях нужно удалить папку `target`:
+or if you need to delete the `target` folder in modules:
 ```yaml
 mvn clean package
 ```
-Если при сборке нужно пропустить юнит тесты, то нужно добавить `-DskipTests`
+If during assembly you need to skip unit tests, then you need to add `-DskipTests`
 
-#### Скриншоты приложения:
+#### Application screenshots:
 
-##### Страница авторизации:
+##### Login page:
 ![alt text](images/login.jpg)
 
-##### Страница счетов:
+##### Account page:
 ![alt text](images/account.jpg)
 
-##### Страница валют:
+##### Currency page:
 ![alt text](images/currency.jpg)
 
-##### Страница категорий транзакций:
+##### Transaction categories page:
 ![alt text](images/category.jpg)
 
-##### Страница транзакций:
+##### Transaction page:
 
-Для пользователя с ролью `admin`, в шапке доступно меню `пользователи`
+For a user with the `admin` role, the `пользователи` menu is available in the header
 ![alt text](images/transaction.jpg)
 
-Для простого пользователя с ролью `user`, пункта меню `пользователи` нет
+For a simple user with the `user` role, there is no `пользователи` menu item
 ![alt text](images/transaction1.jpg)
 
-##### Страница пользователи, видна только администратору:
+##### Users page, visible only to the administrator:
 ![alt text](images/users.jpg)
 
-##### Форма создания новой транзакции: 
+##### New transaction creation form:
 ![alt text](images/create_transaction.jpg)
