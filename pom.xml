@@ -19,7 +19,7 @@
         <lombok>1.16.20</lombok>
         <postgresql>42.3.3</postgresql>
         <hibernate>5.4.24.Final</hibernate>
-        <spring>2.1.1.RELEASE</spring>
+        <spring>2.5.12</spring>
         <junit-jupiter>5.5.1</junit-jupiter>
         <junit-platform>1.5.1</junit-platform>
         <h2>2.1.210</h2>
