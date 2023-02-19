@@ -6,9 +6,9 @@ import ru.geekfactory.homefinance.dao.model.Currency;
 import ru.geekfactory.homefinance.dao.repository.CurrencyRepository;
 import ru.geekfactory.homefinance.model.ConvertedCurrency;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CurrencyService implements ServiceCRUD<Long, Currency> {
@@ -59,13 +59,9 @@ public class CurrencyService implements ServiceCRUD<Long, Currency> {
     }
 
     public ConvertedCurrency findByIdConverted(Long id) {
-        ConvertedCurrency convertedCurrency = new ConvertedCurrency();
-        Optional<Currency> optionalCurrency = findById(id);
-        if (optionalCurrency.isPresent()) {
-            convertedCurrency.setCurrencyId(optionalCurrency.get().getCurrencyId());
-            convertedCurrency.setName(optionalCurrency.get().getName());
-        }
-        return convertedCurrency;
+        return findById(id)
+                .map(currency -> new ConvertedCurrency(currency.getCurrencyId(), currency.getName()))
+                .orElse(new ConvertedCurrency());
     }
 
     public void saveConverted(ConvertedCurrency object) {
@@ -75,14 +71,8 @@ public class CurrencyService implements ServiceCRUD<Long, Currency> {
     }
 
     public List<ConvertedCurrency> findAllConverted() {
-        List<ConvertedCurrency> convertedCurrencyList = new ArrayList<>();
-        List<Currency> currencyList = findAll();
-        for (Currency currency : currencyList) {
-            ConvertedCurrency convertedCurrency = new ConvertedCurrency();
-            convertedCurrency.setCurrencyId(currency.getCurrencyId());
-            convertedCurrency.setName(currency.getName());
-            convertedCurrencyList.add(convertedCurrency);
-        }
-        return convertedCurrencyList;
+        return findAll().stream()
+                .map(currency -> new ConvertedCurrency(currency.getCurrencyId(), currency.getName()))
+                .collect(Collectors.toList());
     }
 }
